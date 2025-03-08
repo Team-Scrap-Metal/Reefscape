@@ -13,7 +13,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
+import java.util.Optional;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
@@ -21,17 +24,52 @@ import edu.wpi.first.wpilibj.RobotBase;
  * (log replay from a file).
  */
 public final class Constants {
-  public static final Mode simMode = Mode.SIM;
-  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  /** Defines State of Robot */
+  public static class RobotStateConstants {
+    public static enum Mode {
+      /** Running on a real robot. */
+      REAL,
 
-  public static enum Mode {
-    /** Running on a real robot. */
-    REAL,
+      /** Running a physics simulator. */
+      SIM,
 
-    /** Running a physics simulator. */
-    SIM,
+      /** Replaying from a log file. */
+      REPLAY
+    }
 
-    /** Replaying from a log file. */
-    REPLAY
+    /** Gets Robot Mode (Real, Sim, or Replay) */
+    public static final Mode getMode() {
+      if (RobotBase.isReal()) {
+        return Mode.REAL;
+      } else if (RobotBase.isSimulation()) {
+        return Mode.SIM;
+      } else {
+        return Mode.REPLAY;
+      }
+    }
+
+    /** Get Alliance (Blue, Red, Null) */
+    public static final Optional<Alliance> getAlliance() {
+      return DriverStation.getAlliance();
+    }
+
+    /** If CAN takes too long, it cancels */
+    public static final int CAN_CONFIG_TIMEOUT_SEC = 30;
+
+    /** Command Loop Seconds */
+    public static final double LOOP_PERIODIC_SEC = 0.02;
+
+    /** Average Battery Voltage */
+    public static final double BATTERY_VOLTAGE = 12;
+  }
+
+  /** Defines all Operater Constants */
+  public static final class OperatorConstants {
+    public static final int DRIVER_PORT = 0;
+    public static final int AUX_PORT = 1;
+  }
+
+  public final class UnitConversions {
+    public static final double MIN_TO_MS = 60000;
   }
 }
