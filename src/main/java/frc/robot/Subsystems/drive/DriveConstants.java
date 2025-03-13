@@ -82,7 +82,10 @@ public class DriveConstants {
       MAX_LINEAR_SPEED_M_PER_SEC / (Math.sqrt(2) * TRACK_WIDTH_M / 2);
 
   /** Current limiting in amps */
-  public static final int CUR_LIM_A = 60;
+  public static final int DRIVE_SUPPLY_LIMIT_AMP = 60;
+  public static final int DRIVE_STATOR_LIMIT_AMP = 60;
+  public static final int TURN_STALL_LIMIT_AMP = 40;
+  public static final int TURN_FREE_SPIN_LIMIT_AMP = 40;
   /** Enebles the current limit */
   public static final boolean ENABLE_CUR_LIM = true;
   /** Updates encoders every 10 milliseconds */

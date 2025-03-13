@@ -79,7 +79,7 @@ public class ModuleIOKrakenNeo implements ModuleIO {
 
     // Sets configs for motors
     krakenConfig = new MotorOutputConfigs().withInverted(DriveConstants.KrakenNEOModule.INVERT_TALONFX).withNeutralMode(NeutralModeValue.Brake);
-    neoConfig.inverted(DriveConstants.KrakenNEOModule.INVERT_SPARK_MAX).idleMode(IdleMode.kBrake).smartCurrentLimit(40, 40);
+    neoConfig.inverted(DriveConstants.KrakenNEOModule.INVERT_SPARK_MAX).idleMode(IdleMode.kBrake).smartCurrentLimit(DriveConstants.TURN_STALL_LIMIT_AMP, DriveConstants.TURN_FREE_SPIN_LIMIT_AMP);
     
 
     /** For each drive motor, update values */
@@ -94,9 +94,9 @@ public class ModuleIOKrakenNeo implements ModuleIO {
           neoConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
       CurrentLimitsConfigs currentLimitsConfig =
-          new CurrentLimitsConfigs().withSupplyCurrentLimit(DriveConstants.CUR_LIM_A);
+          new CurrentLimitsConfigs().withSupplyCurrentLimit(DriveConstants.DRIVE_SUPPLY_LIMIT_AMP);
       currentLimitsConfig.withSupplyCurrentLimitEnable(DriveConstants.ENABLE_CUR_LIM);
-      currentLimitsConfig.withStatorCurrentLimit(DriveConstants.CUR_LIM_A);
+      currentLimitsConfig.withStatorCurrentLimit(DriveConstants.DRIVE_STATOR_LIMIT_AMP);
       currentLimitsConfig.withStatorCurrentLimitEnable(DriveConstants.ENABLE_CUR_LIM);
       driveTalonFX.getConfigurator().apply(currentLimitsConfig);
 
