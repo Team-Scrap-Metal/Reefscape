@@ -1,7 +1,7 @@
-package frc.robot.Subsystems.rollers;
+package frc.robot.Subsystems.endEffector;
 
-public class RollersIOCim implements RollersIO {
-  public RollersIOCim() {}
+public class EndEffectorIONeo implements EndEffectorIO {
+  public EndEffectorIONeo() {}
 
   @Override
   /**
@@ -9,19 +9,19 @@ public class RollersIOCim implements RollersIO {
    *
    * @param inputs from ModuleIOInputsAutoLogged
    */
-  public void updateInputs(RollersIOInputs inputs) {}
+  public void updateInputs(EndEffectorIOInputs inputs) {}
 
   @Override
   /**
-   * Sets the voltage for the Rollers
+   * Sets the voltage for the EndEffector
    *
    * @param volts -12 to 12
    */
-  public void setRollersVoltage(double volts) {}
+  public void setEndEffectorVoltage(double volts) {}
 
   @Override
   /**
-   * Sets the Brake Mode for the Rollers
+   * Sets the Brake Mode for the EndEffector
    *
    * <p>Brake means motor holds position, Coast means easy to move
    *

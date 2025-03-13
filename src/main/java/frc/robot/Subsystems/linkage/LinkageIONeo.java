@@ -1,7 +1,7 @@
-package frc.robot.Subsystems.wrist;
+package frc.robot.Subsystems.linkage;
 
-public class WristIONeo550 implements WristIO {
-  public WristIONeo550() {}
+public class LinkageIONeo implements LinkageIO {
+  public LinkageIONeo() {}
 
   @Override
   /**
@@ -9,19 +9,19 @@ public class WristIONeo550 implements WristIO {
    *
    * @param inputs from ModuleIOInputsAutoLogged
    */
-  public void updateInputs(WristIOInputs inputs) {}
+  public void updateInputs(LinkageIOInputs inputs) {}
 
   @Override
   /**
-   * Sets the voltage for the Wrist
+   * Sets the voltage for the Linkage
    *
    * @param volts -12 to 12
    */
-  public void setWristVoltage(double volts) {}
+  public void setLinkageVoltage(double volts) {}
 
   @Override
   /**
-   * Sets the Brake Mode for the Wrist
+   * Sets the Brake Mode for the Linkage
    *
    * <p>Brake means motor holds position, Coast means easy to move
    *

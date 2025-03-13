@@ -1,7 +1,7 @@
-package frc.robot.Subsystems.endEffector;
+package frc.robot.Subsystems.wrist;
 
-public class EndEffectorIOVortex implements EndEffectorIO {
-  public EndEffectorIOVortex() {}
+public class WristIONeo implements WristIO {
+  public WristIONeo() {}
 
   @Override
   /**
@@ -9,19 +9,19 @@ public class EndEffectorIOVortex implements EndEffectorIO {
    *
    * @param inputs from ModuleIOInputsAutoLogged
    */
-  public void updateInputs(EndEffectorIOInputs inputs) {}
+  public void updateInputs(WristIOInputs inputs) {}
 
   @Override
   /**
-   * Sets the voltage for the EndEffector
+   * Sets the voltage for the Wrist
    *
    * @param volts -12 to 12
    */
-  public void setEndEffectorVoltage(double volts) {}
+  public void setWristVoltage(double volts) {}
 
   @Override
   /**
-   * Sets the Brake Mode for the EndEffector
+   * Sets the Brake Mode for the Wrist
    *
    * <p>Brake means motor holds position, Coast means easy to move
    *

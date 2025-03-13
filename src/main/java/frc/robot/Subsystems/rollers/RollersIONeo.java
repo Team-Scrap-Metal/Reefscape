@@ -1,7 +1,7 @@
-package frc.robot.Subsystems.linkage;
+package frc.robot.Subsystems.rollers;
 
-public class LinkageIOCim implements LinkageIO {
-  public LinkageIOCim() {}
+public class RollersIONeo implements RollersIO {
+  public RollersIONeo() {}
 
   @Override
   /**
@@ -9,19 +9,19 @@ public class LinkageIOCim implements LinkageIO {
    *
    * @param inputs from ModuleIOInputsAutoLogged
    */
-  public void updateInputs(LinkageIOInputs inputs) {}
+  public void updateInputs(RollersIOInputs inputs) {}
 
   @Override
   /**
-   * Sets the voltage for the Linkage
+   * Sets the voltage for the Rollers
    *
    * @param volts -12 to 12
    */
-  public void setLinkageVoltage(double volts) {}
+  public void setRollersVoltage(double volts) {}
 
   @Override
   /**
-   * Sets the Brake Mode for the Linkage
+   * Sets the Brake Mode for the Rollers
    *
    * <p>Brake means motor holds position, Coast means easy to move
    *
