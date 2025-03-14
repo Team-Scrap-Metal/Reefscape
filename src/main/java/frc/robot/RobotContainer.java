@@ -27,6 +27,10 @@ import frc.robot.Subsystems.drive.ModuleIOKrakenNeo;
 import frc.robot.Subsystems.gyro.Gyro;
 import frc.robot.Subsystems.gyro.GyroIO;
 import frc.robot.Subsystems.gyro.GyroIOPigeon;
+import frc.robot.Subsystems.linkage.Linkage;
+import frc.robot.Subsystems.linkage.LinkageIO;
+import frc.robot.Subsystems.linkage.LinkageIONeo;
+
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -39,6 +43,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive m_driveSubsystem;
   private final Gyro m_gyroSubsystem;
+  private final Linkage m_linkageSubsystem;
   // private final PoseEstimator m_poseEstimator; TODO: Update PoseEstimator Stuff
 
   // Controller
@@ -56,6 +61,7 @@ public class RobotContainer {
     switch (RobotStateConstants.getMode()) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
+        m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_gyroSubsystem = new Gyro(new GyroIOPigeon());
         m_driveSubsystem =
             new Drive(
@@ -69,6 +75,7 @@ public class RobotContainer {
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
+        m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_gyroSubsystem = new Gyro(new GyroIO() {});
         m_driveSubsystem =
             new Drive(
@@ -82,6 +89,7 @@ public class RobotContainer {
 
       default:
         // Replayed robot, disable IO implementations
+        m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_gyroSubsystem = new Gyro(new GyroIO() {});
         m_driveSubsystem =
             new Drive(
@@ -124,7 +132,23 @@ public class RobotContainer {
     driverController
         .a()
         .onTrue(new InstantCommand(() -> m_driveSubsystem.updateHeading(), m_driveSubsystem));
+       /**driverController
+       .b() 
+       .onTrue(
+        new RunCommand(
+           () ->
+              m_linkageSubsystem.setSetpoint(.20) 
+
+            )); */
+     driverController
+     .rightBumper()
+     .onTrue(new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(20), m_linkageSubsystem)).
+     onFalse(new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0), m_linkageSubsystem));
+
+     
+
   }
+
 
   private void configureAuxButtonBindings() {
     /** Aux Controls */
