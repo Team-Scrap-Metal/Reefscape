@@ -44,7 +44,19 @@ public class ModuleIOKrakenNeo implements ModuleIO {
         turnAbsoluteEncoder = new CANcoder(DriveConstants.ABSOLUTE_ENCODER.FRONT_LEFT.ENCODER_ID);
         absoluteEncoderOffset = DriveConstants.ABSOLUTE_ENCODER_OFFSET_RAD.FRONT_LEFT.OFFSET;
         break;
+        driveTalonFX = new TalonFX(DriveConstants.DRIVE_MOTOR.FRONT_LEFT.CAN_ID);
+        turnSparkMax =
+            new SparkMax(DriveConstants.TURN_MOTOR.FRONT_LEFT.CAN_ID, MotorType.kBrushless);
+        turnAbsoluteEncoder = new CANcoder(DriveConstants.ABSOLUTE_ENCODER.FRONT_LEFT.ENCODER_ID);
+        absoluteEncoderOffset = DriveConstants.ABSOLUTE_ENCODER_OFFSET_RAD.FRONT_LEFT.OFFSET;
+        break;
       case 1:
+        driveTalonFX = new TalonFX(DriveConstants.DRIVE_MOTOR.BACK_LEFT.CAN_ID);
+        turnSparkMax =
+            new SparkMax(DriveConstants.TURN_MOTOR.BACK_LEFT.CAN_ID, MotorType.kBrushless);
+        turnAbsoluteEncoder = new CANcoder(DriveConstants.ABSOLUTE_ENCODER.BACK_LEFT.ENCODER_ID);
+        absoluteEncoderOffset = DriveConstants.ABSOLUTE_ENCODER_OFFSET_RAD.BACK_LEFT.OFFSET;
+        break;
         driveTalonFX = new TalonFX(DriveConstants.DRIVE_MOTOR.BACK_LEFT.CAN_ID);
         turnSparkMax =
             new SparkMax(DriveConstants.TURN_MOTOR.BACK_LEFT.CAN_ID, MotorType.kBrushless);
@@ -84,8 +96,7 @@ public class ModuleIOKrakenNeo implements ModuleIO {
     neoConfig
         .inverted(DriveConstants.KrakenNEOModule.INVERT_SPARK_MAX)
         .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(
-            DriveConstants.TURN_STALL_LIMIT_AMP, DriveConstants.TURN_FREE_SPIN_LIMIT_AMP);
+        .smartCurrentLimit(40, 40);
 
     /** For each drive motor, update values */
     for (int i = 0; i < DriveConstants.DRIVE_MOTOR.values().length; i++) {

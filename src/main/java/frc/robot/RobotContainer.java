@@ -24,6 +24,9 @@ import frc.robot.Constants.RobotStateConstants;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOKrakenNeo;
+import frc.robot.Subsystems.endEffector.EndEffector;
+import frc.robot.Subsystems.endEffector.EndEffectorIO;
+import frc.robot.Subsystems.endEffector.EndEffectorIONeo;
 import frc.robot.Subsystems.gyro.Gyro;
 import frc.robot.Subsystems.gyro.GyroIO;
 import frc.robot.Subsystems.gyro.GyroIOPigeon;
@@ -51,6 +54,7 @@ public class RobotContainer {
   private final Linkage m_linkageSubsystem;
   private final Wrist m_wristSubsystem;
   private final Rollers m_rollersSubsystem;
+  private final EndEffector m_endEffectorSubsystem;
   // private final PoseEstimator m_poseEstimator; TODO: Update PoseEstimator Stuff
 
   // Controller
@@ -79,7 +83,8 @@ public class RobotContainer {
         m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_wristSubsystem = new Wrist(new WristIONeo());
         m_rollersSubsystem = new Rollers(new RollersIONeo());
-
+          m_endEffectorSubsystem = new EndEffector(new EndEffectorIONeo());
+        
         break;
 
       case SIM:
@@ -95,7 +100,7 @@ public class RobotContainer {
         m_linkageSubsystem = new Linkage(new LinkageIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
-
+        m_endEffectorSubsystem = new EndEffector(new EndEffectorIO(){});
         break;
 
       default:
@@ -108,6 +113,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 m_gyroSubsystem);
+        m_endEffectorSubsystem = new EndEffector(new EndEffectorIO(){});
         m_linkageSubsystem = new Linkage(new LinkageIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
