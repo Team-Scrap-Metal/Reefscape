@@ -8,14 +8,14 @@ public interface WristIO {
     /** This returns the voltage the Wrist Motor Recieves */
     public double wristAppliedVolts = 0.0;
     /**
-    * Returns the position of the absoltute encoder in Radians (Used to make sure wrist zero doesnt
-    * change on enable
-    */
+     * Returns the position of the absoltute encoder in Radians (Used to make sure wrist zero doesnt
+     * change on enable
+     */
     public double wristAbsolutePositionRad = 0.0;
     /**
-    * Returns the position of the absoltute encoder in degrees (Used to make sure wrist zero doesnt
-    * change on enable
-    */
+     * Returns the position of the absoltute encoder in degrees (Used to make sure wrist zero doesnt
+     * change on enable
+     */
     public double wristAbsolutePositionDeg = 0.0;
     /** Returns the position of the Wrist Motor by how many radians it has rotated */
     public double wristPositionRad = 0.0;

@@ -1,24 +1,28 @@
 package frc.robot.Subsystems.wrist;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
 
 public class WristIONeo implements WristIO {
   private final SparkMax wristMotor;
   private final RelativeEncoder wristRelativeEncoder;
   private final SparkMaxConfig wristConfig = new SparkMaxConfig();
+
   public WristIONeo() {
     wristMotor = new SparkMax(WristConstants.CAN_ID, MotorType.kBrushless);
     wristRelativeEncoder = wristMotor.getEncoder();
-    wristConfig.inverted(WristConstants.IS_INVERTED).idleMode(IdleMode.kBrake).smartCurrentLimit(WristConstants.STALL_LIMIT_AMPS, WristConstants.FREE_SPIN_LIMIT_AMPS);
-    wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    wristConfig
+        .inverted(WristConstants.IS_INVERTED)
+        .idleMode(IdleMode.kBrake)
+        .smartCurrentLimit(WristConstants.STALL_LIMIT_AMPS, WristConstants.FREE_SPIN_LIMIT_AMPS);
+    wristMotor.configure(
+        wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override
@@ -31,16 +35,20 @@ public class WristIONeo implements WristIO {
     /** This returns the voltage the Wrist Motor Recieves */
     inputs.wristAppliedVolts = wristMotor.getAppliedOutput() * wristMotor.getBusVoltage();
     /**
-    * Returns the position of the absoltute encoder in Radians (Used to make sure wrist zero doesnt
-    * change on enable
-    */
+     * Returns the position of the absoltute encoder in Radians (Used to make sure wrist zero doesnt
+     * change on enable
+     */
     inputs.wristAbsolutePositionRad = 0.0;
     /** Returns the position of the Wrist Motor by how many radians it has rotated */
-    inputs.wristPositionRad = Units.rotationsToRadians(wristRelativeEncoder.getPosition())/WristConstants.GEAR_RATIO;
+    inputs.wristPositionRad =
+        Units.rotationsToRadians(wristRelativeEncoder.getPosition()) / WristConstants.GEAR_RATIO;
     /** Returns the position of the Wrist Motor by how many degrees it has rotated */
-    inputs.wristPositionDeg = Units.rotationsToDegrees(wristRelativeEncoder.getPosition())/WristConstants.GEAR_RATIO;
+    inputs.wristPositionDeg =
+        Units.rotationsToDegrees(wristRelativeEncoder.getPosition()) / WristConstants.GEAR_RATIO;
     /** Returns the velocity of the Wrist Motor by how many radians per second it has rotated */
-    inputs.wristVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(wristRelativeEncoder.getVelocity())/WristConstants.GEAR_RATIO;
+    inputs.wristVelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(wristRelativeEncoder.getVelocity())
+            / WristConstants.GEAR_RATIO;
     /** The Current Drawn from the Wrist Motor in Amps */
     inputs.wristCurrentAmps = new double[] {wristMotor.getOutputCurrent()};
     /** The tempature of the Wrist Motor in Celsius */
@@ -67,6 +75,7 @@ public class WristIONeo implements WristIO {
    */
   public void setBrakeMode(boolean enable) {
     wristConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
-    wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    wristMotor.configure(
+        wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 }

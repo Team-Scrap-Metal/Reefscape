@@ -16,7 +16,6 @@ public class GyroIOPigeon implements GyroIO {
   public GyroIOPigeon() {
     System.out.println("[Init] Creating GyroIONavX");
     gyro = new Pigeon2(GyroConstants.CAN_ID);
-    gyro.setYaw(GyroConstants.HEADING_OFFSET_DEGREES);
   }
 
   @Override

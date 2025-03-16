@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.wrist;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class Wrist extends SubsystemBase {
@@ -13,7 +15,6 @@ public class Wrist extends SubsystemBase {
     WristPID = new PIDController(WristConstants.kP, WristConstants.kI, WristConstants.kD);
     WristPID.setTolerance(WristConstants.PID_TOLERANCE_RAD);
     WristPID.setSetpoint(0);
-
   }
 
   @Override
@@ -30,6 +31,7 @@ public class Wrist extends SubsystemBase {
   public void updateInputs() {
     io.updateInputs(inputs);
   }
+
   public void setSetpoint(double setpoint) {
     WristPID.setSetpoint(setpoint);
   }

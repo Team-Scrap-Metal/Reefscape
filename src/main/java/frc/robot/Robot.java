@@ -96,7 +96,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_robotContainer.coastOnDisable(true);
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -110,6 +112,7 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }
+    m_robotContainer.coastOnDisable(false);
   }
 
   /** This function is called periodically during autonomous. */
@@ -118,7 +121,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    m_robotContainer.coastOnDisable(false);
+  }
 
   /** This function is called periodically during operator control. */
   @Override
