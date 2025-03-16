@@ -30,7 +30,12 @@ import frc.robot.Subsystems.gyro.GyroIOPigeon;
 import frc.robot.Subsystems.linkage.Linkage;
 import frc.robot.Subsystems.linkage.LinkageIO;
 import frc.robot.Subsystems.linkage.LinkageIONeo;
-
+import frc.robot.Subsystems.rollers.Rollers;
+import frc.robot.Subsystems.rollers.RollersIO;
+import frc.robot.Subsystems.rollers.RollersIONeo;
+import frc.robot.Subsystems.wrist.Wrist;
+import frc.robot.Subsystems.wrist.WristIO;
+import frc.robot.Subsystems.wrist.WristIONeo;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -44,6 +49,8 @@ public class RobotContainer {
   private final Drive m_driveSubsystem;
   private final Gyro m_gyroSubsystem;
   private final Linkage m_linkageSubsystem;
+  private final Wrist m_wristSubsystem;
+  private final Rollers m_rollersSubsystem;
   // private final PoseEstimator m_poseEstimator; TODO: Update PoseEstimator Stuff
 
   // Controller
@@ -61,7 +68,6 @@ public class RobotContainer {
     switch (RobotStateConstants.getMode()) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-        m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_gyroSubsystem = new Gyro(new GyroIOPigeon());
         m_driveSubsystem =
             new Drive(
@@ -70,12 +76,14 @@ public class RobotContainer {
                 new ModuleIOKrakenNeo(2),
                 new ModuleIOKrakenNeo(3),
                 m_gyroSubsystem);
+        m_linkageSubsystem = new Linkage(new LinkageIONeo());
+        m_wristSubsystem = new Wrist(new WristIONeo());
+        m_rollersSubsystem = new Rollers(new RollersIONeo());
 
         break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
-        m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_gyroSubsystem = new Gyro(new GyroIO() {});
         m_driveSubsystem =
             new Drive(
@@ -84,12 +92,14 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 m_gyroSubsystem);
+        m_linkageSubsystem = new Linkage(new LinkageIO() {});
+        m_wristSubsystem = new Wrist(new WristIO() {});
+        m_rollersSubsystem = new Rollers(new RollersIO() {});
 
         break;
 
       default:
         // Replayed robot, disable IO implementations
-        m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_gyroSubsystem = new Gyro(new GyroIO() {});
         m_driveSubsystem =
             new Drive(
@@ -98,6 +108,9 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 m_gyroSubsystem);
+        m_linkageSubsystem = new Linkage(new LinkageIO() {});
+        m_wristSubsystem = new Wrist(new WristIO() {});
+        m_rollersSubsystem = new Rollers(new RollersIO() {});
         break;
     }
 
@@ -132,23 +145,40 @@ public class RobotContainer {
     driverController
         .a()
         .onTrue(new InstantCommand(() -> m_driveSubsystem.updateHeading(), m_driveSubsystem));
-       /**driverController
-       .b() 
-       .onTrue(
-        new RunCommand(
-           () ->
-              m_linkageSubsystem.setSetpoint(.20) 
-
-            )); */
-     driverController
-     .rightBumper()
-     .onTrue(new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(20), m_linkageSubsystem)).
-     onFalse(new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0), m_linkageSubsystem));
-
-     
-
+    /**
+     * driverController .b() .onTrue( new RunCommand( () -> m_linkageSubsystem.setSetpoint(.20)
+     *
+     * <p>));
+     */
+    driverController
+        .rightBumper()
+        .onTrue(
+            new InstantCommand(
+                () -> m_linkageSubsystem.setLinkagePercent(0.20), m_linkageSubsystem))
+        .onFalse(
+            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0), m_linkageSubsystem));
+    driverController
+        .leftBumper()
+        .onTrue(
+            new InstantCommand(
+                () -> m_linkageSubsystem.setLinkagePercent(-0.20), m_linkageSubsystem))
+        .onFalse(
+            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0), m_linkageSubsystem));
+    driverController
+        .rightTrigger()
+        .onTrue(
+            new InstantCommand(
+                () -> m_rollersSubsystem.setRollersPercent(0.20), m_linkageSubsystem))
+        .onFalse(
+            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0), m_linkageSubsystem));
+    driverController
+        .leftTrigger()
+        .onTrue(
+            new InstantCommand(
+                () -> m_rollersSubsystem.setRollersPercent(-0.20), m_linkageSubsystem))
+        .onFalse(
+            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0), m_linkageSubsystem));
   }
-
 
   private void configureAuxButtonBindings() {
     /** Aux Controls */

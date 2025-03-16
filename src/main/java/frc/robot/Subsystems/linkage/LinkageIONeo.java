@@ -1,37 +1,33 @@
 package frc.robot.Subsystems.linkage;
 
-import java.security.PrivateKey;
-
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
-import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
-import frc.robot.Constants.UnitConversions;
 
 public class LinkageIONeo implements LinkageIO {
   private final RelativeEncoder linkagRelativeEncoder;
   private final SparkMax linkageMotor;
   private final SparkMaxConfig linkageConfig = new SparkMaxConfig();
+
   public LinkageIONeo() {
     System.out.println("(INIT) creating LinkageIONeo");
     linkageMotor = new SparkMax(LinkageConstants.CAN_ID, MotorType.kBrushless);
     linkagRelativeEncoder = linkageMotor.getEncoder();
-    linkageConfig.inverted(LinkageConstants.IS_INVERTED).idleMode(IdleMode.kBrake).smartCurrentLimit(LinkageConstants.STALL_LIMIT_AMPS,LinkageConstants.FREE_STALL_LIMIT_AMPS);
-    linkageMotor.configure(linkageConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    
 
-    
-    
+    linkageConfig
+        .inverted(LinkageConstants.IS_INVERTED)
+        .idleMode(IdleMode.kBrake)
+        .smartCurrentLimit(
+            LinkageConstants.STALL_LIMIT_AMPS, LinkageConstants.FREE_STALL_LIMIT_AMPS);
 
-
+    linkageMotor.configure(
+        linkageConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
-  
 
   @Override
   /**
@@ -41,16 +37,16 @@ public class LinkageIONeo implements LinkageIO {
    */
   public void updateInputs(LinkageIOInputs inputs) {
 
-    inputs.linkagePositionRad = Units.rotationsToRadians(linkagRelativeEncoder.getPosition()) / LinkageConstants.GEAR_RATIO;
+    inputs.linkagePositionRad =
+        Units.rotationsToRadians(linkagRelativeEncoder.getPosition()) / LinkageConstants.GEAR_RATIO;
     inputs.linkageAppliedVolts = (linkageMotor.getAppliedOutput() * linkageMotor.getBusVoltage());
     inputs.linkageTempCelsius = new double[] {linkageMotor.getMotorTemperature()};
     inputs.linkageCurrentAmps = new double[] {linkageMotor.getOutputCurrent()};
-    inputs.linkageVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(linkagRelativeEncoder.getVelocity()) / LinkageConstants.GEAR_RATIO;
-    inputs.linkagePositionDeg = Units.rotationsToDegrees(linkagRelativeEncoder.getPosition()) / LinkageConstants.GEAR_RATIO;
-    
-    
-
-    
+    inputs.linkageVelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(linkagRelativeEncoder.getVelocity())
+            / LinkageConstants.GEAR_RATIO;
+    inputs.linkagePositionDeg =
+        Units.rotationsToDegrees(linkagRelativeEncoder.getPosition()) / LinkageConstants.GEAR_RATIO;
   }
 
   @Override
@@ -74,6 +70,7 @@ public class LinkageIONeo implements LinkageIO {
   public void setBrakeMode(boolean enable) {
     linkageConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
   }
+
   public double getLinkageVoltage() {
     return linkagRelativeEncoder.getVelocity();
   }

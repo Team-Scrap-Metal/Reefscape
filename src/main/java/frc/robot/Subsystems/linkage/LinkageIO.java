@@ -18,8 +18,7 @@ public interface LinkageIO {
     public double[] linkageCurrentAmps = new double[] {};
     /** The tempature of the Propulsion Motor in Celsius */
     public double[] linkageTempCelsius = new double[] {};
-
-}
+  }
 
   /** Updates inputs for the Linkage */
   public default void updateInputs(LinkageIOInputs inputs) {}
