@@ -84,8 +84,8 @@ public class RobotContainer {
         m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_wristSubsystem = new Wrist(new WristIONeo());
         m_rollersSubsystem = new Rollers(new RollersIONeo());
-          m_endEffectorSubsystem = new EndEffector(new EndEffectorIONeo());
-        
+        m_endEffectorSubsystem = new EndEffector(new EndEffectorIONeo());
+
         break;
 
       case SIM:
@@ -101,7 +101,7 @@ public class RobotContainer {
         m_linkageSubsystem = new Linkage(new LinkageIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
-        m_endEffectorSubsystem = new EndEffector(new EndEffectorIO(){});
+        m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
         break;
 
       default:
@@ -114,7 +114,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 m_gyroSubsystem);
-        m_endEffectorSubsystem = new EndEffector(new EndEffectorIO(){});
+        m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
         m_linkageSubsystem = new Linkage(new LinkageIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});

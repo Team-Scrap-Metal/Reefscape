@@ -1,25 +1,29 @@
 package frc.robot.Subsystems.endEffector;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
 
 public class EndEffectorIONeo implements EndEffectorIO {
   private final SparkMax endEffectorMotor;
   private final RelativeEncoder endEffectorRelativeEncoder;
   private final SparkMaxConfig endEffectorConfig = new SparkMaxConfig();
+
   public EndEffectorIONeo() {
     endEffectorMotor = new SparkMax(EndEffectorConstants.CAN_ID, MotorType.kBrushless);
     endEffectorRelativeEncoder = endEffectorMotor.getEncoder();
-    endEffectorConfig.inverted(EndEffectorConstants.IS_INVERTED).idleMode(IdleMode.kCoast).smartCurrentLimit(EndEffectorConstants.STALL_LIMIT_AMPS, EndEffectorConstants.FREE_SPIN_LIMIT_AMPS);
-    endEffectorMotor.configure(endEffectorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    endEffectorConfig
+        .inverted(EndEffectorConstants.IS_INVERTED)
+        .idleMode(IdleMode.kCoast)
+        .smartCurrentLimit(
+            EndEffectorConstants.STALL_LIMIT_AMPS, EndEffectorConstants.FREE_SPIN_LIMIT_AMPS);
+    endEffectorMotor.configure(
+        endEffectorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override
@@ -30,19 +34,24 @@ public class EndEffectorIONeo implements EndEffectorIO {
    */
   public void updateInputs(EndEffectorIOInputs inputs) {
     /** This returns the voltage the Endeffector Motor Recieves */
-    inputs.endEffectorAppliedVolts = endEffectorMotor.getAppliedOutput() * endEffectorMotor.getBusVoltage();
+    inputs.endEffectorAppliedVolts =
+        endEffectorMotor.getAppliedOutput() * endEffectorMotor.getBusVoltage();
     /** Returns the position of the Endeffector Motor by how many radians it has rotated */
-    inputs.endEffectorPositionRad = Units.rotationsToRadians(endEffectorRelativeEncoder.getPosition())/EndEffectorConstants.GEAR_RATIO;
+    inputs.endEffectorPositionRad =
+        Units.rotationsToRadians(endEffectorRelativeEncoder.getPosition())
+            / EndEffectorConstants.GEAR_RATIO;
     /**
      * Returns the velocity of the Endeffector Motor by how many radians per second it has rotated
      */
-    inputs.endEffectorVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(endEffectorRelativeEncoder.getVelocity())/EndEffectorConstants.GEAR_RATIO;
+    inputs.endEffectorVelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(endEffectorRelativeEncoder.getVelocity())
+            / EndEffectorConstants.GEAR_RATIO;
     /** The Current Drawn from the Endeffector Motor in Amps */
     inputs.endEffectorCurrentAmps = new double[] {};
     /** The tempature of the Endeffector Motor in Celsius */
     inputs.endEffectorTempCelsius = new double[] {};
-    inputs.endEffectorVelocityRotPerMin = endEffectorRelativeEncoder.getVelocity()/EndEffectorConstants.GEAR_RATIO;
-
+    inputs.endEffectorVelocityRotPerMin =
+        endEffectorRelativeEncoder.getVelocity() / EndEffectorConstants.GEAR_RATIO;
   }
 
   @Override
@@ -65,6 +74,7 @@ public class EndEffectorIONeo implements EndEffectorIO {
    */
   public void setBrakeMode(boolean enable) {
     endEffectorConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
-    endEffectorMotor.configure(endEffectorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    endEffectorMotor.configure(
+        endEffectorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 }

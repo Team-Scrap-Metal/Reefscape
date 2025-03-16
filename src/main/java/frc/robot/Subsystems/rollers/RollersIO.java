@@ -9,13 +9,9 @@ public interface RollersIO {
     public double rollerAppliedVolts = 0.0;
     /** Returns the position of the roller Motor by how many radians it has rotated */
     public double rollerPositionRad = 0.0;
-    /**
-     * Returns the velocity of the roller Motor by how many radians per second it has rotated
-     */
+    /** Returns the velocity of the roller Motor by how many radians per second it has rotated */
     public double rollerVelocityRadPerSec = 0.0;
-    /**
-     * Returns the velocity of the roller Motor by how many rotations per minute it has rotated
-     */
+    /** Returns the velocity of the roller Motor by how many rotations per minute it has rotated */
     public double rollerVelocityRotPerMin = 0.0;
     /** The Current Drawn from the roller Motor in Amps */
     public double[] rollerCurrentAmps = new double[] {};
