@@ -1,7 +1,6 @@
 package frc.robot.Subsystems.drive;
 
 import com.ctre.phoenix6.signals.InvertedValue;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
@@ -34,7 +33,7 @@ public class DriveConstants {
             -DriveConstants.TRACK_WIDTH_M / 2.0, DriveConstants.TRACK_WIDTH_M / 2.0
           }, // Back Left: Module 1
           new double[] {
-            -DriveConstants.TRACK_WIDTH_M / -2.0, DriveConstants.TRACK_WIDTH_M / 2.0
+            -DriveConstants.TRACK_WIDTH_M / 2.0, -DriveConstants.TRACK_WIDTH_M / 2.0
           }, // Back Right: Module 2
           new double[] {
             DriveConstants.TRACK_WIDTH_M / 2.0, -DriveConstants.TRACK_WIDTH_M / 2.0
@@ -61,10 +60,10 @@ public class DriveConstants {
   }
 
   public static enum ABSOLUTE_ENCODER_OFFSET_RAD {
-    FRONT_RIGHT(0.245), // Module 0 //TODO: Update
-    FRONT_LEFT(-0.318), // Module 1 //TODO: Update
-    BACK_LEFT(-0.261), // Module 2 //TODO: Update
-    BACK_RIGHT(0.598); // Module 3 //TODO: Update
+    FRONT_LEFT(-0.207087 - 0.0905053), // Module 0 //TODO: Update
+    BACK_LEFT(-3.110913 + 0.2408349), // Module 1 //TODO: Update
+    BACK_RIGHT(0.587514), // Module 2 //TODO: Update
+    FRONT_RIGHT(2.862408 + 0.003068); // Module 3 //TODO: Update
 
     public final double OFFSET;
 
@@ -82,7 +81,11 @@ public class DriveConstants {
       MAX_LINEAR_SPEED_M_PER_SEC / (Math.sqrt(2) * TRACK_WIDTH_M / 2);
 
   /** Current limiting in amps */
-  public static final int CUR_LIM_A = 60;
+  public static final int DRIVE_SUPPLY_LIMIT_AMP = 60;
+
+  public static final int DRIVE_STATOR_LIMIT_AMP = 60;
+  public static final int TURN_STALL_LIMIT_AMP = 40;
+  public static final int TURN_FREE_SPIN_LIMIT_AMP = 40;
   /** Enebles the current limit */
   public static final boolean ENABLE_CUR_LIM = true;
   /** Updates encoders every 10 milliseconds */
@@ -154,24 +157,24 @@ public class DriveConstants {
     // Feed Forward values used in sim: S = 0.4, V = 0.4
 
     /** KS represents the voltage required to overcome static friction */
-    public static final double KRAKEN_KS = 0.4;
+    public static final double KRAKEN_KS = 0.07;
 
     /** KV represents the voltage used every second per meter */
-    public static final double KRAKEN_KV = 0.4;
+    public static final double KRAKEN_KV = 0.12;
 
     // PID Constants for Neo Steer
     /**
      * KP represents the constant multiplied by the current error from setpoint (Proportional Error)
      */
-    public static final double NEO_KP = 5.0;
+    public static final double NEO_KP = 5.95;
     /** KI represents the constant multiplied by the total error from setpoint (Integrated Error) */
-    public static final double NEO_KI = 1.2;
+    public static final double NEO_KI = 0.0;
     /** KD represents the constant multiplied by the velocity error from setpoint (Derived Error) */
-    public static final double NEO_KD = 0.03;
+    public static final double NEO_KD = 0.1;
 
     /** Set the inverted for the drive TalonFX */
     public static final InvertedValue INVERT_TALONFX = InvertedValue.CounterClockwise_Positive;
     /** Set the inverted for the turn SPARKMAX */
-    public static final boolean INVERT_SPARK_MAX = false;
+    public static final boolean INVERT_SPARK_MAX = true;
   }
 }

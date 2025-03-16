@@ -132,6 +132,10 @@ public class RobotContainer {
 
   public void stopEverything() {}
 
+  public void coastOnDisable(boolean isDisabled) {
+    m_driveSubsystem.coastOnDisable(isDisabled);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

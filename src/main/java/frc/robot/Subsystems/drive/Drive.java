@@ -40,11 +40,11 @@ public class Drive extends SubsystemBase {
   private double[] lastModulePositionsMeters = new double[] {0.0, 0.0, 0.0, 0.0};
 
   public Drive(
-    ModuleIO FLModuleIO,
-    ModuleIO BLModuleIO,
-    ModuleIO BRModuleIO,
-    ModuleIO FRModuleIO,
-    Gyro gyro) {
+      ModuleIO FLModuleIO,
+      ModuleIO BLModuleIO,
+      ModuleIO BRModuleIO,
+      ModuleIO FRModuleIO,
+      Gyro gyro) {
 
     System.out.println("[Init] Creating Drive");
     this.gyro = gyro;
@@ -52,7 +52,7 @@ public class Drive extends SubsystemBase {
     modules[1] = new Module(BLModuleIO, 1);
     modules[2] = new Module(BRModuleIO, 2);
     modules[3] = new Module(FRModuleIO, 3);
-    
+
     // Creates Swerve Dimensions in a 2D plan
     swerveKinematics = new SwerveDriveKinematics(DriveConstants.getModuleTranslations());
   }
