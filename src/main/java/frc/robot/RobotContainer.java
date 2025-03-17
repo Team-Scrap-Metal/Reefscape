@@ -21,6 +21,9 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RobotStateConstants;
+import frc.robot.Subsystems.climber.Climber;
+import frc.robot.Subsystems.climber.ClimberIO;
+import frc.robot.Subsystems.climber.ClimberIONeo;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOKrakenNeo;
@@ -51,6 +54,7 @@ public class RobotContainer {
   private final Linkage m_linkageSubsystem;
   private final Wrist m_wristSubsystem;
   private final Rollers m_rollersSubsystem;
+  private final Climber m_climberSubsystem;
   // private final PoseEstimator m_poseEstimator; TODO: Update PoseEstimator Stuff
 
   // Controller
@@ -79,7 +83,7 @@ public class RobotContainer {
         m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_wristSubsystem = new Wrist(new WristIONeo());
         m_rollersSubsystem = new Rollers(new RollersIONeo());
-
+        m_climberSubsystem = new Climber(new ClimberIONeo());
         break;
 
       case SIM:
@@ -95,9 +99,10 @@ public class RobotContainer {
         m_linkageSubsystem = new Linkage(new LinkageIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
-
+        m_climberSubsystem = new Climber(new ClimberIO() {});
+        
         break;
-
+        
       default:
         // Replayed robot, disable IO implementations
         m_gyroSubsystem = new Gyro(new GyroIO() {});
@@ -108,10 +113,11 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 m_gyroSubsystem);
-        m_linkageSubsystem = new Linkage(new LinkageIO() {});
-        m_wristSubsystem = new Wrist(new WristIO() {});
-        m_rollersSubsystem = new Rollers(new RollersIO() {});
-        break;
+            m_linkageSubsystem = new Linkage(new LinkageIO() {});
+            m_wristSubsystem = new Wrist(new WristIO() {});
+            m_rollersSubsystem = new Rollers(new RollersIO() {});
+            m_climberSubsystem = new Climber(new ClimberIO() {});
+            break;
     }
 
     // m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
@@ -182,6 +188,12 @@ public class RobotContainer {
 
   private void configureAuxButtonBindings() {
     /** Aux Controls */
+    auxController.leftTrigger().onTrue(new InstantCommand(
+        () -> m_climberSubsystem.setClimberPercent(0.05), m_climberSubsystem)).onFalse(new InstantCommand(
+            () -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
+    auxController.rightTrigger().onTrue(new InstantCommand(
+        () -> m_climberSubsystem.setClimberPercent(-0.05), m_climberSubsystem)).onFalse(new InstantCommand(
+            () -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
   }
 
   public void stopEverything() {}

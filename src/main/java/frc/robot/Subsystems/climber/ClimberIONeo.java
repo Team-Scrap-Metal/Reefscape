@@ -72,7 +72,9 @@ public class ClimberIONeo implements ClimberIO {
    *
    * @param volts -12 to 12
    */
-  public void setClimberVoltage(double volts) {}
+  public void setClimberVoltage(double volts) {
+    climberLeftMotor.setVoltage(volts);
+  }
 
   @Override
   /**
@@ -82,5 +84,10 @@ public class ClimberIONeo implements ClimberIO {
    *
    * @param enable if enable, it sets brake mode, else it sets coast mode
    */
-  public void setBrakeMode(boolean enable) {}
+  public void setBrakeMode(boolean enable) {
+    climberLeftConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
+    climberRightConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
+    climberLeftMotor.configure(climberLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    climberRightMotor.configure(climberRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
 }
