@@ -143,8 +143,8 @@ public class RobotContainer {
             () ->
                 m_driveSubsystem.driveWithDeadband(
                     driverController.getLeftX() * 1, // Forward/backward
-                    -driverController.getLeftY()
-                        * 1, // Left/Right (multiply by -1 bc controller axis is inverted)
+                    driverController.getLeftY()
+                        * -1, // Left/Right (multiply by -1 bc controller axis is inverted)
                     driverController.getRightX() * (1)), // Rotate chassis left/right
             m_driveSubsystem));
 
@@ -160,29 +160,27 @@ public class RobotContainer {
     driverController
         .rightBumper()
         .onTrue(
-            new InstantCommand(
-                () -> m_linkageSubsystem.setLinkagePercent(0.05), m_linkageSubsystem))
+            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0.1), m_linkageSubsystem))
         .onFalse(
             new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0), m_linkageSubsystem));
     driverController
         .leftBumper()
         .onTrue(
             new InstantCommand(
-                () -> m_linkageSubsystem.setLinkagePercent(-0.05), m_linkageSubsystem))
+                () -> m_linkageSubsystem.setLinkagePercent(-0.1), m_linkageSubsystem))
         .onFalse(
             new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0), m_linkageSubsystem));
     driverController
         .rightTrigger()
         .onTrue(
-            new InstantCommand(
-                () -> m_rollersSubsystem.setRollersPercent(0.05), m_linkageSubsystem))
+            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(1.0), m_linkageSubsystem))
         .onFalse(
             new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0), m_linkageSubsystem));
     driverController
         .leftTrigger()
         .onTrue(
             new InstantCommand(
-                () -> m_rollersSubsystem.setRollersPercent(-0.05), m_rollersSubsystem))
+                () -> m_rollersSubsystem.setRollersPercent(-1.0), m_rollersSubsystem))
         .onFalse(
             new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0), m_rollersSubsystem));
   }
@@ -193,26 +191,26 @@ public class RobotContainer {
         .leftBumper()
         .onTrue(
             new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(0.05), m_endEffectorSubsystem))
+                () -> m_endEffectorSubsystem.setEndEffectorPercent(0.2), m_endEffectorSubsystem))
         .onFalse(
             new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(0.), m_endEffectorSubsystem));
+                () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
 
     auxController
         .rightBumper()
         .onTrue(
             new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(-0.05), m_endEffectorSubsystem))
+                () -> m_endEffectorSubsystem.setEndEffectorPercent(-0.2), m_endEffectorSubsystem))
         .onFalse(new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(0)));
 
     auxController
         .leftTrigger()
-        .onTrue(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0.05), m_wristSubsystem))
+        .onTrue(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0.2), m_wristSubsystem))
         .onFalse(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0), m_wristSubsystem));
 
     auxController
         .rightTrigger()
-        .onTrue(new InstantCommand(() -> m_wristSubsystem.setWristPercent(-0.05), m_wristSubsystem))
+        .onTrue(new InstantCommand(() -> m_wristSubsystem.setWristPercent(-0.2), m_wristSubsystem))
         .onFalse(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0)));
   }
 
