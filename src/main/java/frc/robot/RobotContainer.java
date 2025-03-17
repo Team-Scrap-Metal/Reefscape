@@ -24,6 +24,9 @@ import frc.robot.Constants.RobotStateConstants;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOKrakenNeo;
+import frc.robot.Subsystems.elevator.Elevator;
+import frc.robot.Subsystems.elevator.ElevatorIO;
+import frc.robot.Subsystems.elevator.ElevatorIOVortex;
 import frc.robot.Subsystems.endEffector.EndEffector;
 import frc.robot.Subsystems.endEffector.EndEffectorIO;
 import frc.robot.Subsystems.endEffector.EndEffectorIONeo;
@@ -55,6 +58,7 @@ public class RobotContainer {
   private final Wrist m_wristSubsystem;
   private final Rollers m_rollersSubsystem;
   private final EndEffector m_endEffectorSubsystem;
+  private final Elevator m_elevatorSubsystem;
 
   // private final PoseEstimator m_poseEstimator; TODO: Update PoseEstimator Stuff
 
@@ -85,6 +89,7 @@ public class RobotContainer {
         m_wristSubsystem = new Wrist(new WristIONeo());
         m_rollersSubsystem = new Rollers(new RollersIONeo());
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIONeo());
+        m_elevatorSubsystem = new Elevator(new ElevatorIOVortex());
 
         break;
 
@@ -102,6 +107,7 @@ public class RobotContainer {
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
+        m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
         break;
 
       default:
@@ -118,6 +124,7 @@ public class RobotContainer {
         m_linkageSubsystem = new Linkage(new LinkageIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
+        m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
         break;
     }
 
@@ -211,7 +218,24 @@ public class RobotContainer {
     auxController
         .rightTrigger()
         .onTrue(new InstantCommand(() -> m_wristSubsystem.setWristPercent(-0.2), m_wristSubsystem))
-        .onFalse(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0)));
+        .onFalse(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0), m_wristSubsystem));
+
+    auxController
+        .a()
+        .onTrue(
+            new InstantCommand(
+                () -> m_elevatorSubsystem.setElevatorPercent(-0.21), m_elevatorSubsystem))
+        .onFalse(
+            new InstantCommand(
+                () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
+    auxController
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () -> m_elevatorSubsystem.setElevatorPercent(0.21), m_elevatorSubsystem))
+        .onFalse(
+            new InstantCommand(
+                () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
   }
 
   public void stopEverything() {}

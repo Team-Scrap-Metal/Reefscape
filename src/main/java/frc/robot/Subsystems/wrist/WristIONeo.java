@@ -6,8 +6,8 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.AbsoluteEncoderConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
 
@@ -28,7 +28,11 @@ public class WristIONeo implements WristIO {
         .smartCurrentLimit(WristConstants.STALL_LIMIT_AMPS, WristConstants.FREE_SPIN_LIMIT_AMPS);
     wristMotor.configure(
         wristMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    wristAbsoluteEncoderConfig.positionConversionFactor(1).startPulseUs(2);
+    wristAbsoluteEncoderConfig
+        .positionConversionFactor(1)
+        .zeroCentered(true); // TODO: Set offset and figured out what endpulseus does
+    wristRelativeEncoder.setPosition(
+        ((wristAbsoluteEncoder.getPosition() / 2) * WristConstants.GEAR_RATIO));
   }
 
   @Override
