@@ -100,9 +100,9 @@ public class RobotContainer {
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
         m_climberSubsystem = new Climber(new ClimberIO() {});
-        
+
         break;
-        
+
       default:
         // Replayed robot, disable IO implementations
         m_gyroSubsystem = new Gyro(new GyroIO() {});
@@ -113,11 +113,11 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 m_gyroSubsystem);
-            m_linkageSubsystem = new Linkage(new LinkageIO() {});
-            m_wristSubsystem = new Wrist(new WristIO() {});
-            m_rollersSubsystem = new Rollers(new RollersIO() {});
-            m_climberSubsystem = new Climber(new ClimberIO() {});
-            break;
+        m_linkageSubsystem = new Linkage(new LinkageIO() {});
+        m_wristSubsystem = new Wrist(new WristIO() {});
+        m_rollersSubsystem = new Rollers(new RollersIO() {});
+        m_climberSubsystem = new Climber(new ClimberIO() {});
+        break;
     }
 
     // m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
@@ -188,12 +188,19 @@ public class RobotContainer {
 
   private void configureAuxButtonBindings() {
     /** Aux Controls */
-    auxController.leftTrigger().onTrue(new InstantCommand(
-        () -> m_climberSubsystem.setClimberPercent(0.05), m_climberSubsystem)).onFalse(new InstantCommand(
-            () -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
-    auxController.rightTrigger().onTrue(new InstantCommand(
-        () -> m_climberSubsystem.setClimberPercent(-0.05), m_climberSubsystem)).onFalse(new InstantCommand(
-            () -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
+    auxController
+        .leftTrigger()
+        .onTrue(
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0.5), m_climberSubsystem))
+        .onFalse(
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
+    auxController
+        .rightTrigger()
+        .onTrue(
+            new InstantCommand(
+                () -> m_climberSubsystem.setClimberPercent(-0.5), m_climberSubsystem))
+        .onFalse(
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
   }
 
   public void stopEverything() {}
