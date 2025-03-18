@@ -29,9 +29,6 @@ public class GyroIOPigeon implements GyroIO {
         new Rotation2d(
             Units.degreesToRadians(
                 gyro.getYaw().getValueAsDouble() + GyroConstants.HEADING_OFFSET_DEGREES));
-    inputs.anglePositionRad =
-        new Rotation2d(
-            Units.degreesToRadians(gyro.getAngle() + GyroConstants.HEADING_OFFSET_DEGREES));
     inputs.rollVelocityRadPerSec =
         Units.degreesToRadians(
             gyro.getAngularVelocityYDevice()
