@@ -1,21 +1,32 @@
 package frc.robot.Subsystems.wrist;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class Wrist extends SubsystemBase {
   private final WristIO io;
   private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
+  private final ProfiledPIDController wristPID =
+      new ProfiledPIDController(
+          WristConstants.kP,
+          WristConstants.kI,
+          WristConstants.kD,
+          new Constraints(WristConstants.MAX_VELOCITY, WristConstants.MAX_ACCELERATION));
 
   public Wrist(WristIO io) {
     System.out.println("[Init] Creating Wrist");
     this.io = io;
+    wristPID.setTolerance(WristConstants.PID_TOLERANCE_RAD);
+    wristPID.setGoal(0);
   }
 
   @Override
   public void periodic() {
     this.updateInputs();
     Logger.processInputs("Wrist", inputs);
+    // setWristVoltage(wristPID.calculate(this.getWristPositionRad()));
   }
 
   /**
@@ -26,11 +37,19 @@ public class Wrist extends SubsystemBase {
     io.updateInputs(inputs);
   }
 
+  public void setSetpointRad(double setpoint) {
+    wristPID.setGoal(setpoint);
+  }
+
   public void setWristVoltage(double volts) {
     io.setWristVoltage(volts);
   }
 
   public void setWristPercent(double percent) {
     io.setWristVoltage(percent * 12);
+  }
+
+  public double getWristPositionRad() {
+    return inputs.wristPositionRad;
   }
 }

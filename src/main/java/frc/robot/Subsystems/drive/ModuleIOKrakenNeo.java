@@ -98,9 +98,9 @@ public class ModuleIOKrakenNeo implements ModuleIO {
           neoConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
       CurrentLimitsConfigs currentLimitsConfig =
-          new CurrentLimitsConfigs().withSupplyCurrentLimit(DriveConstants.CUR_LIM_A);
+          new CurrentLimitsConfigs().withSupplyCurrentLimit(DriveConstants.DRIVE_SUPPLY_LIMIT_AMP);
       currentLimitsConfig.withSupplyCurrentLimitEnable(DriveConstants.ENABLE_CUR_LIM);
-      currentLimitsConfig.withStatorCurrentLimit(DriveConstants.CUR_LIM_A);
+      currentLimitsConfig.withStatorCurrentLimit(DriveConstants.DRIVE_STATOR_LIMIT_AMP);
       currentLimitsConfig.withStatorCurrentLimitEnable(DriveConstants.ENABLE_CUR_LIM);
       driveTalonFX.getConfigurator().apply(currentLimitsConfig);
 

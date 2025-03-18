@@ -49,9 +49,9 @@ public class Gyro extends SubsystemBase {
   /**
    * @return the angle of the robot in Radian
    */
-  public Rotation2d getAngle() {
-    return inputs.anglePositionRad;
-  }
+  // public Rotation2d getAngle() {
+  //   return inputs.anglePositionRad;
+  // }
 
   /** Resets the Heading to the Direction the Gyro is Facing */
   public void zeroYaw() {

@@ -6,16 +6,23 @@ import org.littletonrobotics.junction.Logger;
 public class Linkage extends SubsystemBase {
   private final LinkageIO io;
   private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
+  // private PIDController LinkagePID = new PIDController(0, 0, 0);
 
   public Linkage(LinkageIO io) {
     System.out.println("[Init] Creating Linkage");
     this.io = io;
+
+    // LinkagePID = new PIDController(LinkageConstants.kP, LinkageConstants.kI,
+    // LinkageConstants.kD);
+    // LinkagePID.setTolerance(LinkageConstants.PID_TOLERANCE_RAD);
+    // LinkagePID.setSetpoint(0.0);
   }
 
   @Override
   public void periodic() {
     this.updateInputs();
     Logger.processInputs("Linkage", inputs);
+    // setLinkageVoltage(LinkagePID.calculate(this.getLinkagePositionRad()));
   }
 
   /**
@@ -26,6 +33,10 @@ public class Linkage extends SubsystemBase {
     io.updateInputs(inputs);
   }
 
+  // public void setSetpoint(double setpoint) {
+  //   LinkagePID.setSetpoint(setpoint);
+  // }
+
   public void setLinkageVoltage(double volts) {
     io.setLinkageVoltage(volts);
   }
@@ -33,4 +44,12 @@ public class Linkage extends SubsystemBase {
   public void setLinkagePercent(double percent) {
     io.setLinkageVoltage(percent * 12);
   }
+
+  // public double getLinkageVoltage() {
+  //   return io.getLinkageVoltage();
+  // }
+
+  // public double getLinkagePositionRad() {
+  //   return inputs.linkagePositionRad();
+  // }
 }
