@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,7 +62,7 @@ public class RobotContainer {
   private final Elevator m_elevatorSubsystem;
 
   // private final PoseEstimator m_poseEstimator; TODO: Update PoseEstimator Stuff
-
+  private SlewRateLimiter wristRateLimiter;
   // Controller
   private final CommandXboxController driverController =
       new CommandXboxController(OperatorConstants.DRIVER_PORT);
@@ -127,7 +128,7 @@ public class RobotContainer {
         m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
         break;
     }
-
+    wristRateLimiter = new SlewRateLimiter(1);
     // m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
     // Configure the button bindings
     autoChooser.addDefaultOption("null", null);
@@ -212,12 +213,18 @@ public class RobotContainer {
 
     auxController
         .leftTrigger()
-        .onTrue(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0.2), m_wristSubsystem))
+        .onTrue(
+            new InstantCommand(
+                () -> m_wristSubsystem.setWristPercent(wristRateLimiter.calculate(0.4)),
+                m_wristSubsystem))
         .onFalse(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0), m_wristSubsystem));
 
     auxController
         .rightTrigger()
-        .onTrue(new InstantCommand(() -> m_wristSubsystem.setWristPercent(-0.2), m_wristSubsystem))
+        .onTrue(
+            new InstantCommand(
+                () -> m_wristSubsystem.setWristPercent(wristRateLimiter.calculate(-0.4)),
+                m_wristSubsystem))
         .onFalse(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0), m_wristSubsystem));
 
     auxController

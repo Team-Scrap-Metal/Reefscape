@@ -22,17 +22,17 @@ public class WristIONeo implements WristIO {
     wristMotor = new SparkMax(WristConstants.CAN_ID, MotorType.kBrushless);
     wristRelativeEncoder = wristMotor.getEncoder();
     wristAbsoluteEncoder = wristMotor.getAbsoluteEncoder();
+    wristAbsoluteEncoderConfig.positionConversionFactor(1).zeroCentered(true).zeroOffset(0.621);
     wristMotorConfig
         .inverted(WristConstants.IS_INVERTED)
         .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(WristConstants.STALL_LIMIT_AMPS, WristConstants.FREE_SPIN_LIMIT_AMPS);
+        .smartCurrentLimit(WristConstants.STALL_LIMIT_AMPS, WristConstants.FREE_SPIN_LIMIT_AMPS)
+        .apply(wristAbsoluteEncoderConfig);
     wristMotor.configure(
         wristMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    wristAbsoluteEncoderConfig
-        .positionConversionFactor(1)
-        .zeroCentered(true); // TODO: Set offset and figured out what endpulseus does
     wristRelativeEncoder.setPosition(
         ((wristAbsoluteEncoder.getPosition() / 2) * WristConstants.GEAR_RATIO));
+        wristRelativeEncoder.setPosition(wristAbsoluteEncoder.getPosition()/2);
   }
 
   @Override
@@ -49,12 +49,12 @@ public class WristIONeo implements WristIO {
      * change on enable //
      */
     inputs.wristAbsolutePositionRad =
-        Units.rotationsToRadians(wristAbsoluteEncoder.getPosition()) / WristConstants.GEAR_RATIO;
+        wristAbsoluteEncoder.getPosition() * Math.PI;
     /**
      * Returns the position of the absoltute encoder in Degrees (Used to make sure wrist zero doesnt
      * change on enable
      */
-    inputs.wristAbsolutePositionDeg = wristAbsoluteEncoder.getPosition();
+    inputs.wristAbsolutePositionDeg = wristAbsoluteEncoder.getPosition() * 180;
     /** Returns the position of the Wrist Motor by how many radians it has rotated */
     inputs.wristPositionRad =
         Units.rotationsToRadians(wristRelativeEncoder.getPosition()) / WristConstants.GEAR_RATIO;

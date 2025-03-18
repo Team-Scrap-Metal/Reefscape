@@ -16,4 +16,6 @@ public class ElevatorConstants {
   public static final double kI = 0.0;
   public static final double kD = 0.0;
   public static final double PID_TOLERANCE_RAD = Units.degreesToRadians(1);
+  public static final double MAX_VELOCITY = 0.0;
+  public static final double MAX_ACCELERATION = 0.0;
 }
