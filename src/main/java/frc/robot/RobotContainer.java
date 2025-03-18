@@ -22,6 +22,9 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RobotStateConstants;
+import frc.robot.Subsystems.climber.Climber;
+import frc.robot.Subsystems.climber.ClimberIO;
+import frc.robot.Subsystems.climber.ClimberIONeo;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOKrakenNeo;
@@ -60,8 +63,9 @@ public class RobotContainer {
   private final Rollers m_rollersSubsystem;
   private final EndEffector m_endEffectorSubsystem;
   private final Elevator m_elevatorSubsystem;
-
+  private final Climber m_climberSubsystem;
   // private final PoseEstimator m_poseEstimator; TODO: Update PoseEstimator Stuff
+
   private SlewRateLimiter wristRateLimiter;
   // Controller
   private final CommandXboxController driverController =
@@ -91,7 +95,7 @@ public class RobotContainer {
         m_rollersSubsystem = new Rollers(new RollersIONeo());
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIONeo());
         m_elevatorSubsystem = new Elevator(new ElevatorIOVortex());
-
+        m_climberSubsystem = new Climber(new ClimberIONeo());
         break;
 
       case SIM:
@@ -109,6 +113,8 @@ public class RobotContainer {
         m_rollersSubsystem = new Rollers(new RollersIO() {});
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
         m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
+        m_climberSubsystem = new Climber(new ClimberIO() {});
+
         break;
 
       default:
@@ -126,6 +132,7 @@ public class RobotContainer {
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
         m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
+        m_climberSubsystem = new Climber(new ClimberIO() {});
         break;
     }
     wristRateLimiter = new SlewRateLimiter(1);
@@ -243,6 +250,16 @@ public class RobotContainer {
         .onFalse(
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
+
+    auxController.x().onTrue(new InstantCommand(() -> m_climberSubsystem.setClimberPercent(-0.5), m_climberSubsystem))
+    .onFalse(
+        new InstantCommand(
+            () -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
+
+    auxController.y().onTrue(new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0.5), m_climberSubsystem))
+    .onFalse(
+        new InstantCommand(
+            () -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
   }
 
   public void stopEverything() {}
