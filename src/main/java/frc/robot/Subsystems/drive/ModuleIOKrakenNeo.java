@@ -84,8 +84,7 @@ public class ModuleIOKrakenNeo implements ModuleIO {
     neoConfig
         .inverted(DriveConstants.KrakenNEOModule.INVERT_SPARK_MAX)
         .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(
-            DriveConstants.TURN_STALL_LIMIT_AMP, DriveConstants.TURN_FREE_SPIN_LIMIT_AMP);
+        .smartCurrentLimit(40, 40);
 
     /** For each drive motor, update values */
     for (int i = 0; i < DriveConstants.DRIVE_MOTOR.values().length; i++) {

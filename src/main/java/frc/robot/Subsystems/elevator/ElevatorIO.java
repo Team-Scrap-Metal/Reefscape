@@ -4,7 +4,24 @@ import org.littletonrobotics.junction.AutoLog;
 
 public interface ElevatorIO {
   @AutoLog
-  public static class ElevatorIOInputs {}
+  public static class ElevatorIOInputs {
+    /** This returns the voltage the elevator Motor Recieves */
+    public double elevatorAppliedVolts = 0.0;
+    /** Returns the position of the elevator Motor by how many radians it has rotated */
+    public double elevatorPositionRad = 0.0;
+    /** /** Returns the position of the elevator Motor by how many meters it has raised */
+    public double elevatorPositionM = 0.0;
+    /** Returns the velocity of the elevator Motor by how many radians per second it has rotated */
+    public double elevatorVelocityRadPerSec = 0.0;
+    /**
+     * Returns the velocity of the elevator Motor by how many rotations per minute it has rotated
+     */
+    public double elevatorVelocityRotPerMin = 0.0;
+    /** The Current Drawn from the elevator Motor in Amps */
+    public double[] elevatorCurrentAmps = new double[] {};
+    /** The tempature of the elevator Motor in Celsius */
+    public double[] elevatorTempCelsius = new double[] {};
+  }
 
   /** Updates inputs for the Elevator */
   public default void updateInputs(ElevatorIOInputs inputs) {}
