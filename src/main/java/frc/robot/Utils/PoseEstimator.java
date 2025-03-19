@@ -52,13 +52,14 @@ public class PoseEstimator extends SubsystemBase {
 
     mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
   }
+
   @Override
   public void periodic() {
     // When ran on the real robot it would overload the command scheduler, causing input delay from
     // joystick to driving
-      field2d.setRobotPose(getCurrentPose2d());
-      poseEstimator.updateWithTime(
-          Timer.getFPGATimestamp(), drive.getRotation(), drive.getSwerveModulePositions());
+    field2d.setRobotPose(getCurrentPose2d());
+    poseEstimator.updateWithTime(
+        Timer.getFPGATimestamp(), drive.getRotation(), drive.getSwerveModulePositions());
 
     // System.out.println(mt1.tagCount);
     // System.out.println(mt1.pose);
