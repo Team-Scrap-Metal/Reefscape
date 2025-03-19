@@ -10,9 +10,9 @@ public class Wrist extends SubsystemBase {
   private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
   private final ProfiledPIDController wristPID =
       new ProfiledPIDController(
-          WristConstants.kP,
-          WristConstants.kI,
-          WristConstants.kD,
+          WristConstants.KP,
+          WristConstants.KI,
+          WristConstants.KD,
           new Constraints(WristConstants.MAX_VELOCITY, WristConstants.MAX_ACCELERATION));
 
   public Wrist(WristIO io) {

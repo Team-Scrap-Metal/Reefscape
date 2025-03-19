@@ -40,7 +40,7 @@ public class EndEffectorIONeo implements EndEffectorIO {
     inputs.endEffectorPositionRad =
         Units.rotationsToRadians(endEffectorRelativeEncoder.getPosition())
             / EndEffectorConstants.GEAR_RATIO;
-            //NAH ID WIN!!!
+    // NAH ID WIN!!!
     /**
      * Returns the velocity of the Endeffector Motor by how many radians per second it has rotated
      */

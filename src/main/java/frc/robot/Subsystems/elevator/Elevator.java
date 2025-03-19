@@ -15,7 +15,9 @@ public class Elevator extends SubsystemBase {
           ElevatorConstants.KI,
           ElevatorConstants.KD,
           new Constraints(ElevatorConstants.MAX_VELOCITY, ElevatorConstants.MAX_ACCELERATION));
-  private final ElevatorFeedforward elevatorFeedforward = new ElevatorFeedforward(ElevatorConstants.KS, ElevatorConstants.KG, ElevatorConstants.KV, ElevatorConstants.KA);
+  private final ElevatorFeedforward elevatorFeedforward =
+      new ElevatorFeedforward(
+          ElevatorConstants.KS, ElevatorConstants.KG, ElevatorConstants.KV, ElevatorConstants.KA);
 
   public Elevator(ElevatorIO io) {
     System.out.println("[Init] Creating Elevator");
@@ -28,7 +30,9 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     this.updateInputs();
     Logger.processInputs("Elevator", inputs);
-    setElevatorVoltage(elevatorFeedforward.calculate(elevatorPID.getSetpoint().velocity) + elevatorPID.calculate(this.getElevatorPositionMeters()));
+    setElevatorVoltage(
+        elevatorFeedforward.calculate(elevatorPID.getSetpoint().velocity)
+            + elevatorPID.calculate(this.getElevatorPositionMeters()));
   }
 
   /**

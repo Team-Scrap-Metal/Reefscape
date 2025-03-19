@@ -20,12 +20,12 @@ public class WristConstants {
 
   public static final double L2_AND_L3_START_ROTATION_RAD = Units.degreesToRadians(0.0);
   public static final double L2_AND_L3_END_ROTATION_RAD = Units.degreesToRadians(0.0);
-  
+
   public static final double L4_START_ROTATION_RAD = Units.degreesToRadians(0.0);
   public static final double L4_END_ROTATION_RAD = Units.degreesToRadians(0.0);
-  
+
   public static final double ALGAE_REMOVAL_RAD = Units.degreesToRadians(0.0);
-  
-  //NAH ID WIN!!!
+
+  // NAH ID WIN!!!
   public static final double STOW_ROTATION_RAD = Units.degreesToRadians(0.0);
 }

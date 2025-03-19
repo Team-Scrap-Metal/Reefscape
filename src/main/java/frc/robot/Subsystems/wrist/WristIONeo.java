@@ -32,7 +32,7 @@ public class WristIONeo implements WristIO {
         wristMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     wristRelativeEncoder.setPosition(
         ((wristAbsoluteEncoder.getPosition() / 2) * WristConstants.GEAR_RATIO));
-        wristRelativeEncoder.setPosition(wristAbsoluteEncoder.getPosition()/2);
+    wristRelativeEncoder.setPosition(wristAbsoluteEncoder.getPosition() / 2);
   }
 
   @Override
@@ -48,8 +48,7 @@ public class WristIONeo implements WristIO {
      * Returns the position of the absoltute encoder in Radians (Used to make sure wrist zero doesnt
      * change on enable //
      */
-    inputs.wristAbsolutePositionRad =
-        wristAbsoluteEncoder.getPosition() * Math.PI;
+    inputs.wristAbsolutePositionRad = wristAbsoluteEncoder.getPosition() * Math.PI;
     /**
      * Returns the position of the absoltute encoder in Degrees (Used to make sure wrist zero doesnt
      * change on enable
