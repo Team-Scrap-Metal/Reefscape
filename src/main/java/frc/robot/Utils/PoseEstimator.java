@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.RobotStateConstants;
-import frc.robot.Constants.RobotStateConstants.Mode;
+// import frc.robot.Constants.RobotStateConstants;
+// import frc.robot.Constants.RobotStateConstants.Mode;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.DriveConstants;
 import frc.robot.Subsystems.gyro.Gyro;
@@ -26,10 +26,13 @@ public class PoseEstimator extends SubsystemBase {
    */
   public static Vector<N3> stateStandardDevs = VecBuilder.fill(0.1, 0.1, 0.1);
 
+  public static Vector<N3> visionStandardDevs = VecBuilder.fill(0.5, 0.5, 9999999);
+
   private SwerveDrivePoseEstimator poseEstimator;
   private Drive drive;
   private Gyro gyro;
   private Field2d field2d;
+  private LimelightHelpers.PoseEstimate mt1;
 
   public PoseEstimator(Drive drive, Gyro gyro) {
 
@@ -43,17 +46,29 @@ public class PoseEstimator extends SubsystemBase {
             new SwerveDriveKinematics(DriveConstants.getModuleTranslations()),
             gyro.getYaw(),
             drive.getSwerveModulePositions(),
-            new Pose2d(new Translation2d(), new Rotation2d()));
+            new Pose2d(new Translation2d(), new Rotation2d()),
+            stateStandardDevs,
+            visionStandardDevs);
+
+    mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
   }
 
   @Override
   public void periodic() {
     // When ran on the real robot it would overload the command scheduler, causing input delay from
     // joystick to driving
-    if (RobotStateConstants.getMode() == Mode.SIM) {
-      field2d.setRobotPose(getCurrentPose2d());
-      poseEstimator.updateWithTime(
-          Timer.getFPGATimestamp(), drive.getRotation(), drive.getSwerveModulePositions());
+    field2d.setRobotPose(getCurrentPose2d());
+    poseEstimator.updateWithTime(
+        Timer.getFPGATimestamp(), drive.getRotation(), drive.getSwerveModulePositions());
+
+    // System.out.println(mt1.tagCount);
+    // System.out.println(mt1.pose);
+
+    mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    if (mt1.tagCount > 0) {
+      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, 0));
+      poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
+      // System.out.println("running");
     }
   }
 

@@ -146,6 +146,10 @@ public class Drive extends SubsystemBase {
     runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rot, heading), null);
   }
 
+  public void setRawRobotRel(double x, double y, double rot){
+    runVelocity(ChassisSpeeds.fromRobotRelativeSpeeds(x, y, rot, this.getRotation()));
+  }
+
   /** returns a swerveModuleState of chassis speeds */
   public ChassisSpeeds getChassisSpeed() {
     return swerveKinematics.toChassisSpeeds(
