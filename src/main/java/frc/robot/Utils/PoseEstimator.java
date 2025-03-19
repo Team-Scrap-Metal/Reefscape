@@ -66,7 +66,7 @@ public class PoseEstimator extends SubsystemBase {
 
     mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
     if (mt1.tagCount > 0) {
-      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, 0));
+      // poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, 0));
       poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
       // System.out.println("running");
     }
