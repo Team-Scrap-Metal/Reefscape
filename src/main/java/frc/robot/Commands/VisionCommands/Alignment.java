@@ -25,7 +25,7 @@ public class Alignment extends Command {
   @Override
   public void initialize() {
     // drive.setRawRobotRel(0, 0, 0);
-    //Stop the robot for auto align purposes.
+    // Stop the robot for auto align purposes.
     drive.stop();
   }
 
@@ -34,32 +34,30 @@ public class Alignment extends Command {
   public void execute() {
     RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("");
     for (RawFiducial fiducial : fiducials) {
-        int id = fiducial.id;                    // Tag ID
-        double txnc = fiducial.txnc;             // X offset (no crosshair)
-        // double tync = fiducial.tync;             // Y offset (no crosshair)
-        // double ta = fiducial.ta;                 // Target area
-        // double distToCamera = fiducial.distToCamera;  // Distance to camera
-        // double distToRobot = fiducial.distToRobot;    // Distance to robot
-        // double ambiguity = fiducial.ambiguity;   // Tag pose ambiguity
-        
+      int id = fiducial.id; // Tag ID
+      double txnc = fiducial.txnc; // X offset (no crosshair)
+      // double tync = fiducial.tync;             // Y offset (no crosshair)
+      // double ta = fiducial.ta;                 // Target area
+      // double distToCamera = fiducial.distToCamera;  // Distance to camera
+      // double distToRobot = fiducial.distToRobot;    // Distance to robot
+      // double ambiguity = fiducial.ambiguity;   // Tag pose ambiguity
 
-        if(id%2==0){
-          //Case for even ids
-          
-        }else{
-          //Case for odd ids
+      if (id % 2 == 0) {
+        // Case for even ids
 
-        }
+      } else {
+        // Case for odd ids
+
+      }
     }
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     // drive.setRawRobotRel(0, 0, 0);
-    //Once the robot is done executing its tasks,
-    //it will stop
+    // Once the robot is done executing its tasks,
+    // it will stop
     drive.stop();
   }
 
