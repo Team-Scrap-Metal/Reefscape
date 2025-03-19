@@ -251,15 +251,20 @@ public class RobotContainer {
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
 
-    auxController.x().onTrue(new InstantCommand(() -> m_climberSubsystem.setClimberPercent(-0.5), m_climberSubsystem))
-    .onFalse(
-        new InstantCommand(
-            () -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
+    auxController
+        .x()
+        .onTrue(
+            new InstantCommand(
+                () -> m_climberSubsystem.setClimberPercent(-0.5), m_climberSubsystem))
+        .onFalse(
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
 
-    auxController.y().onTrue(new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0.5), m_climberSubsystem))
-    .onFalse(
-        new InstantCommand(
-            () -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
+    auxController
+        .y()
+        .onTrue(
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0.5), m_climberSubsystem))
+        .onFalse(
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
   }
 
   public void stopEverything() {}
