@@ -35,6 +35,7 @@ public class ElevatorIOVortex implements ElevatorIO {
         .follow(ElevatorConstants.LEFT_CANID);
     elevatorRightMotor.configure(
         rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    elevatorLeftEncoder.setPosition(0);
   }
 
   @Override
