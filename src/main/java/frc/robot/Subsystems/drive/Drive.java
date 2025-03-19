@@ -4,6 +4,7 @@
 
 package frc.robot.Subsystems.drive;
 
+import com.pathplanner.lib.util.DriveFeedforwards;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -125,7 +126,7 @@ public class Drive extends SubsystemBase {
    * Sets the Velocity of the Swerve Drive through Passing in a ChassisSpeeds (Can be Field Relative
    * OR Robot Orientated)
    */
-  public void runVelocity(ChassisSpeeds speeds) {
+  public void runVelocity(ChassisSpeeds speeds, DriveFeedforwards driveff) {
     ChassisSpeeds discreteSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
     setpoint = discreteSpeeds;
   }
@@ -138,11 +139,15 @@ public class Drive extends SubsystemBase {
    * @param rot Angular Velocity of Entire Swerve Drive
    */
   public void setRaw(double x, double y, double rot) {
-    runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rot, this.getRotation()));
+    runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rot, this.getRotation()), null);
   }
 
   public void setRawWithAdjustedHeading(double x, double y, double rot, Rotation2d heading) {
-    runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rot, heading));
+    runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rot, heading), null);
+  }
+
+  public void setRawRobotRel(double x, double y, double rot){
+    runVelocity(ChassisSpeeds.fromRobotRelativeSpeeds(x, y, rot, this.getRotation()));
   }
 
   /** returns a swerveModuleState of chassis speeds */
@@ -175,12 +180,13 @@ public class Drive extends SubsystemBase {
             linearVelocity.getX() * DriveConstants.MAX_LINEAR_SPEED_M_PER_SEC,
             linearVelocity.getY() * DriveConstants.MAX_LINEAR_SPEED_M_PER_SEC,
             omega * DriveConstants.MAX_ANGULAR_SPEED_RAD_PER_SEC,
-            this.getRotation()));
+            this.getRotation()),
+        null);
   }
 
   /** stops the robot (sets velocity to 0 bu inputing empty Chassis Speeds which Default to 0) */
   public void stop() {
-    runVelocity(new ChassisSpeeds());
+    runVelocity(new ChassisSpeeds(), null);
   }
 
   /** stops the robot and sets wheels in the shape of an x */

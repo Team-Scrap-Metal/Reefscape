@@ -53,6 +53,11 @@ public final class Constants {
       return DriverStation.getAlliance();
     }
 
+    public static final boolean isAllianceRed() {
+
+      return DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? true : false;
+    }
+
     /** If CAN takes too long, it cancels */
     public static final int CAN_CONFIG_TIMEOUT_SEC = 30;
 
