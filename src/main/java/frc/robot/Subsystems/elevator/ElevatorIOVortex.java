@@ -20,19 +20,23 @@ public class ElevatorIOVortex implements ElevatorIO {
     elevatorLeftMotor = new SparkFlex(ElevatorConstants.LEFT_CANID, MotorType.kBrushless);
     elevatorLeftEncoder = elevatorLeftMotor.getEncoder();
     elevatorRightMotor = new SparkFlex(ElevatorConstants.RIGHT_CANID, MotorType.kBrushless);
+
     leftMotorConfig
         .smartCurrentLimit(
             ElevatorConstants.STALL_LIMIT_AMPS, ElevatorConstants.FREESPIN_LIMIT_AMPS)
         .inverted(false)
         .idleMode(IdleMode.kBrake);
+
     elevatorLeftMotor.configure(
         leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
     rightMotorConfig
         .smartCurrentLimit(
             ElevatorConstants.STALL_LIMIT_AMPS, ElevatorConstants.FREESPIN_LIMIT_AMPS)
-        .inverted(true)
+        .inverted(false)
         .idleMode(IdleMode.kBrake)
-        .follow(ElevatorConstants.LEFT_CANID);
+        .follow(ElevatorConstants.LEFT_CANID, true);
+
     elevatorRightMotor.configure(
         rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     elevatorLeftEncoder.setPosition(0);
@@ -95,7 +99,7 @@ public class ElevatorIOVortex implements ElevatorIO {
     leftMotorConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
     rightMotorConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
     elevatorRightMotor.configure(
-        leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     elevatorRightMotor.configure(
         rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }

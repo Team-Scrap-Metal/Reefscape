@@ -37,15 +37,13 @@ import frc.robot.Subsystems.endEffector.EndEffectorIONeo;
 import frc.robot.Subsystems.gyro.Gyro;
 import frc.robot.Subsystems.gyro.GyroIO;
 import frc.robot.Subsystems.gyro.GyroIOPigeon;
-import frc.robot.Subsystems.linkage.Linkage;
-import frc.robot.Subsystems.linkage.LinkageIO;
-import frc.robot.Subsystems.linkage.LinkageIONeo;
 import frc.robot.Subsystems.rollers.Rollers;
 import frc.robot.Subsystems.rollers.RollersIO;
 import frc.robot.Subsystems.rollers.RollersIONeo;
 import frc.robot.Subsystems.wrist.Wrist;
 import frc.robot.Subsystems.wrist.WristIO;
 import frc.robot.Subsystems.wrist.WristIONeo;
+import frc.robot.Utils.PoseEstimator;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -59,13 +57,12 @@ public class RobotContainer {
   // Subsystems
   private final Drive m_driveSubsystem;
   private final Gyro m_gyroSubsystem;
-  private final Linkage m_linkageSubsystem;
   private final Wrist m_wristSubsystem;
   private final Rollers m_rollersSubsystem;
   private final EndEffector m_endEffectorSubsystem;
   private final Elevator m_elevatorSubsystem;
   private final Climber m_climberSubsystem;
-  // private final PoseEstimator m_poseEstimator; TODO: Update PoseEstimator Stuff
+  private final PoseEstimator m_poseEstimator;
 
   private SlewRateLimiter wristRateLimiter;
   // Controller
@@ -91,7 +88,6 @@ public class RobotContainer {
                 new ModuleIOKrakenNeo(2),
                 new ModuleIOKrakenNeo(3),
                 m_gyroSubsystem);
-        m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_wristSubsystem = new Wrist(new WristIONeo());
         m_rollersSubsystem = new Rollers(new RollersIONeo());
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIONeo());
@@ -109,7 +105,6 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 m_gyroSubsystem);
-        m_linkageSubsystem = new Linkage(new LinkageIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
@@ -129,7 +124,6 @@ public class RobotContainer {
                 new ModuleIO() {},
                 m_gyroSubsystem);
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
-        m_linkageSubsystem = new Linkage(new LinkageIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
         m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
@@ -137,7 +131,7 @@ public class RobotContainer {
         break;
     }
     wristRateLimiter = new SlewRateLimiter(1);
-    // m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
+    m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
     // Configure the button bindings
     autoChooser.addDefaultOption("null", null);
     configureDriverButtonBindings();
@@ -169,36 +163,39 @@ public class RobotContainer {
         .a()
         .onTrue(new InstantCommand(() -> m_driveSubsystem.updateHeading(), m_driveSubsystem));
     /**
-     * driverController .b() .onTrue( new RunCommand( () -> m_linkageSubsystem.setSetpoint(.20)
+     * driverController .b() .onTrue( new RunCommand( () -> m_climberSubsystem.setSetpoint(.20)
      *
      * <p>));
      */
     driverController
         .rightBumper()
         .onTrue(
-            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0.1), m_linkageSubsystem))
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(1.0), m_climberSubsystem))
         .onFalse(
-            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0), m_linkageSubsystem));
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
     driverController
         .leftBumper()
         .onTrue(
             new InstantCommand(
-                () -> m_linkageSubsystem.setLinkagePercent(-0.1), m_linkageSubsystem))
+                () -> m_climberSubsystem.setClimberPercent(-1.0), m_climberSubsystem))
         .onFalse(
-            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0), m_linkageSubsystem));
-    driverController
-        .rightTrigger()
-        .onTrue(
-            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(1.0), m_linkageSubsystem))
-        .onFalse(
-            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0), m_linkageSubsystem));
-    driverController
-        .leftTrigger()
-        .onTrue(
-            new InstantCommand(
-                () -> m_rollersSubsystem.setRollersPercent(-1.0), m_rollersSubsystem))
-        .onFalse(
-            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0), m_rollersSubsystem));
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
+    // driverController
+    //     .rightTrigger()
+    //     .onTrue(
+    //         new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(1.0),
+    // m_climberSubsystem))
+    //     .onFalse(
+    //         new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0),
+    // m_climberSubsystem));
+    // driverController
+    //     .leftTrigger()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_rollersSubsystem.setRollersPercent(-1.0), m_rollersSubsystem))
+    //     .onFalse(
+    //         new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0),
+    // m_rollersSubsystem));
   }
 
   private void configureAuxButtonBindings() {
@@ -239,7 +236,7 @@ public class RobotContainer {
         .a()
         .onTrue(
             new InstantCommand(
-                () -> m_elevatorSubsystem.setElevatorPercent(-0.21), m_elevatorSubsystem))
+                () -> m_elevatorSubsystem.setElevatorPercent(-0.5), m_elevatorSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
@@ -247,7 +244,7 @@ public class RobotContainer {
         .b()
         .onTrue(
             new InstantCommand(
-                () -> m_elevatorSubsystem.setElevatorPercent(0.21), m_elevatorSubsystem))
+                () -> m_elevatorSubsystem.setElevatorPercent(0.5), m_elevatorSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
