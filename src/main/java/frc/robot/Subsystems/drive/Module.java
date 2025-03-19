@@ -145,23 +145,23 @@ public class Module {
     // Optimize state based on current angle, aka take the shortest path for wheel to reach desired
     // angle in rad (-pi,pi))
     SwerveModuleState swerveModuleState;
-    var optimizedState = SwerveModuleState.optimize(state, getAngle());
+    this.getState().optimize(getAngle());
 
     // Run turn controller
     io.setTurnVoltage(
-        steerPID.calculate(getAngle().getRadians(), optimizedState.angle.getRadians()));
+        steerPID.calculate(getAngle().getRadians(), this.getState().angle.getRadians()));
 
     // Update velocity based on turn error
-    optimizedState.speedMetersPerSecond *= Math.cos(steerPID.getError());
+    this.getState().speedMetersPerSecond *= Math.cos(steerPID.getError());
 
     // Turn Speed m/s into Vel rad/s
-    double velocityRadPerSec = optimizedState.speedMetersPerSecond / DriveConstants.WHEEL_RADIUS_M;
+    double velocityRadPerSec = this.getState().speedMetersPerSecond / DriveConstants.WHEEL_RADIUS_M;
 
     // Run drive controller
     io.setDriveVoltage(
         driveFeedforward.calculate(velocityRadPerSec)
             + (drivePID.calculate(inputs.driveVelocityRadPerSec, velocityRadPerSec)));
 
-    return optimizedState;
+    return this.getState();
   }
 }
