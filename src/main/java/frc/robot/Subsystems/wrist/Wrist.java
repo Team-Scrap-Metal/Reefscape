@@ -2,6 +2,7 @@ package frc.robot.Subsystems.wrist;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -26,7 +27,7 @@ public class Wrist extends SubsystemBase {
   public void periodic() {
     this.updateInputs();
     Logger.processInputs("Wrist", inputs);
-    // setWristVoltage(wristPID.calculate(this.getWristPositionRad()));
+    setWristVoltage(wristPID.calculate(this.getWristPositionRad()));
   }
 
   /**
@@ -39,6 +40,7 @@ public class Wrist extends SubsystemBase {
 
   public void setSetpointRad(double setpoint) {
     wristPID.setGoal(setpoint);
+    SmartDashboard.putNumber("Setpoint", wristPID.getSetpoint().position);
   }
 
   public void setWristVoltage(double volts) {
@@ -51,5 +53,9 @@ public class Wrist extends SubsystemBase {
 
   public double getWristPositionRad() {
     return inputs.wristPositionRad;
+  }
+
+  public void coastOnDisable(boolean isDisabled) {
+    io.setBrakeMode(!isDisabled);
   }
 }

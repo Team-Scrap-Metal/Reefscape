@@ -9,12 +9,12 @@ public class WristConstants {
   public static final int FREE_SPIN_LIMIT_AMPS = 40;
   public static final double GEAR_RATIO = 40;
 
-  public static final double KP = 0.0;
+  public static final double KP = 34.0;
   public static final double KI = 0.0;
   public static final double KD = 0.0;
-  public static final double PID_TOLERANCE_RAD = Units.degreesToRadians(1);
-  public static final double MAX_VELOCITY = 0.0;
-  public static final double MAX_ACCELERATION = 0.0;
+  public static final double PID_TOLERANCE_RAD = Units.degreesToRadians(2);
+  public static final double MAX_VELOCITY = 6 * Math.PI / 3;
+  public static final double MAX_ACCELERATION = MAX_VELOCITY * 2;
 
   public static final double L1_ROTATION_RAD = Units.degreesToRadians(0.0);
 

@@ -14,6 +14,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -63,6 +64,7 @@ public class RobotContainer {
   private final Elevator m_elevatorSubsystem;
   private final Climber m_climberSubsystem;
   private final PoseEstimator m_poseEstimator;
+  //   private final PathPlanner m_pathPlanner;
 
   private SlewRateLimiter wristRateLimiter;
   // Controller
@@ -132,8 +134,10 @@ public class RobotContainer {
     }
     wristRateLimiter = new SlewRateLimiter(1);
     m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
+    // m_pathPlanner = new PathPlanner(m_driveSubsystem, m_poseEstimator);
     // Configure the button bindings
-    autoChooser.addDefaultOption("null", null);
+    autoChooser.addDefaultOption("Null", null);
+    // autoChooser.addDefaultOption("Leave Auto", new PathPlannerAuto("Leave"));
     configureDriverButtonBindings();
     configureAuxButtonBindings();
   }
@@ -201,36 +205,23 @@ public class RobotContainer {
   private void configureAuxButtonBindings() {
     /** Aux Controls */
     auxController
-        .leftBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(0.2), m_endEffectorSubsystem))
-        .onFalse(
-            new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
-
-    auxController
-        .rightBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(-0.2), m_endEffectorSubsystem))
-        .onFalse(new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(0)));
-
-    auxController
         .leftTrigger()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setWristPercent(wristRateLimiter.calculate(0.4)),
-                m_wristSubsystem))
-        .onFalse(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0), m_wristSubsystem));
-
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(0)),
+                m_wristSubsystem));
     auxController
         .rightTrigger()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setWristPercent(wristRateLimiter.calculate(-0.4)),
-                m_wristSubsystem))
-        .onFalse(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0), m_wristSubsystem));
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(90)),
+                m_wristSubsystem));
+    auxController
+        .rightBumper()
+        .onTrue(
+            new InstantCommand(
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(180)),
+                m_wristSubsystem));
 
     auxController
         .a()
@@ -269,6 +260,7 @@ public class RobotContainer {
 
   public void coastOnDisable(boolean isDisabled) {
     m_driveSubsystem.coastOnDisable(isDisabled);
+    m_wristSubsystem.coastOnDisable(isDisabled);
   }
 
   /**

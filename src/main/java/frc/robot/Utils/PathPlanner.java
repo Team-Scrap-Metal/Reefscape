@@ -9,6 +9,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotStateConstants;
 import frc.robot.Subsystems.drive.Drive;
@@ -31,6 +32,8 @@ public class PathPlanner extends SubsystemBase {
       // Handle exception as needed
       e.printStackTrace();
     }
+
+    SmartDashboard.putString("Running PathPlanner", "running");
 
     AutoBuilder.configure(
         pose::getCurrentPose2d,

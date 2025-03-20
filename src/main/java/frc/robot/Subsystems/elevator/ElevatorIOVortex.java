@@ -55,9 +55,10 @@ public class ElevatorIOVortex implements ElevatorIO {
             + elevatorRightMotor.getAppliedOutput() * elevatorRightMotor.getBusVoltage();
     /** Returns the position of the elevator Motor by how many radians it has rotated */
     inputs.elevatorPositionRad =
-        Units.rotationsToRadians(elevatorLeftEncoder.getPosition()) / ElevatorConstants.GEAR_RATIO;
+        (Units.rotationsToRadians(elevatorLeftEncoder.getPosition()) / ElevatorConstants.GEAR_RATIO)
+            * 4;
     /** /** Returns the position of the elevator Motor by how many meters it has raised */
-    inputs.elevatorPositionM = Units.inchesToMeters(0.5) * inputs.elevatorPositionRad;
+    inputs.elevatorPositionM = Units.inchesToMeters(0.5) * inputs.elevatorPositionRad * 4;
     /** Returns the velocity of the elevator Motor by how many radians per second it has rotated */
     inputs.elevatorVelocityRadPerSec =
         Units.rotationsPerMinuteToRadiansPerSecond(elevatorLeftEncoder.getVelocity())

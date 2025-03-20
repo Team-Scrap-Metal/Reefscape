@@ -48,7 +48,7 @@ public class PoseEstimator extends SubsystemBase {
             stateStandardDevs,
             visionStandardDevs);
 
-    mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    // mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
   }
 
   @Override
@@ -62,12 +62,12 @@ public class PoseEstimator extends SubsystemBase {
     // System.out.println(mt1.tagCount);
     // System.out.println(mt1.pose);
 
-    mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-    if (mt1.tagCount > 0) {
-      // poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, 0));
-      poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-      // System.out.println("running");
-    }
+    // mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    // if (mt1.tagCount > 0) {
+    //   // poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, 0));
+    //   poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
+    //   // System.out.println("running");
+    // }
   }
 
   /**
