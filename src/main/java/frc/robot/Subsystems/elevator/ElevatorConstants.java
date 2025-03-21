@@ -13,14 +13,14 @@ public class ElevatorConstants {
   public static final double GEAR_RATIO = 4;
   public static final double LINEAR_CONSTANTS_M = 0.0; // TODO: Update
 
-  public static final double KP = 0.0;
+  public static final double KP = 2.0;
   public static final double KI = 0.0;
   public static final double KD = 0.0;
-  public static final double PID_TOLERANCE_RAD = Units.degreesToRadians(1);
-  public static final double MAX_VELOCITY = 0.0;
-  public static final double MAX_ACCELERATION = 0.0;
+  public static final double PID_TOLERANCE_M = Units.inchesToMeters(5);
+  public static final double MAX_VELOCITY = 0.25;
+  public static final double MAX_ACCELERATION = MAX_VELOCITY * 2;
   public static final double KS = 0.0;
-  public static final double KG = 0.0;
+  public static final double KG = 0.25;
   public static final double KV = 0.0;
   public static final double KA = 0.0;
 

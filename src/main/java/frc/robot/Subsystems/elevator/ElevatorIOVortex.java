@@ -24,7 +24,7 @@ public class ElevatorIOVortex implements ElevatorIO {
     leftMotorConfig
         .smartCurrentLimit(
             ElevatorConstants.STALL_LIMIT_AMPS, ElevatorConstants.FREESPIN_LIMIT_AMPS)
-        .inverted(false)
+        .inverted(true)
         .idleMode(IdleMode.kBrake);
 
     elevatorLeftMotor.configure(
@@ -55,10 +55,11 @@ public class ElevatorIOVortex implements ElevatorIO {
             + elevatorRightMotor.getAppliedOutput() * elevatorRightMotor.getBusVoltage();
     /** Returns the position of the elevator Motor by how many radians it has rotated */
     inputs.elevatorPositionRad =
-        (Units.rotationsToRadians(elevatorLeftEncoder.getPosition()) / ElevatorConstants.GEAR_RATIO)
-            * 4;
+        (Units.rotationsToRadians(elevatorLeftEncoder.getPosition())
+            / ElevatorConstants.GEAR_RATIO);
     /** /** Returns the position of the elevator Motor by how many meters it has raised */
-    inputs.elevatorPositionM = Units.inchesToMeters(0.5) * inputs.elevatorPositionRad * 4;
+    inputs.elevatorPositionM = Units.inchesToMeters(elevatorLeftEncoder.getPosition() / 29.0503597);
+    // Units.inchesToMeters(3 / 8) * inputs.elevatorPositionRad * 4;
     /** Returns the velocity of the elevator Motor by how many radians per second it has rotated */
     inputs.elevatorVelocityRadPerSec =
         Units.rotationsPerMinuteToRadiansPerSecond(elevatorLeftEncoder.getVelocity())
@@ -99,8 +100,8 @@ public class ElevatorIOVortex implements ElevatorIO {
   public void setBrakeMode(boolean enable) {
     leftMotorConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
     rightMotorConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
-    elevatorRightMotor.configure(
-        rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    elevatorLeftMotor.configure(
+        leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     elevatorRightMotor.configure(
         rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }

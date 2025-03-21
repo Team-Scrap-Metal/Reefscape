@@ -22,7 +22,7 @@ public class Elevator extends SubsystemBase {
   public Elevator(ElevatorIO io) {
     System.out.println("[Init] Creating Elevator");
     this.io = io;
-    elevatorPID.setTolerance(ElevatorConstants.PID_TOLERANCE_RAD);
+    elevatorPID.setTolerance(ElevatorConstants.PID_TOLERANCE_M);
     elevatorPID.setGoal(0);
   }
 
@@ -47,7 +47,7 @@ public class Elevator extends SubsystemBase {
     io.setElevatorVoltage(volts);
   }
 
-  public void setSetpointRad(double setpoint) {
+  public void setSetpointM(double setpoint) {
     elevatorPID.setGoal(setpoint);
   }
 
@@ -61,5 +61,9 @@ public class Elevator extends SubsystemBase {
 
   public double getElevatorPositionMeters() {
     return inputs.elevatorPositionM;
+  }
+
+  public void coastOnDisable(boolean isDisabled) {
+    io.setBrakeMode(!isDisabled);
   }
 }

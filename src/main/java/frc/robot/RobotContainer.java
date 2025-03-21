@@ -208,20 +208,20 @@ public class RobotContainer {
         .leftTrigger()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(0)),
-                m_wristSubsystem));
+                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(5)),
+                m_elevatorSubsystem));
     auxController
         .rightTrigger()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(90)),
-                m_wristSubsystem));
+                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(20)),
+                m_elevatorSubsystem));
     auxController
         .rightBumper()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(180)),
-                m_wristSubsystem));
+                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(60)),
+                m_elevatorSubsystem));
 
     auxController
         .a()
@@ -261,6 +261,7 @@ public class RobotContainer {
   public void coastOnDisable(boolean isDisabled) {
     m_driveSubsystem.coastOnDisable(isDisabled);
     m_wristSubsystem.coastOnDisable(isDisabled);
+    // m_elevatorSubsystem.coastOnDisable(isDisabled);
   }
 
   /**
