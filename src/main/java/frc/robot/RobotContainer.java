@@ -297,8 +297,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
-    //     new RunCommand(
-    //         () -> m_driveSubsystem.driveWithDeadband(0, 0.5, 0), m_driveSubsystem);
+    return new RunCommand(() -> m_driveSubsystem.driveWithDeadband(0, 0.5, 0), m_driveSubsystem);
   }
 }
