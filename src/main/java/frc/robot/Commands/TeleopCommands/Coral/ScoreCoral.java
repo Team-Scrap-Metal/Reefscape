@@ -20,20 +20,21 @@ public class ScoreCoral extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ConditionalCommand(
-        Commands.runOnce(() -> {
-        nefector.setEndEffectorPercent(-0.3);
-        wrist.setSetpointRad(Units.degreesToRadians(260));
-        }, 
-        wrist, 
-        nefector), 
-        Commands.runOnce(() -> {
-        nefector.setEndEffectorPercent(-0.3);
-        wrist.setSetpointRad(Units.degreesToRadians(100));
-        }, 
-        nefector, wrist), 
-        ()-> wrist.getWristPositionRad() > Units.degreesToRadians(180) ? true : false)
-      
-    );
+        new ConditionalCommand(
+            Commands.runOnce(
+                () -> {
+                  nefector.setEndEffectorPercent(-0.3);
+                  wrist.setSetpointRad(Units.degreesToRadians(260));
+                },
+                wrist,
+                nefector),
+            Commands.runOnce(
+                () -> {
+                  nefector.setEndEffectorPercent(-0.3);
+                  wrist.setSetpointRad(Units.degreesToRadians(100));
+                },
+                nefector,
+                wrist),
+            () -> wrist.getWristPositionRad() > Units.degreesToRadians(180) ? true : false));
   }
 }

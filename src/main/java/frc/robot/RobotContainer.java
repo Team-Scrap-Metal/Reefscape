@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Commands.TeleopCommands.Coral.ScoreCoral;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RobotStateConstants;
 import frc.robot.Subsystems.climber.Climber;
@@ -208,6 +207,22 @@ public class RobotContainer {
         .onFalse(
             new InstantCommand(
                 () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
+
+    driverController
+        .povUp()
+        .onTrue(
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(1.0), m_climberSubsystem))
+        .onFalse(
+            new InstantCommand(
+                () -> m_climberSubsystem.setClimberPercent(0.0), m_climberSubsystem));
+    driverController
+        .povDown()
+        .onTrue(
+            new InstantCommand(
+                () -> m_climberSubsystem.setClimberPercent(-0.5), m_climberSubsystem))
+        .onFalse(
+            new InstantCommand(
+                () -> m_climberSubsystem.setClimberPercent(0.0), m_climberSubsystem));
   }
 
   private void configureAuxButtonBindings() {
