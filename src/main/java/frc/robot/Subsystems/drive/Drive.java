@@ -145,6 +145,10 @@ public class Drive extends SubsystemBase {
     runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rot, heading));
   }
 
+  public void setRawRobotRel(double x, double y, double rot) {
+    runVelocity(ChassisSpeeds.fromRobotRelativeSpeeds(x, y, rot, this.getRotation()));
+  }
+
   /** returns a swerveModuleState of chassis speeds */
   public ChassisSpeeds getChassisSpeed() {
     return swerveKinematics.toChassisSpeeds(
@@ -158,6 +162,8 @@ public class Drive extends SubsystemBase {
     double linearMagnitude = MathUtil.applyDeadband(Math.hypot(x, y), DriveConstants.DEADBAND);
     Rotation2d linearDirection = new Rotation2d(x, y);
     double omega = MathUtil.applyDeadband(rot, DriveConstants.DEADBAND);
+
+    System.out.println("Running");
 
     // Square values
     linearMagnitude = linearMagnitude * linearMagnitude;

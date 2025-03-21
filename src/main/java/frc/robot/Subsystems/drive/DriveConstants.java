@@ -17,7 +17,7 @@ public class DriveConstants {
   public static final double TRACK_WIDTH_M = Units.inchesToMeters(23.25);
 
   /** Gear Ratio for MK4I L3 (Kraken) */
-  public static final double GEAR_RATIO = 5.36;
+  public static final double GEAR_RATIO = 6.12;
 
   /** Max Speed the Robot Can Travel in One Linear Direction (m/s) */
   public static final double MAX_LINEAR_SPEED_M_PER_SEC = 5.2; // TODO: Update
