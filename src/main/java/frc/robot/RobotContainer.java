@@ -159,7 +159,7 @@ public class RobotContainer {
                     driverController.getLeftX() * 1, // Forward/backward
                     driverController.getLeftY()
                         * -1, // Left/Right (multiply by -1 bc controller axis is inverted)
-                    driverController.getRightX() * (1)), // Rotate chassis left/right
+                    driverController.getRightX() * (0.75)), // Rotate chassis left/right
             m_driveSubsystem));
 
     // Resets robot heading to be wherever the front of the robot is facing
@@ -177,54 +177,56 @@ public class RobotContainer {
             new InstantCommand(() -> m_climberSubsystem.setClimberPercent(1.0), m_climberSubsystem))
         .onFalse(
             new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
-    driverController
-        .leftBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> m_climberSubsystem.setClimberPercent(-1.0), m_climberSubsystem))
-        .onFalse(
-            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
     // driverController
-    //     .rightTrigger()
-    //     .onTrue(
-    //         new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(1.0),
-    // m_climberSubsystem))
-    //     .onFalse(
-    //         new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0),
-    // m_climberSubsystem));
-    // driverController
-    //     .leftTrigger()
+    //     .leftBumper()
     //     .onTrue(
     //         new InstantCommand(
-    //             () -> m_rollersSubsystem.setRollersPercent(-1.0), m_rollersSubsystem))
+    //             () -> m_climberSubsystem.setClimberPercent(-1.0), m_climberSubsystem))
     //     .onFalse(
-    //         new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0),
-    // m_rollersSubsystem));
+    //         new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
   }
 
   private void configureAuxButtonBindings() {
     /** Aux Controls */
     auxController
-        .leftTrigger()
+        .y()
         .onTrue(
             new InstantCommand(
-                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(5)),
-                m_elevatorSubsystem));
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(0)),
+                m_wristSubsystem));
     auxController
-        .rightTrigger()
+        .x()
         .onTrue(
             new InstantCommand(
-                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(20)),
-                m_elevatorSubsystem));
-    auxController
-        .rightBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(60)),
-                m_elevatorSubsystem));
-
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(270)),
+                m_wristSubsystem));
     auxController
         .a()
+        .onTrue(
+            new InstantCommand(
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(180)),
+                m_wristSubsystem));
+    auxController
+        .y()
+        .onTrue(
+            new InstantCommand(
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(90)),
+                m_wristSubsystem));
+    // auxController
+    //     .rightTrigger()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(20)),
+    //             m_elevatorSubsystem));
+    // auxController
+    //     .rightBumper()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(60)),
+    //             m_elevatorSubsystem));
+
+    auxController
+        .povDown()
         .onTrue(
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(-0.5), m_elevatorSubsystem))
@@ -232,7 +234,7 @@ public class RobotContainer {
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
     auxController
-        .b()
+        .povUp()
         .onTrue(
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0.5), m_elevatorSubsystem))
@@ -240,20 +242,19 @@ public class RobotContainer {
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
 
-    auxController
-        .x()
-        .onTrue(
-            new InstantCommand(
-                () -> m_climberSubsystem.setClimberPercent(-0.5), m_climberSubsystem))
-        .onFalse(
-            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
 
     auxController
-        .y()
+        .rightTrigger()
         .onTrue(
-            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0.5), m_climberSubsystem))
+            new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(0.5), m_endEffectorSubsystem))
         .onFalse(
-            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
+            new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
+    auxController
+        .leftTrigger()
+        .onTrue(
+            new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(-0.5), m_endEffectorSubsystem))
+        .onFalse(
+            new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
   }
 
   public void stopEverything() {}
