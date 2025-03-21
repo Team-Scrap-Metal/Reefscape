@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Commands.TeleopCommands.Coral.ScoreCoral;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RobotStateConstants;
 import frc.robot.Subsystems.climber.Climber;
@@ -269,7 +270,7 @@ public class RobotContainer {
         .rightTrigger()
         .onTrue(
             new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(0.5), m_endEffectorSubsystem))
+                () -> m_endEffectorSubsystem.setEndEffectorPercent(0.75), m_endEffectorSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
@@ -277,10 +278,14 @@ public class RobotContainer {
         .leftTrigger()
         .onTrue(
             new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(-0.5), m_endEffectorSubsystem))
+                () -> m_endEffectorSubsystem.setEndEffectorPercent(-0.25), m_endEffectorSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
+    // auxController
+    //     .rightBumper()
+    //     .onTrue(
+    //         new ScoreCoral(m_endEffectorSubsystem, m_wristSubsystem));
   }
 
   public void stopEverything() {}
