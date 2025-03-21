@@ -183,7 +183,8 @@ public class RobotContainer {
     //         new InstantCommand(
     //             () -> m_climberSubsystem.setClimberPercent(-1.0), m_climberSubsystem))
     //     .onFalse(
-    //         new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
+    //         new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0),
+    // m_climberSubsystem));
   }
 
   private void configureAuxButtonBindings() {
@@ -242,19 +243,22 @@ public class RobotContainer {
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
 
-
     auxController
         .rightTrigger()
         .onTrue(
-            new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(0.5), m_endEffectorSubsystem))
+            new InstantCommand(
+                () -> m_endEffectorSubsystem.setEndEffectorPercent(0.5), m_endEffectorSubsystem))
         .onFalse(
-            new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
+            new InstantCommand(
+                () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
     auxController
         .leftTrigger()
         .onTrue(
-            new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(-0.5), m_endEffectorSubsystem))
+            new InstantCommand(
+                () -> m_endEffectorSubsystem.setEndEffectorPercent(-0.5), m_endEffectorSubsystem))
         .onFalse(
-            new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
+            new InstantCommand(
+                () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
   }
 
   public void stopEverything() {}
