@@ -60,7 +60,6 @@ public class RobotContainer {
   private final Drive m_driveSubsystem;
   private final Gyro m_gyroSubsystem;
   private final Wrist m_wristSubsystem;
-  private final Rollers m_rollersSubsystem;
   private final EndEffector m_endEffectorSubsystem;
   private final Elevator m_elevatorSubsystem;
   private final Climber m_climberSubsystem;
@@ -93,7 +92,6 @@ public class RobotContainer {
                 new ModuleIOKrakenNeo(3),
                 m_gyroSubsystem);
         m_wristSubsystem = new Wrist(new WristIONeo());
-        m_rollersSubsystem = new Rollers(new RollersIONeo());
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIONeo());
         m_elevatorSubsystem = new Elevator(new ElevatorIOVortex());
         m_climberSubsystem = new Climber(new ClimberIONeo());
@@ -111,7 +109,6 @@ public class RobotContainer {
                 new ModuleIO() {},
                 m_gyroSubsystem);
         m_wristSubsystem = new Wrist(new WristIO() {});
-        m_rollersSubsystem = new Rollers(new RollersIO() {});
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
         m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
         m_climberSubsystem = new Climber(new ClimberIO() {});
@@ -131,7 +128,6 @@ public class RobotContainer {
                 m_gyroSubsystem);
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
-        m_rollersSubsystem = new Rollers(new RollersIO() {});
         m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
         m_climberSubsystem = new Climber(new ClimberIO() {});
         m_linkageSubsystem = new Linkage(new LinkageIONeo());
@@ -192,21 +188,21 @@ public class RobotContainer {
             new InstantCommand(
                 () -> m_linkageSubsystem.setLinkagePercent(0.0), m_linkageSubsystem));
 
-    driverController
-        .leftTrigger()
-        .onTrue(
-            new InstantCommand(
-                () -> m_rollersSubsystem.setRollersPercent(-1.0), m_rollersSubsystem))
-        .onFalse(
-            new InstantCommand(
-                () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
-    driverController
-        .rightTrigger()
-        .onTrue(
-            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(1.0), m_rollersSubsystem))
-        .onFalse(
-            new InstantCommand(
-                () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
+    // driverController
+    //     .leftTrigger()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_rollersSubsystem.setRollersPercent(-1.0), m_rollersSubsystem))
+    //     .onFalse(
+    //         new InstantCommand(
+    //             () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
+    // driverController
+    //     .rightTrigger()
+    //     .onTrue(
+    //         new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(1.0), m_rollersSubsystem))
+    //     .onFalse(
+    //         new InstantCommand(
+    //             () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
 
     driverController
         .povUp()
