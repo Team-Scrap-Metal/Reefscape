@@ -69,6 +69,9 @@ public class RobotContainer {
   //   private final PathPlanner m_pathPlanner;
 
   private SlewRateLimiter wristRateLimiter;
+
+  private SlewRateLimiter linkageSlewRateLimiter;
+  
   // Controller
   private final CommandXboxController driverController =
       new CommandXboxController(OperatorConstants.DRIVER_PORT);
@@ -138,6 +141,7 @@ public class RobotContainer {
         break;
     }
     wristRateLimiter = new SlewRateLimiter(1);
+    linkageSlewRateLimiter = new SlewRateLimiter(0.25);
     // m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
     // m_pathPlanner = new PathPlanner(m_driveSubsystem, m_poseEstimator);
     // Configure the button bindings
@@ -176,18 +180,25 @@ public class RobotContainer {
      *
      * <p>));
      */
-    driverController
+    driverController.b().onTrue(new RunCommand( ()->
+        m_driveSubsystem.driveWithDeadband(
+            driverController.getLeftX() * 0.75, 
+            driverController.getLeftY() * -1 * 0.75, 
+            driverController.getRightX() * 0.75 * 0.75), 
+            m_driveSubsystem));
+    
+            driverController
         .leftBumper()
         .onTrue(
             new InstantCommand(
-                () -> m_linkageSubsystem.setLinkagePercent(-0.5), m_linkageSubsystem))
+                () -> m_linkageSubsystem.setLinkagePercent(linkageSlewRateLimiter.calculate(-0.5)), m_linkageSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_linkageSubsystem.setLinkagePercent(0.0), m_linkageSubsystem));
     driverController
         .rightBumper()
         .onTrue(
-            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0.5), m_linkageSubsystem))
+            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(linkageSlewRateLimiter.calculate(0.5)), m_linkageSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_linkageSubsystem.setLinkagePercent(0.0), m_linkageSubsystem));

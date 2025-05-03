@@ -27,7 +27,7 @@ public class Wrist extends SubsystemBase {
   public void periodic() {
     this.updateInputs();
     Logger.processInputs("Wrist", inputs);
-    setWristVoltage(wristPID.calculate(this.getWristPositionRad()));
+    // setWristVoltage(wristPID.calculate(this.getWristPositionRad()));
   }
 
   /**
