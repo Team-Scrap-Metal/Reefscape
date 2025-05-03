@@ -196,14 +196,15 @@ public class RobotContainer {
         .leftTrigger()
         .onTrue(
             new InstantCommand(
-                () -> m_rollersSubsystem.setRollersPercent(-1.0), m_rollersSubsystem))
+                () -> m_rollersSubsystem.setRollersPercent(-0.50), m_rollersSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
     driverController
         .rightTrigger()
         .onTrue(
-            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(1.0), m_rollersSubsystem))
+            new InstantCommand(
+                () -> m_rollersSubsystem.setRollersPercent(0.50), m_rollersSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
@@ -276,7 +277,7 @@ public class RobotContainer {
         .povUp()
         .onTrue(
             new InstantCommand(
-                () -> m_elevatorSubsystem.setElevatorPercent(0.5), m_elevatorSubsystem))
+                () -> m_elevatorSubsystem.setElevatorPercent(0.75), m_elevatorSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
