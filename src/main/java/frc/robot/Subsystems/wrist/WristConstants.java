@@ -9,13 +9,14 @@ public class WristConstants {
   public static final int FREE_SPIN_LIMIT_AMPS = 40;
   public static final double GEAR_RATIO = 40;
 
-  public static final double KP = 28.0;
-  public static final double KI = 0.0;
-  public static final double KD = 0.0;
-  public static final double PID_TOLERANCE_RAD = Units.degreesToRadians(2);
-  public static final double MAX_VELOCITY = 6 * Math.PI / 3;
-  public static final double MAX_ACCELERATION = MAX_VELOCITY * 2;
+  public static double KP = 28.0;
+  public static double KI = 0.0;
+  public static double KD = 0.0;
+  public static double PID_TOLERANCE_RAD = Units.degreesToRadians(2);
+  public static double MAX_VELOCITY = 6 * Math.PI / 3;
+  public static double MAX_ACCELERATION = MAX_VELOCITY * 2;
 
+  public static final class WristPositions{
   public static final double L1_ROTATION_RAD = Units.degreesToRadians(0.0);
 
   public static final double L2_AND_L3_START_ROTATION_RAD = Units.degreesToRadians(0.0);
@@ -29,4 +30,5 @@ public class WristConstants {
   public static final double FLOOR_INTAKE_RAD = Units.degreesToRadians(180);
   // NAH ID WIN!!!
   public static final double STOW_ROTATION_RAD = Units.degreesToRadians(0.0);
+}
 }

@@ -13,16 +13,20 @@ public class ElevatorConstants {
   public static final double GEAR_RATIO = 4;
   public static final double LINEAR_CONSTANTS_M = 0.0; // TODO: Update
 
-  public static final double KP = 2.0;
-  public static final double KI = 0.0;
-  public static final double KD = 0.0;
-  public static final double PID_TOLERANCE_M = Units.inchesToMeters(5);
-  public static final double MAX_VELOCITY = 0.25;
-  public static final double MAX_ACCELERATION = MAX_VELOCITY * 2;
-  public static final double KS = 0.0;
-  public static final double KG = 0.25;
-  public static final double KV = 0.0;
-  public static final double KA = 0.0;
+  public static class ElevatorControls{
+  public static double KP = 2.0;
+  public static double KI = 0.0;
+  public static double KD = 0.0;
+  public static double PID_TOLERANCE_M = Units.inchesToMeters(5);
+  public static double MAX_VELOCITY = 0.25;
+  public static double MAX_ACCELERATION = MAX_VELOCITY * 2;
+  public static double KS = 0.0;
+  public static double KG = 0.25;
+  public static double KV = 0.0;
+  public static double KA = 0.0;
+  }
+
+  public static final class ElevatorPositions{
 
   public static final double CARRIAGE_HEIGHT_OFF_FLOOR_M = Units.inchesToMeters(5);
   public static final double L1_START_HEIGHT_M = 0.0;
@@ -43,4 +47,5 @@ public class ElevatorConstants {
   // Opening from floor is 3ft
   public static final double CORAL_STATION_HEIGHT_M = Units.feetToMeters(3);
   public static final double GROUND_INTAKE_HEIGHT_M = 0.0;
+}
 }

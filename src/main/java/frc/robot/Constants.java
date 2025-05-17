@@ -48,6 +48,32 @@ public final class Constants {
       }
     }
 
+    public static enum MechanismStateMachine {
+      PositionL1(),
+      PositionL2(),
+      PositionL3(),
+      PositionL4(),
+      ScoreCoralLeft(),
+      ScoreCoralRight(),
+      GroundPickup(),
+      PlayerStationPickup(),
+      AlgaeStowed(),
+      AlgaeDeployed(),
+      AlgaeHold(),
+      AlgaeScore(),
+      ClimberIn(),
+      ClimberOut(),
+      Climbed(),
+      Stowed()
+    }
+
+    public static enum DriveStateMachine {
+      VisionDrive(),
+      ManualDrive(),
+      SlowDrive(),
+      AutoDrive()
+    }
+
     /** Get Alliance (Blue, Red, Null) */
     public static final Optional<Alliance> getAlliance() {
       return DriverStation.getAlliance();
