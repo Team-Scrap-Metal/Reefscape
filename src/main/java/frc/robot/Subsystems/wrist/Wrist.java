@@ -4,7 +4,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import org.littletonrobotics.junction.Logger;
 
 public class Wrist extends SubsystemBase {
@@ -60,30 +59,30 @@ public class Wrist extends SubsystemBase {
     io.setBrakeMode(!isDisabled);
   }
 
-   public void updateControls(){
-    //Step 1: Get new Values
-  WristConstants.KP = SmartDashboard.getNumber("WristKP", WristConstants.KP);
-  WristConstants.KI = SmartDashboard.getNumber("WristKI", WristConstants.KI);
-  WristConstants.KD = SmartDashboard.getNumber("WristKD", WristConstants.KD);
-  WristConstants.PID_TOLERANCE_RAD= SmartDashboard.getNumber("WristTolerance", WristConstants.PID_TOLERANCE_RAD);
-  WristConstants.MAX_VELOCITY = SmartDashboard.getNumber("WristMaxVel", WristConstants.MAX_VELOCITY);
-  WristConstants.MAX_ACCELERATION = SmartDashboard.getNumber("WristMaxAccell", WristConstants.MAX_ACCELERATION);
-  // WristConstants.KS = SmartDashboard.getNumber("WristKS", WristConstants.KS);
-  // WristConstants.KG = SmartDashboard.getNumber("WristKG", WristConstants.KG);
-  // WristConstants.KV = SmartDashboard.getNumber("WristKV", WristConstants.KV);
-  // WristConstants.KA = SmartDashboard.getNumber("WristKA", WristConstants.KA);
-    //Step 2: Apply new Values
-    wristPID.setPID(
-      WristConstants.KP,
-        WristConstants.KI,
-        WristConstants.KD);
+  public void updateControls() {
+    // Step 1: Get new Values
+    WristConstants.KP = SmartDashboard.getNumber("WristKP", WristConstants.KP);
+    WristConstants.KI = SmartDashboard.getNumber("WristKI", WristConstants.KI);
+    WristConstants.KD = SmartDashboard.getNumber("WristKD", WristConstants.KD);
+    WristConstants.PID_TOLERANCE_RAD =
+        SmartDashboard.getNumber("WristTolerance", WristConstants.PID_TOLERANCE_RAD);
+    WristConstants.MAX_VELOCITY =
+        SmartDashboard.getNumber("WristMaxVel", WristConstants.MAX_VELOCITY);
+    WristConstants.MAX_ACCELERATION =
+        SmartDashboard.getNumber("WristMaxAccell", WristConstants.MAX_ACCELERATION);
+    // WristConstants.KS = SmartDashboard.getNumber("WristKS", WristConstants.KS);
+    // WristConstants.KG = SmartDashboard.getNumber("WristKG", WristConstants.KG);
+    // WristConstants.KV = SmartDashboard.getNumber("WristKV", WristConstants.KV);
+    // WristConstants.KA = SmartDashboard.getNumber("WristKA", WristConstants.KA);
+    // Step 2: Apply new Values
+    wristPID.setPID(WristConstants.KP, WristConstants.KI, WristConstants.KD);
     wristPID.setConstraints(
         new Constraints(WristConstants.MAX_VELOCITY, WristConstants.MAX_ACCELERATION));
-// wFeedforward.setKs(WristConstants.KS);
-// WristFeedforward.setKg(WristConstants.KG);
-// WristFeedforward.setKv(WristConstants.KV);
-// WristFeedforward.setKa(WristConstants.KA);
-    //Step 3: Put new Values
+    // wFeedforward.setKs(WristConstants.KS);
+    // WristFeedforward.setKg(WristConstants.KG);
+    // WristFeedforward.setKv(WristConstants.KV);
+    // WristFeedforward.setKa(WristConstants.KA);
+    // Step 3: Put new Values
     SmartDashboard.putNumber("WristKP", WristConstants.KP);
     SmartDashboard.putNumber("WristKI", WristConstants.KI);
     SmartDashboard.putNumber("WristKD", WristConstants.KD);

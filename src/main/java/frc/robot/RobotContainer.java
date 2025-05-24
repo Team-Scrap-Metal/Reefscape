@@ -299,7 +299,8 @@ public class RobotContainer {
         .povDown()
         .onTrue(
             new InstantCommand(
-                () -> m_elevatorSubsystem.setElevatorPercent(-0.5), m_elevatorSubsystem))
+                () -> m_elevatorSubsystem.setElevatorCurrentTypeAndVoltage(2, -10),
+                m_elevatorSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
@@ -307,7 +308,8 @@ public class RobotContainer {
         .povUp()
         .onTrue(
             new InstantCommand(
-                () -> m_elevatorSubsystem.setElevatorPercent(0.75), m_elevatorSubsystem))
+                () -> m_elevatorSubsystem.setElevatorCurrentTypeAndVoltage(1, 10),
+                m_elevatorSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));

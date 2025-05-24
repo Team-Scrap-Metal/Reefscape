@@ -23,7 +23,7 @@ public class ElevatorIOVortex implements ElevatorIO {
 
     leftMotorConfig
         .smartCurrentLimit(
-            ElevatorConstants.STALL_LIMIT_AMPS, ElevatorConstants.FREESPIN_LIMIT_AMPS)
+            ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS)
         .inverted(true)
         .idleMode(IdleMode.kBrake);
 
@@ -32,7 +32,7 @@ public class ElevatorIOVortex implements ElevatorIO {
 
     rightMotorConfig
         .smartCurrentLimit(
-            ElevatorConstants.STALL_LIMIT_AMPS, ElevatorConstants.FREESPIN_LIMIT_AMPS)
+            ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS)
         .inverted(false)
         .idleMode(IdleMode.kBrake)
         .follow(ElevatorConstants.LEFT_CANID, true);
@@ -86,6 +86,32 @@ public class ElevatorIOVortex implements ElevatorIO {
    * @param volts -12 to 12
    */
   public void setElevatorVoltage(double volts) {
+    elevatorLeftMotor.setVoltage(volts);
+  }
+
+  /**
+   * Switches between upward current and downward current 1 - Up 2 - Down
+   *
+   * @param type
+   * @param volts
+   */
+  public void setElevatorCurrentTypeAndVoltage(int type, double volts) {
+
+    switch (type) {
+      case 1:
+        leftMotorConfig.smartCurrentLimit(
+            ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS);
+        rightMotorConfig.smartCurrentLimit(
+            ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS);
+      case 2:
+        leftMotorConfig.smartCurrentLimit(
+            ElevatorConstants.STALL_LIMIT_DOWN_AMPS, ElevatorConstants.FREESPIN_LIMIT_DOWN_AMPS);
+        rightMotorConfig.smartCurrentLimit(
+            ElevatorConstants.STALL_LIMIT_DOWN_AMPS, ElevatorConstants.FREESPIN_LIMIT_DOWN_AMPS);
+
+      default:
+        break;
+    }
     elevatorLeftMotor.setVoltage(volts);
   }
 
