@@ -188,8 +188,8 @@ public class RobotContainer {
             new RunCommand(
                 () ->
                     m_driveSubsystem.driveWithDeadband(
-                        driverController.getLeftX() * 0.15,
-                        driverController.getLeftY() * -1 * 0.15,
+                        driverController.getLeftX() * 0.5,
+                        driverController.getLeftY() * -1 * 0.5,
                         driverController.getRightX() * 0.75 * 0.75),
                 m_driveSubsystem))
         .onFalse(
@@ -258,30 +258,43 @@ public class RobotContainer {
 
   private void configureAuxButtonBindings() {
     /** Aux Controls */
+    // auxController
+    //     .y()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(0)),
+    //             m_wristSubsystem));
+    // auxController
+    //     .x()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(270)),
+    //             m_wristSubsystem));
+    // auxController
+    //     .a()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(180)),
+    //             m_wristSubsystem));
+    // auxController
+    //     .b()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(90)),
+    //             m_wristSubsystem));
     auxController
         .y()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(0)),
-                m_wristSubsystem));
-    auxController
-        .x()
-        .onTrue(
-            new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(270)),
-                m_wristSubsystem));
+                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(20)),
+                m_elevatorSubsystem));
     auxController
         .a()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(180)),
-                m_wristSubsystem));
-    auxController
-        .b()
-        .onTrue(
-            new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(90)),
-                m_wristSubsystem));
+                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(50)),
+                m_elevatorSubsystem));
+
     // auxController
     //     .rightTrigger()
     //     .onTrue(
@@ -339,7 +352,7 @@ public class RobotContainer {
   public void stopEverything() {}
 
   public void coastOnDisable(boolean isDisabled) {
-    // m_driveSubsystem.coastOnDisable(isDisabled);
+    m_driveSubsystem.coastOnDisable(isDisabled);
     m_wristSubsystem.coastOnDisable(isDisabled);
     // m_elevatorSubsystem.coastOnDisable(isDisabled);
   }

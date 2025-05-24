@@ -5,15 +5,15 @@
 package frc.robot.Subsystems.elevator;
 
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 
 /** Add your docs here. */
 public class ElevatorIOSim implements ElevatorIO {
-    private final ElevatorSim elevatorSim;
+  private final ElevatorSim elevatorSim;
 
-    public ElevatorIOSim(){
-        elevatorSim = new ElevatorSim(
+  public ElevatorIOSim() {
+    elevatorSim =
+        new ElevatorSim(
             DCMotor.getNeoVortex(2), ElevatorConstants.GEAR_RATIO, 0, 0, 0, 0, false, 0, null);
-    }
+  }
 }
