@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.AbsoluteEncoderConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class WristIONeo implements WristIO {
   private final SparkMax wristMotor;
@@ -44,6 +45,7 @@ public class WristIONeo implements WristIO {
   public void updateInputs(WristIOInputs inputs) {
     /** This returns the voltage the Wrist Motor Recieves */
     inputs.wristAppliedVolts = wristMotor.getAppliedOutput() * wristMotor.getBusVoltage();
+    SmartDashboard.putNumber("WristVolts", inputs.wristAppliedVolts);
     /**
      * Returns the position of the absoltute encoder in Radians (Used to make sure wrist zero doesnt
      * change on enable //
@@ -66,8 +68,10 @@ public class WristIONeo implements WristIO {
             / WristConstants.GEAR_RATIO;
     /** The Current Drawn from the Wrist Motor in Amps */
     inputs.wristCurrentAmps = new double[] {wristMotor.getOutputCurrent()};
+    SmartDashboard.putNumber("WristAmps", inputs.wristCurrentAmps[0]);
     /** The tempature of the Wrist Motor in Celsius */
     inputs.wristTempCelsius = new double[] {wristMotor.getMotorTemperature()};
+    SmartDashboard.putNumber("WristCelsius", inputs.wristTempCelsius[0]);
   }
 
   @Override

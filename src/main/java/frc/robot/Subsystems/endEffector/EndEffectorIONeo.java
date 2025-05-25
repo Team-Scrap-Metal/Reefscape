@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class EndEffectorIONeo implements EndEffectorIO {
   private final SparkMax endEffectorMotor;
@@ -36,6 +37,8 @@ public class EndEffectorIONeo implements EndEffectorIO {
     /** This returns the voltage the Endeffector Motor Recieves */
     inputs.endEffectorAppliedVolts =
         endEffectorMotor.getAppliedOutput() * endEffectorMotor.getBusVoltage();
+    SmartDashboard.putNumber("EndEffectorVolts", inputs.endEffectorAppliedVolts);
+
     /** Returns the position of the Endeffector Motor by how many radians it has rotated */
     inputs.endEffectorPositionRad =
         Units.rotationsToRadians(endEffectorRelativeEncoder.getPosition())
@@ -48,9 +51,11 @@ public class EndEffectorIONeo implements EndEffectorIO {
         Units.rotationsPerMinuteToRadiansPerSecond(endEffectorRelativeEncoder.getVelocity())
             / EndEffectorConstants.GEAR_RATIO;
     /** The Current Drawn from the Endeffector Motor in Amps */
-    inputs.endEffectorCurrentAmps = new double[] {};
+    inputs.endEffectorCurrentAmps = new double[] {endEffectorMotor.getOutputCurrent()};
+    SmartDashboard.putNumber("WristAmps", inputs.endEffectorCurrentAmps[0]);
     /** The tempature of the Endeffector Motor in Celsius */
-    inputs.endEffectorTempCelsius = new double[] {};
+    inputs.endEffectorTempCelsius = new double[] {endEffectorMotor.getMotorTemperature()};
+    SmartDashboard.putNumber("EndEffectorCelsius", inputs.endEffectorTempCelsius[0]);
     inputs.endEffectorVelocityRotPerMin =
         endEffectorRelativeEncoder.getVelocity() / EndEffectorConstants.GEAR_RATIO;
   }

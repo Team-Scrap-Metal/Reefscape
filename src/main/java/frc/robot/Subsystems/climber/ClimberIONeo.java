@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ClimberIONeo implements ClimberIO {
   private SparkMax climberLeftMotor;
@@ -52,6 +53,7 @@ public class ClimberIONeo implements ClimberIO {
     inputs.climberAppliedVolts =
         climberLeftMotor.getAppliedOutput() * climberLeftMotor.getBusVoltage()
             + climberRightMotor.getAppliedOutput() * climberRightMotor.getBusVoltage();
+    SmartDashboard.putNumber("ClimberCelsius", inputs.climberAppliedVolts);
     /**
      * Returns the position of the absoltute encoder in Radians (Used to make sure climber zero
      * doesnt change on enable
@@ -69,11 +71,15 @@ public class ClimberIONeo implements ClimberIO {
     /** The Current Drawn from the climber Motor in Amps */
     inputs.climberCurrentAmps =
         new double[] {climberLeftMotor.getOutputCurrent(), climberRightMotor.getOutputCurrent()};
+    SmartDashboard.putNumber("ClimberLeftAmps", inputs.climberCurrentAmps[0]);
+    SmartDashboard.putNumber("ClimberRightAmps", inputs.climberCurrentAmps[1]);
     /** The tempature of the climber Motor in Celsius */
     inputs.climberTempCelsius =
         new double[] {
           climberLeftMotor.getMotorTemperature(), climberRightMotor.getMotorTemperature()
         };
+    SmartDashboard.putNumber("ClimberLeftCelsius", inputs.climberTempCelsius[0]);
+    SmartDashboard.putNumber("ClimberRightCelsius", inputs.climberTempCelsius[1]);
   }
 
   @Override

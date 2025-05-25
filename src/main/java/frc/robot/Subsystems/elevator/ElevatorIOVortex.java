@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorIOVortex implements ElevatorIO {
   private final SparkFlex elevatorLeftMotor;
@@ -53,6 +54,7 @@ public class ElevatorIOVortex implements ElevatorIO {
     inputs.elevatorAppliedVolts =
         elevatorLeftMotor.getAppliedOutput() * elevatorLeftMotor.getBusVoltage()
             + elevatorRightMotor.getAppliedOutput() * elevatorRightMotor.getBusVoltage();
+    SmartDashboard.putNumber("ElevatorVolts", inputs.elevatorAppliedVolts);
     /** Returns the position of the elevator Motor by how many radians it has rotated */
     inputs.elevatorPositionRad =
         (Units.rotationsToRadians(elevatorLeftEncoder.getPosition())
@@ -72,11 +74,15 @@ public class ElevatorIOVortex implements ElevatorIO {
     /** The Current Drawn from the elevator Motor in Amps */
     inputs.elevatorCurrentAmps =
         new double[] {elevatorLeftMotor.getOutputCurrent(), elevatorRightMotor.getOutputCurrent()};
+    SmartDashboard.putNumber("ElevatorLeftAmps", inputs.elevatorCurrentAmps[0]);
+    SmartDashboard.putNumber("ElevatorRightAmps", inputs.elevatorCurrentAmps[1]);
     /** The tempature of the elevator Motor in Celsius */
     inputs.elevatorTempCelsius =
         new double[] {
           elevatorLeftMotor.getMotorTemperature(), elevatorRightMotor.getMotorTemperature()
         };
+    SmartDashboard.putNumber("ElevatorLeftCelsius", inputs.elevatorTempCelsius[0]);
+    SmartDashboard.putNumber("ElevatorRightCelsius", inputs.elevatorTempCelsius[1]);
   }
 
   @Override

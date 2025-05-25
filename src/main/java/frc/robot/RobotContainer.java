@@ -258,54 +258,54 @@ public class RobotContainer {
 
   private void configureAuxButtonBindings() {
     /** Aux Controls */
-    // auxController
-    //     .y()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(0)),
-    //             m_wristSubsystem));
-    // auxController
-    //     .x()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(270)),
-    //             m_wristSubsystem));
-    // auxController
-    //     .a()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(180)),
-    //             m_wristSubsystem));
-    // auxController
-    //     .b()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(90)),
-    //             m_wristSubsystem));
     auxController
         .y()
         .onTrue(
             new InstantCommand(
-                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(20)),
-                m_elevatorSubsystem));
-    auxController
-        .a()
-        .onTrue(
-            new InstantCommand(
-                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(50)),
-                m_elevatorSubsystem));
-    auxController
-        .b()
-        .onTrue(
-            new InstantCommand(
-                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(65)),
-                m_elevatorSubsystem));
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(0)),
+                m_wristSubsystem));
     auxController
         .x()
         .onTrue(
             new InstantCommand(
-                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(0)),
-                m_elevatorSubsystem));
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(330)),
+                m_wristSubsystem));
+    auxController
+        .a()
+        .onTrue(
+            new InstantCommand(
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(180)),
+                m_wristSubsystem));
+    auxController
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(90)),
+                m_wristSubsystem));
+    // auxController
+    //     .y()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(20)),
+    //             m_elevatorSubsystem));
+    // auxController
+    //     .a()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(50)),
+    //             m_elevatorSubsystem));
+    // auxController
+    //     .b()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(65)),
+    //             m_elevatorSubsystem));
+    // auxController
+    //     .x()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(0)),
+    //             m_elevatorSubsystem));
 
     // auxController
     //     .rightTrigger()
