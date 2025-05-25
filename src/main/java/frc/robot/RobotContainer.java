@@ -294,6 +294,18 @@ public class RobotContainer {
             new InstantCommand(
                 () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(50)),
                 m_elevatorSubsystem));
+    auxController
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(65)),
+                m_elevatorSubsystem));
+    auxController
+        .x()
+        .onTrue(
+            new InstantCommand(
+                () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(0)),
+                m_elevatorSubsystem));
 
     // auxController
     //     .rightTrigger()

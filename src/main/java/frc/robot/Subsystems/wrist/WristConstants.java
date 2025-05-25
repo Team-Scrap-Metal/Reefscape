@@ -12,6 +12,9 @@ public class WristConstants {
   public static double KP = 28.0;
   public static double KI = 0.0;
   public static double KD = 0.0;
+  public static double KS = 0.0;
+  public static double KG = 0.0;
+  public static double KV = 0.0;
   public static double PID_TOLERANCE_RAD = Units.degreesToRadians(2);
   public static double MAX_VELOCITY = 6 * Math.PI / 3;
   public static double MAX_ACCELERATION = MAX_VELOCITY * 2;

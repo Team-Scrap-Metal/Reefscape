@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.wrist;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,6 +16,8 @@ public class Wrist extends SubsystemBase {
           WristConstants.KI,
           WristConstants.KD,
           new Constraints(WristConstants.MAX_VELOCITY, WristConstants.MAX_ACCELERATION));
+  private final ArmFeedforward wristFeedforward =
+      new ArmFeedforward(WristConstants.KS, WristConstants.KG, WristConstants.KV);
 
   public Wrist(WristIO io) {
     System.out.println("[Init] Creating Wrist");
@@ -70,17 +73,17 @@ public class Wrist extends SubsystemBase {
         SmartDashboard.getNumber("WristMaxVel", WristConstants.MAX_VELOCITY);
     WristConstants.MAX_ACCELERATION =
         SmartDashboard.getNumber("WristMaxAccell", WristConstants.MAX_ACCELERATION);
-    // WristConstants.KS = SmartDashboard.getNumber("WristKS", WristConstants.KS);
-    // WristConstants.KG = SmartDashboard.getNumber("WristKG", WristConstants.KG);
-    // WristConstants.KV = SmartDashboard.getNumber("WristKV", WristConstants.KV);
+    WristConstants.KS = SmartDashboard.getNumber("WristKS", WristConstants.KS);
+    WristConstants.KG = SmartDashboard.getNumber("WristKG", WristConstants.KG);
+    WristConstants.KV = SmartDashboard.getNumber("WristKV", WristConstants.KV);
     // WristConstants.KA = SmartDashboard.getNumber("WristKA", WristConstants.KA);
     // Step 2: Apply new Values
     wristPID.setPID(WristConstants.KP, WristConstants.KI, WristConstants.KD);
     wristPID.setConstraints(
         new Constraints(WristConstants.MAX_VELOCITY, WristConstants.MAX_ACCELERATION));
-    // wFeedforward.setKs(WristConstants.KS);
-    // WristFeedforward.setKg(WristConstants.KG);
-    // WristFeedforward.setKv(WristConstants.KV);
+    wristFeedforward.setKs(WristConstants.KS);
+    wristFeedforward.setKg(WristConstants.KG);
+    wristFeedforward.setKv(WristConstants.KV);
     // WristFeedforward.setKa(WristConstants.KA);
     // Step 3: Put new Values
     SmartDashboard.putNumber("WristKP", WristConstants.KP);
@@ -89,9 +92,9 @@ public class Wrist extends SubsystemBase {
     SmartDashboard.putNumber("WristTolerance", WristConstants.PID_TOLERANCE_RAD);
     SmartDashboard.putNumber("WristMaxVel", WristConstants.MAX_VELOCITY);
     SmartDashboard.putNumber("WristMaxAccell", WristConstants.MAX_ACCELERATION);
-    // SmartDashboard.putNumber("WristKS", WristConstants.KS);
-    // SmartDashboard.putNumber("WristKG", WristConstants.KG);
-    // SmartDashboard.putNumber("WristKV", WristConstants.KV);
+    SmartDashboard.putNumber("WristKS", WristConstants.KS);
+    SmartDashboard.putNumber("WristKG", WristConstants.KG);
+    SmartDashboard.putNumber("WristKV", WristConstants.KV);
     // SmartDashboard.putNumber("WristKA", WristConstants.KA);
   }
 }
