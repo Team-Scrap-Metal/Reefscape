@@ -7,7 +7,7 @@ public class WristConstants {
   public static final boolean IS_INVERTED = false;
   public static final int STALL_LIMIT_AMPS = 40;
   public static final int FREE_SPIN_LIMIT_AMPS = 40;
-  public static final double GEAR_RATIO = 40;
+  public static final double GEAR_RATIO = 120;
 
   public static double KP = 28.0;
   public static double KI = 0.0;

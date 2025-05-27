@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -46,6 +47,8 @@ import frc.robot.Subsystems.rollers.RollersIONeo;
 import frc.robot.Subsystems.wrist.Wrist;
 import frc.robot.Subsystems.wrist.WristIO;
 import frc.robot.Subsystems.wrist.WristIONeo;
+import frc.robot.Utils.PathPlanner;
+import frc.robot.Utils.PoseEstimator;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -64,9 +67,9 @@ public class RobotContainer {
   private final EndEffector m_endEffectorSubsystem;
   private final Elevator m_elevatorSubsystem;
   private final Climber m_climberSubsystem;
-  //   private final PoseEstimator m_poseEstimator;
+  private final PoseEstimator m_poseEstimator;
   private final Linkage m_linkageSubsystem;
-  //   private final PathPlanner m_pathPlanner;
+  private final PathPlanner m_pathPlanner;
 
   private SlewRateLimiter wristRateLimiter;
 
@@ -144,11 +147,11 @@ public class RobotContainer {
     wristRateLimiter = new SlewRateLimiter(1);
     downlinkageSlewRateLimiter = new SlewRateLimiter(0.001);
     uplinkageSlewRateLimiter = new SlewRateLimiter(0.001);
-    // m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
-    // m_pathPlanner = new PathPlanner(m_driveSubsystem, m_poseEstimator);
+    m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
+    m_pathPlanner = new PathPlanner(m_driveSubsystem, m_poseEstimator);
     // Configure the button bindings
     autoChooser.addDefaultOption("Null", null);
-    // autoChooser.addDefaultOption("Leave Auto", new PathPlannerAuto("Leave"));
+    autoChooser.addOption("Straight Line", new PathPlannerAuto("StraightLine"));
     configureDriverButtonBindings();
     configureAuxButtonBindings();
   }
@@ -268,7 +271,7 @@ public class RobotContainer {
         .x()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(330)),
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(270)),
                 m_wristSubsystem));
     auxController
         .a()
@@ -375,6 +378,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new RunCommand(() -> m_driveSubsystem.driveWithDeadband(0, 0.5, 0), m_driveSubsystem);
+    return autoChooser.get();
+    // return new RunCommand(() -> m_driveSubsystem.driveWithDeadband(0, 0.5, 0), m_driveSubsystem);
   }
 }
