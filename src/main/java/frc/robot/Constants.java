@@ -48,24 +48,37 @@ public final class Constants {
       }
     }
 
-    public static enum MechanismStateMachine {
-      PositionL1(),
-      PositionL2(),
-      PositionL3(),
-      PositionL4(),
-      ScoreCoralLeft(),
-      ScoreCoralRight(),
-      GroundPickup(),
-      PlayerStationPickup(),
-      AlgaeStowed(),
-      AlgaeDeployed(),
-      AlgaeHold(),
-      AlgaeScore(),
-      ClimberIn(),
-      ClimberOut(),
-      Climbed(),
-      Stowed()
+    public static enum CoralStateMachine {
+      PositionL1(true, true),
+      PositionL2Left(true, false),
+      PositionL2Right(false, false),
+      PositionL3Left(true, false),
+      PositionL3Right(false, false),
+      PositionL4Left(true, false),
+      PositionL4Right(false, false);
+    
+
+      public final boolean isLeft;
+      public final boolean isL1;
+    CoralStateMachine(boolean isLeft, boolean isL1) {
+      this.isLeft = isLeft;
+      this.isL1 = isL1;
     }
+  }
+
+        // ScoreL23Left(),
+      // ScoreL23Right(),
+      // ScoreL4Left(),
+      // GroundPickup(),
+      // PlayerStationPickup()
+      // AlgaeStowed(),
+      // AlgaeDeployed(),
+      // AlgaeHold(),
+      // AlgaeScore(),
+      // ClimberIn(),
+      // ClimberOut(),
+      // Climbed(),
+      // Stowed()public final double OFFSET;
 
     public static enum DriveStateMachine {
       VisionDrive(),

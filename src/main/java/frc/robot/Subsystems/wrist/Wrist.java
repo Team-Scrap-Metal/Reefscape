@@ -3,8 +3,11 @@ package frc.robot.Subsystems.wrist;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Subsystems.wrist.WristConstants.WristPositions;
+
 import org.littletonrobotics.junction.Logger;
 
 public class Wrist extends SubsystemBase {
@@ -52,6 +55,11 @@ public class Wrist extends SubsystemBase {
   public void setSetpointRad(double setpoint) {
     wristPID.setGoal(setpoint);
     SmartDashboard.putNumber("Setpoint", wristPID.getSetpoint().position);
+  }
+
+  public boolean safeToLift(){
+    return (getWristPositionRad() - Units.degreesToRadians(90) < 5 && getWristPositionRad() - Units.degreesToRadians(90) > -5) || 
+    (getWristPositionRad() - Units.degreesToRadians(90) < 185 && getWristPositionRad() - Units.degreesToRadians(90) > -185) ? true : false;
   }
 
   public void setWristVoltage(double volts) {

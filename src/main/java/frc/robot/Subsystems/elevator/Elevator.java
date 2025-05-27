@@ -3,6 +3,7 @@ package frc.robot.Subsystems.elevator;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.elevator.ElevatorConstants.ElevatorControls;
@@ -72,6 +73,10 @@ public class Elevator extends SubsystemBase {
 
   public void coastOnDisable(boolean isDisabled) {
     io.setBrakeMode(!isDisabled);
+  }
+
+  public boolean safeToRotate(){
+    return getElevatorPositionMeters() > Units.inchesToMeters(10) ? true : false;
   }
 
   public void updateControls() {
