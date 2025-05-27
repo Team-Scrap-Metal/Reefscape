@@ -4,9 +4,11 @@
 
 package frc.robot.Commands.TeleopCommands.Coral;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.Constants.RobotStateConstants;
 import frc.robot.Constants.RobotStateConstants.CoralStateMachine;
 import frc.robot.Subsystems.elevator.Elevator;
 import frc.robot.Subsystems.elevator.ElevatorConstants.ElevatorPositions;
@@ -21,56 +23,110 @@ public class PositionToScore extends SequentialCommandGroup {
   public PositionToScore(CoralStateMachine coral, Elevator elevator, Wrist wrist) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    switch (coral){
+    switch (coral) {
       case PositionL1:
-      addCommands(
-        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L1_START_HEIGHT_M), elevator),
-        new WaitUntilCommand(()->elevator.safeToRotate()),
-        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.L1_ROTATION_RAD), wrist)
-      );
-      break;
+        addCommands(
+            Commands.runOnce(
+                () -> {
+                  RobotStateConstants.currentState = CoralStateMachine.PositionL1;
+                },
+                wrist),
+            new InstantCommand(
+                () -> elevator.setSetpointM(ElevatorPositions.L1_START_HEIGHT_M), elevator),
+            new WaitUntilCommand(() -> elevator.safeToRotate()),
+            new InstantCommand(() -> wrist.setSetpointRad(WristPositions.L1_ROTATION_RAD), wrist));
+        break;
       case PositionL2Left:
-      addCommands(
-        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L2_HEIGHT_M), elevator),
-        new WaitUntilCommand(()->elevator.safeToRotate()),
-        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_START_ROTATION_RAD), wrist)
-      );
-      break;
+        addCommands(
+            Commands.runOnce(
+                () -> {
+                  RobotStateConstants.currentState = CoralStateMachine.PositionL2Left;
+                },
+                wrist),
+            new InstantCommand(
+                () -> elevator.setSetpointM(ElevatorPositions.L2_HEIGHT_M), elevator),
+            new WaitUntilCommand(() -> elevator.safeToRotate()),
+            new InstantCommand(
+                () -> wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_START_ROTATION_RAD),
+                wrist));
+        break;
       case PositionL2Right:
-      addCommands(
-        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L2_HEIGHT_M), elevator),
-        new WaitUntilCommand(()->elevator.safeToRotate()),
-        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_START_ROTATION_RAD), wrist)
-      );
-      break;
+        addCommands(
+            Commands.runOnce(
+                () -> {
+                  RobotStateConstants.currentState = CoralStateMachine.PositionL2Right;
+                },
+                wrist),
+            new InstantCommand(
+                () -> elevator.setSetpointM(ElevatorPositions.L2_HEIGHT_M), elevator),
+            new WaitUntilCommand(() -> elevator.safeToRotate()),
+            new InstantCommand(
+                () -> wrist.setSetpointRad(WristPositions.RIGHT_L2_AND_L3_START_ROTATION_RAD),
+                wrist));
+        break;
       case PositionL3Left:
-      addCommands(
-        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L3_HEIGHT_M), elevator),
-        new WaitUntilCommand(()->elevator.safeToRotate()),
-        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_START_ROTATION_RAD), wrist)
-      );
-      break;
+        addCommands(
+            Commands.runOnce(
+                () -> {
+                  RobotStateConstants.currentState = CoralStateMachine.PositionL3Left;
+                },
+                wrist),
+            new InstantCommand(
+                () -> elevator.setSetpointM(ElevatorPositions.L3_HEIGHT_M), elevator),
+            new WaitUntilCommand(() -> elevator.safeToRotate()),
+            new InstantCommand(
+                () -> wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_START_ROTATION_RAD),
+                wrist));
+        break;
       case PositionL3Right:
-      addCommands(
-        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L3_HEIGHT_M), elevator),
-        new WaitUntilCommand(()->elevator.safeToRotate()),
-        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_START_ROTATION_RAD), wrist)
-      );
-      break;
+        addCommands(
+            Commands.runOnce(
+                () -> {
+                  RobotStateConstants.currentState = CoralStateMachine.PositionL3Right;
+                },
+                wrist),
+            new InstantCommand(
+                () -> elevator.setSetpointM(ElevatorPositions.L3_HEIGHT_M), elevator),
+            new WaitUntilCommand(() -> elevator.safeToRotate()),
+            new InstantCommand(
+                () -> wrist.setSetpointRad(WristPositions.RIGHT_L2_AND_L3_START_ROTATION_RAD),
+                wrist));
+        break;
       case PositionL4Left:
-      addCommands(
-        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L4_HEIGHT_M), elevator),
-        new WaitUntilCommand(()->elevator.safeToRotate()),
-        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L4_START_ROTATION_RAD), wrist)
-      );
-      break; 
+        addCommands(
+            Commands.runOnce(
+                () -> {
+                  RobotStateConstants.currentState = CoralStateMachine.PositionL4Left;
+                },
+                wrist),
+            new InstantCommand(
+                () -> elevator.setSetpointM(ElevatorPositions.L4_HEIGHT_M), elevator),
+            new WaitUntilCommand(() -> elevator.safeToRotate()),
+            new InstantCommand(
+                () -> wrist.setSetpointRad(WristPositions.LEFT_L4_START_ROTATION_RAD), wrist));
+        break;
       case PositionL4Right:
-      addCommands(
-        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L4_HEIGHT_M), elevator),
-        new WaitUntilCommand(()->elevator.safeToRotate()),
-        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L4_START_ROTATION_RAD), wrist)
-      );
-      break; 
-  }
+        addCommands(
+            Commands.runOnce(
+                () -> {
+                  RobotStateConstants.currentState = CoralStateMachine.PositionL4Right;
+                },
+                wrist),
+            new InstantCommand(
+                () -> elevator.setSetpointM(ElevatorPositions.L4_HEIGHT_M), elevator),
+            new WaitUntilCommand(() -> elevator.safeToRotate()),
+            new InstantCommand(
+                () -> wrist.setSetpointRad(WristPositions.RIGHT_L4_START_ROTATION_RAD), wrist));
+        break;
+      case Stowed:
+        addCommands(
+            Commands.runOnce(
+                () -> {
+                  RobotStateConstants.currentState = CoralStateMachine.Stowed;
+                },
+                wrist),
+            new Stow(elevator, wrist));
+        break;
+    }
   }
 }

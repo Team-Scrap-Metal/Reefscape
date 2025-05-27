@@ -4,6 +4,8 @@
 
 package frc.robot.Commands.TeleopCommands.Coral;
 
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -20,10 +22,24 @@ public class Stow extends SequentialCommandGroup {
   public Stow(Elevator elevator, Wrist wrist) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(  
-      new InstantCommand(()-> wrist.setSetpointRad(WristPositions.STOW_ROTATION_RAD), wrist),
-      new WaitUntilCommand(()->wrist.safeToLift()),
-      new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M), elevator)
-    );
+    addCommands(
+        new ConditionalCommand(
+            new SequentialCommandGroup(
+                new InstantCommand(() -> elevator.setSetpointM(Units.inchesToMeters(13)), elevator),
+                new WaitUntilCommand(() -> elevator.safeToRotate()),
+                new InstantCommand(
+                    () -> wrist.setSetpointRad(WristPositions.STOW_ROTATION_RAD), wrist),
+                new WaitUntilCommand(() -> wrist.safeToLift()),
+                new InstantCommand(
+                    () -> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M),
+                    elevator)),
+            new SequentialCommandGroup(
+                new InstantCommand(
+                    () -> wrist.setSetpointRad(WristPositions.STOW_ROTATION_RAD), wrist),
+                new WaitUntilCommand(() -> wrist.safeToLift()),
+                new InstantCommand(
+                    () -> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M),
+                    elevator)),
+            () -> elevator.safeToRotate() ? false : true));
   }
 }

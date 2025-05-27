@@ -82,8 +82,8 @@ public class Elevator extends SubsystemBase {
     oldSetpoint += increment;
     elevatorPID.setGoal(oldSetpoint);
   }
-  
-  public boolean safeToRotate(){
+
+  public boolean safeToRotate() {
     return getElevatorPositionMeters() > Units.inchesToMeters(10) ? true : false;
   }
 
