@@ -24,6 +24,7 @@ public class Wrist extends SubsystemBase {
     this.io = io;
     wristPID.setTolerance(WristConstants.PID_TOLERANCE_RAD);
     wristPID.setGoal(0);
+    wristPID.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   @Override
