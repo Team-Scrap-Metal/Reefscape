@@ -157,7 +157,7 @@ public class DriveConstants {
     // Feed Forward values used in sim: S = 0.4, V = 0.4
 
     /** KS represents the voltage required to overcome static friction */
-    public static final double KRAKEN_KS = 0.01;
+    public static final double KRAKEN_KS = 0.02;
 
     /** KV represents the voltage used every second per meter */
     public static final double KRAKEN_KV = 0.10;

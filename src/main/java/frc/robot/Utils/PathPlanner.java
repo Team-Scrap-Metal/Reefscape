@@ -42,7 +42,7 @@ public class PathPlanner extends SubsystemBase {
         drive::runVelocity,
         new PPHolonomicDriveController(
             new PIDConstants( // Translation PID constants
-                0, // TODO: Update Values && put in constants
+                1.0, // TODO: Update Values && put in constants
                 0, // TODO: Update Values && put in constants
                 0), // TODO: Update Values && put in constants
             new PIDConstants( // Rotation PID constants
