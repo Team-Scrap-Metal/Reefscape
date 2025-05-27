@@ -21,6 +21,8 @@ public class Elevator extends SubsystemBase {
       new ElevatorFeedforward(
           ElevatorControls.KS, ElevatorControls.KG, ElevatorControls.KV, ElevatorControls.KA);
 
+  private double oldSetpoint = 0.0;
+
   public Elevator(ElevatorIO io) {
     System.out.println("[Init] Creating Elevator");
     this.io = io;
@@ -32,7 +34,7 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     this.updateInputs();
     Logger.processInputs("Elevator", inputs);
-    updateControls();
+    // updateControls();
     // setElevatorVoltage(
     //     elevatorFeedforward.calculate(elevatorPID.getSetpoint().velocity)
     //         + elevatorPID.calculate(this.getElevatorPositionMeters()));
@@ -72,6 +74,12 @@ public class Elevator extends SubsystemBase {
 
   public void coastOnDisable(boolean isDisabled) {
     io.setBrakeMode(!isDisabled);
+  }
+
+  public void incrementSetpoint(double increment){
+    oldSetpoint = elevatorPID.getGoal().position;
+    oldSetpoint += increment;
+    elevatorPID.setGoal(oldSetpoint);
   }
 
   public void updateControls() {

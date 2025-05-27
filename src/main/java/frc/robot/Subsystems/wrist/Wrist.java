@@ -20,6 +20,8 @@ public class Wrist extends SubsystemBase {
   private final ArmFeedforward wristFeedforward =
       new ArmFeedforward(WristConstants.KS, WristConstants.KG, WristConstants.KV);
 
+  private double oldSetpoint = 0.0;
+
   public Wrist(WristIO io) {
     System.out.println("[Init] Creating Wrist");
     this.io = io;
@@ -52,6 +54,12 @@ public class Wrist extends SubsystemBase {
   public void setSetpointRad(double setpoint) {
     wristPID.setGoal(setpoint);
     SmartDashboard.putNumber("Setpoint", wristPID.getSetpoint().position);
+  }
+
+  public void incrementSetpoint(double increment){
+    oldSetpoint = wristPID.getGoal().position;
+    oldSetpoint += increment;
+    wristPID.setGoal(oldSetpoint);
   }
 
   public void setWristVoltage(double volts) {
