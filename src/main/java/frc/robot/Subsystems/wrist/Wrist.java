@@ -56,7 +56,7 @@ public class Wrist extends SubsystemBase {
     SmartDashboard.putNumber("Setpoint", wristPID.getSetpoint().position);
   }
 
-  public void incrementSetpoint(double increment){
+  public void incrementSetpoint(double increment) {
     oldSetpoint = wristPID.getGoal().position;
     oldSetpoint += increment;
     wristPID.setGoal(oldSetpoint);

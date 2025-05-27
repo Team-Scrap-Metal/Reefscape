@@ -35,9 +35,9 @@ public class Elevator extends SubsystemBase {
     this.updateInputs();
     Logger.processInputs("Elevator", inputs);
     // updateControls();
-    // setElevatorVoltage(
-    //     elevatorFeedforward.calculate(elevatorPID.getSetpoint().velocity)
-    //         + elevatorPID.calculate(this.getElevatorPositionMeters()));
+    setElevatorVoltage(
+        elevatorFeedforward.calculate(elevatorPID.getSetpoint().velocity)
+            + elevatorPID.calculate(this.getElevatorPositionMeters()));
   }
 
   /**
@@ -76,7 +76,7 @@ public class Elevator extends SubsystemBase {
     io.setBrakeMode(!isDisabled);
   }
 
-  public void incrementSetpoint(double increment){
+  public void incrementSetpoint(double increment) {
     oldSetpoint = elevatorPID.getGoal().position;
     oldSetpoint += increment;
     elevatorPID.setGoal(oldSetpoint);
