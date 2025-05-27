@@ -6,6 +6,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Subsystems.wrist.WristConstants.WristPositions;
+
 import org.littletonrobotics.junction.Logger;
 
 public class Wrist extends SubsystemBase {
@@ -60,6 +62,11 @@ public class Wrist extends SubsystemBase {
     oldSetpoint = wristPID.getGoal().position;
     oldSetpoint += increment;
     wristPID.setGoal(oldSetpoint);
+  }
+  
+  public boolean safeToLift(){
+    return (getWristPositionRad() - Units.degreesToRadians(90) < 5 && getWristPositionRad() - Units.degreesToRadians(90) > -5) || 
+    (getWristPositionRad() - Units.degreesToRadians(90) < 185 && getWristPositionRad() - Units.degreesToRadians(90) > -185) ? true : false;
   }
 
   public void setWristVoltage(double volts) {

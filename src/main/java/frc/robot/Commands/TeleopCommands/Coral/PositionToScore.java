@@ -4,16 +4,73 @@
 
 package frc.robot.Commands.TeleopCommands.Coral;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.Constants.RobotStateConstants.CoralStateMachine;
+import frc.robot.Subsystems.elevator.Elevator;
+import frc.robot.Subsystems.elevator.ElevatorConstants.ElevatorPositions;
+import frc.robot.Subsystems.wrist.Wrist;
+import frc.robot.Subsystems.wrist.WristConstants.WristPositions;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PositionToScore extends SequentialCommandGroup {
   /** Creates a new PositionToScore. */
-  public PositionToScore() {
+  public PositionToScore(CoralStateMachine coral, Elevator elevator, Wrist wrist) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands();
+    switch (coral){
+      case PositionL1:
+      addCommands(
+        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L1_START_HEIGHT_M), elevator),
+        new WaitUntilCommand(()->elevator.safeToRotate()),
+        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.L1_ROTATION_RAD), wrist)
+      );
+      break;
+      case PositionL2Left:
+      addCommands(
+        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L2_HEIGHT_M), elevator),
+        new WaitUntilCommand(()->elevator.safeToRotate()),
+        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_START_ROTATION_RAD), wrist)
+      );
+      break;
+      case PositionL2Right:
+      addCommands(
+        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L2_HEIGHT_M), elevator),
+        new WaitUntilCommand(()->elevator.safeToRotate()),
+        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_START_ROTATION_RAD), wrist)
+      );
+      break;
+      case PositionL3Left:
+      addCommands(
+        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L3_HEIGHT_M), elevator),
+        new WaitUntilCommand(()->elevator.safeToRotate()),
+        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_START_ROTATION_RAD), wrist)
+      );
+      break;
+      case PositionL3Right:
+      addCommands(
+        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L3_HEIGHT_M), elevator),
+        new WaitUntilCommand(()->elevator.safeToRotate()),
+        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_START_ROTATION_RAD), wrist)
+      );
+      break;
+      case PositionL4Left:
+      addCommands(
+        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L4_HEIGHT_M), elevator),
+        new WaitUntilCommand(()->elevator.safeToRotate()),
+        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L4_START_ROTATION_RAD), wrist)
+      );
+      break; 
+      case PositionL4Right:
+      addCommands(
+        new InstantCommand(()-> elevator.setSetpointM(ElevatorPositions.L4_HEIGHT_M), elevator),
+        new WaitUntilCommand(()->elevator.safeToRotate()),
+        new InstantCommand(()-> wrist.setSetpointRad(WristPositions.LEFT_L4_START_ROTATION_RAD), wrist)
+      );
+      break; 
+  }
   }
 }

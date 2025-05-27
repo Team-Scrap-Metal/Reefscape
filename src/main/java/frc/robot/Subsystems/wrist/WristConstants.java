@@ -20,13 +20,17 @@ public class WristConstants {
   public static double MAX_ACCELERATION = 8.56637;
 
   public static final class WristPositions {
-    public static final double L1_ROTATION_RAD = Units.degreesToRadians(0.0);
+    public static final double L1_ROTATION_RAD = Units.degreesToRadians(180) + Units.degreesToRadians(90);
 
-    public static final double L2_AND_L3_START_ROTATION_RAD = Units.degreesToRadians(0.0);
-    public static final double L2_AND_L3_END_ROTATION_RAD = Units.degreesToRadians(0.0);
+    public static final double LEFT_L2_AND_L3_START_ROTATION_RAD = Units.degreesToRadians(90) + Units.degreesToRadians(90);
+    public static final double LEFT_L2_AND_L3_END_ROTATION_RAD = Units.degreesToRadians(125) + Units.degreesToRadians(90);
+    public static final double RIGHT_L2_AND_L3_START_ROTATION_RAD = Units.degreesToRadians(270) + Units.degreesToRadians(90);
+    public static final double RIGHT_L2_AND_L3_END_ROTATION_RAD = Units.degreesToRadians(245) + Units.degreesToRadians(90);
 
-    public static final double L4_START_ROTATION_RAD = Units.degreesToRadians(0.0);
-    public static final double L4_END_ROTATION_RAD = Units.degreesToRadians(0.0);
+    public static final double LEFT_L4_START_ROTATION_RAD = Units.degreesToRadians(90) + Units.degreesToRadians(90);
+    public static final double LEFT_L4_END_ROTATION_RAD = Units.degreesToRadians(135) + Units.degreesToRadians(90);
+    public static final double RIGHT_L4_START_ROTATION_RAD = Units.degreesToRadians(270) + Units.degreesToRadians(90);
+    public static final double RIGHT_L4_END_ROTATION_RAD = Units.degreesToRadians(240) + Units.degreesToRadians(90);
 
     public static final double ALGAE_REMOVAL_RAD = Units.degreesToRadians(90);
 
