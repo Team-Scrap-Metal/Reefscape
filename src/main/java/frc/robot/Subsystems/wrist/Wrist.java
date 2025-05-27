@@ -3,6 +3,7 @@ package frc.robot.Subsystems.wrist;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
@@ -23,7 +24,7 @@ public class Wrist extends SubsystemBase {
     System.out.println("[Init] Creating Wrist");
     this.io = io;
     wristPID.setTolerance(WristConstants.PID_TOLERANCE_RAD);
-    wristPID.setGoal(0);
+    wristPID.setGoal(Units.degreesToRadians(90));
     wristPID.enableContinuousInput(-Math.PI, Math.PI);
   }
 

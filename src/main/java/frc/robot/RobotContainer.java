@@ -265,25 +265,25 @@ public class RobotContainer {
         .y()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(0)),
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(90)),
                 m_wristSubsystem));
     auxController
         .x()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(270)),
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(0)),
                 m_wristSubsystem));
     auxController
         .a()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(180)),
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(270)),
                 m_wristSubsystem));
     auxController
         .b()
         .onTrue(
             new InstantCommand(
-                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(90)),
+                () -> m_wristSubsystem.setSetpointRad(Units.degreesToRadians(180)),
                 m_wristSubsystem));
     // auxController
     //     .y()

@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.AbsoluteEncoderConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -31,9 +32,10 @@ public class WristIONeo implements WristIO {
         .apply(wristAbsoluteEncoderConfig);
     wristMotor.configure(
         wristMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    wristRelativeEncoder.setPosition(
-        ((wristAbsoluteEncoder.getPosition() / 2) * WristConstants.GEAR_RATIO));
-    wristRelativeEncoder.setPosition(wristAbsoluteEncoder.getPosition() / 2);
+    // wristRelativeEncoder.setPosition(
+    //     ((wristAbsoluteEncoder.getPosition() / 2) * WristConstants.GEAR_RATIO));
+    // wristRelativeEncoder.setPosition(wristAbsoluteEncoder.getPosition() / 2);
+    // wristRelativeEncoder.setPosition(Units.degreesToRotations(90));
   }
 
   @Override
@@ -58,7 +60,9 @@ public class WristIONeo implements WristIO {
     inputs.wristAbsolutePositionDeg = wristAbsoluteEncoder.getPosition() * 180;
     /** Returns the position of the Wrist Motor by how many radians it has rotated */
     inputs.wristPositionRad =
-        Units.rotationsToRadians(wristRelativeEncoder.getPosition()) / WristConstants.GEAR_RATIO;
+        MathUtil.angleModulus(
+            Units.rotationsToRadians(wristRelativeEncoder.getPosition()) / WristConstants.GEAR_RATIO
+                + Units.degreesToRadians(90));
     /** Returns the position of the Wrist Motor by how many degrees it has rotated */
     inputs.wristPositionDeg =
         Units.rotationsToDegrees(wristRelativeEncoder.getPosition()) / WristConstants.GEAR_RATIO;
