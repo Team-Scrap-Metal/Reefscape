@@ -8,6 +8,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Subsystems.elevator.Elevator;
 import frc.robot.Subsystems.elevator.ElevatorConstants.ElevatorPositions;
@@ -26,15 +27,22 @@ public class GroundPickup extends SequentialCommandGroup {
     addCommands(
         new ConditionalCommand(
             new SequentialCommandGroup(
-                new InstantCommand(() -> elevator.setSetpointM(Units.inchesToMeters(13)), elevator),
-                new WaitUntilCommand(() -> elevator.safeToRotate()),
                 new InstantCommand(
                     () -> wrist.setSetpointRad(WristPositions.FLOOR_INTAKE_RAD), wrist),
                 new WaitUntilCommand(() -> wrist.safeToLift()),
                 new InstantCommand(
                     () -> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M),
                     elevator)),
-            new InstantCommand(() -> wrist.setSetpointRad(WristPositions.FLOOR_INTAKE_RAD), wrist),
+            new SequentialCommandGroup(
+                new InstantCommand(() -> elevator.setSetpointM(Units.inchesToMeters(13)), elevator),
+                new WaitUntilCommand(() -> elevator.safeToRotate()),
+                new InstantCommand(
+                    () -> wrist.setSetpointRad(WristPositions.FLOOR_INTAKE_RAD), wrist),
+                new WaitCommand(3),
+                new WaitUntilCommand(() -> wrist.safeToLift()),
+                new InstantCommand(
+                    () -> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M),
+                    elevator)),
             () -> elevator.safeToRotate()));
   }
 }

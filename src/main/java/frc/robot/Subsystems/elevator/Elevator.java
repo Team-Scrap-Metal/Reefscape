@@ -86,7 +86,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean safeToRotate() {
-    return getElevatorPositionMeters() > Units.inchesToMeters(10) ? true : false;
+    return getElevatorPositionMeters() > Units.inchesToMeters(10);
   }
 
   public void updateControls() {

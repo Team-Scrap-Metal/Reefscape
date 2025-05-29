@@ -300,19 +300,19 @@ public class RobotContainer {
         .x()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL2Left, m_elevatorSubsystem, m_wristSubsystem))
+                CoralStateMachine.PositionL2Right, m_elevatorSubsystem, m_wristSubsystem))
         .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
     auxController
         .b()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL3Left, m_elevatorSubsystem, m_wristSubsystem))
+                CoralStateMachine.PositionL3Right, m_elevatorSubsystem, m_wristSubsystem))
         .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
     auxController
         .y()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL4Left, m_elevatorSubsystem, m_wristSubsystem))
+                CoralStateMachine.PositionL4Right, m_elevatorSubsystem, m_wristSubsystem))
         .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
     // auxController
     //     .y()

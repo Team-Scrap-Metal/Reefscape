@@ -35,13 +35,22 @@ public class Wrist extends SubsystemBase {
     this.updateInputs();
     Logger.processInputs("Wrist", inputs);
     // updateControls();
-    // setWristVoltage(
-    //     wristFeedforward.calculate(wristPID.getSetpoint().position,
-    // wristPID.getSetpoint().velocity)
-    //         + wristPID.calculate(this.getWristPositionRad()));
+    setWristVoltage(
+        wristFeedforward.calculate(wristPID.getSetpoint().position, wristPID.getSetpoint().velocity)
+            + wristPID.calculate(this.getWristPositionRad()));
 
     SmartDashboard.putNumber("WristSetpoint", wristPID.getSetpoint().position);
     SmartDashboard.putNumber("WristPosition", inputs.wristPositionRad);
+    SmartDashboard.putBoolean(
+        "safeToLift",
+        (getWristPositionRad() - Units.degreesToRadians(90) < Units.degreesToRadians(5)
+                && getWristPositionRad() - Units.degreesToRadians(90) > Units.degreesToRadians(-5))
+            || (getWristPositionRad() - Units.degreesToRadians(90) < Units.degreesToRadians(-175)
+                && getWristPositionRad() - Units.degreesToRadians(90)
+                    > Units.degreesToRadians(-185)));
+    SmartDashboard.putNumber(
+        "WristPosition",
+        Units.radiansToDegrees(getWristPositionRad() - Units.degreesToRadians(90)));
   }
 
   /**
@@ -64,13 +73,18 @@ public class Wrist extends SubsystemBase {
   }
 
   public boolean safeToLift() {
-    return (getWristPositionRad() - Units.degreesToRadians(90) < Units.degreesToRadians(5)
+    SmartDashboard.putBoolean(
+        "safeToLift",
+        (getWristPositionRad() - Units.degreesToRadians(90) < Units.degreesToRadians(5)
                 && getWristPositionRad() - Units.degreesToRadians(90) > Units.degreesToRadians(-5))
-            || (getWristPositionRad() - Units.degreesToRadians(90) < Units.degreesToRadians(185)
+            || (getWristPositionRad() - Units.degreesToRadians(90) < Units.degreesToRadians(-175)
                 && getWristPositionRad() - Units.degreesToRadians(90)
-                    > Units.degreesToRadians(-185))
-        ? true
-        : false;
+                    > Units.degreesToRadians(-185)));
+
+    return (getWristPositionRad() - Units.degreesToRadians(90) < Units.degreesToRadians(5)
+            && getWristPositionRad() - Units.degreesToRadians(90) > Units.degreesToRadians(-5))
+        || (getWristPositionRad() - Units.degreesToRadians(90) < Units.degreesToRadians(-175)
+            && getWristPositionRad() - Units.degreesToRadians(90) > Units.degreesToRadians(-185));
   }
 
   public void setWristVoltage(double volts) {
