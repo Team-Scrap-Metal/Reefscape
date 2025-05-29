@@ -22,30 +22,36 @@ public class ScoreCoral extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new ConditionalCommand(
+
+        /* 1st conditional command */ new ConditionalCommand(
             new ConditionalCommand(
+                /* if L1 */
                 Commands.runOnce(
                     () -> {
                       nefector.setEndEffectorPercent(-0.2);
                     },
                     nefector),
                 new ConditionalCommand(
+                    /* Left */
                     Commands.runOnce(
                         () -> {
                           wrist.setSetpointRad(WristPositions.LEFT_L2_AND_L3_END_ROTATION_RAD);
-                          nefector.setEndEffectorPercent(-0.2);
+                          // nefector.setEndEffectorPercent(-0.2);
                         },
                         nefector),
+                    /* Right */
                     Commands.runOnce(
                         () -> {
                           wrist.setSetpointRad(WristPositions.RIGHT_L2_AND_L3_END_ROTATION_RAD);
-                          nefector.setEndEffectorPercent(-0.2);
+                          // nefector.setEndEffectorPercent(-0.2);
                         },
                         nefector,
                         wrist),
                     () -> RobotStateConstants.currentState.isLeft),
                 () -> RobotStateConstants.currentState.isL1),
-            Commands.runOnce(() -> {}, wrist),
-            () -> RobotStateConstants.currentState != CoralStateMachine.Stowed));
+
+            /* if 2st conditional command true */ Commands.runOnce(() -> {}, wrist),
+            /*Conditional Command */ () ->
+                RobotStateConstants.currentState != CoralStateMachine.Stowed));
   }
 }

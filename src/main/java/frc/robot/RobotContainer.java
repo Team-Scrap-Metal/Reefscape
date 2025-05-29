@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.TeleopCommands.Coral.GroundPickup;
 import frc.robot.Commands.TeleopCommands.Coral.PositionToScore;
@@ -374,8 +375,14 @@ public class RobotContainer {
         .rightTrigger()
         .onTrue(new ScoreCoral(m_endEffectorSubsystem, m_wristSubsystem))
         .onFalse(
-            new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
+            new SequentialCommandGroup(
+                new InstantCommand(
+                    () -> m_endEffectorSubsystem.setEndEffectorPercent(-0.2),
+                    m_endEffectorSubsystem),
+                new WaitCommand(2),
+                new InstantCommand(
+                    () -> m_endEffectorSubsystem.setEndEffectorPercent(0),
+                    m_endEffectorSubsystem)));
     // auxController
     //     .rightTrigger()
     //     .onTrue(
