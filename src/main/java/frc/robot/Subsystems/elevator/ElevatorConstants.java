@@ -12,7 +12,7 @@ public class ElevatorConstants {
   public static final int FREESPIN_LIMIT_UP_AMPS = 50;
   public static final int STALL_LIMIT_DOWN_AMPS = 0;
   public static final int FREESPIN_LIMIT_DOWN_AMPS = 0;
-  public static final double GEAR_RATIO = 4;
+  public static final double GEAR_RATIO = 4.8;
   public static final double LINEAR_CONSTANTS_M = 0.0; // TODO: Update
 
   public static class ElevatorControls {
@@ -23,7 +23,7 @@ public class ElevatorConstants {
     public static double MAX_VELOCITY = 1.5;
     public static double MAX_ACCELERATION = 0.9;
     public static double KS = 1.0;
-    public static double KG = 0.7;
+    public static double KG = 0.75;
     public static double KV = 0.0;
     public static double KA = 0.0;
   }

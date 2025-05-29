@@ -35,10 +35,12 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     this.updateInputs();
     Logger.processInputs("Elevator", inputs);
-    // updateControls();
+    updateControls();
     setElevatorVoltage(
         elevatorFeedforward.calculate(elevatorPID.getSetpoint().velocity)
             + elevatorPID.calculate(this.getElevatorPositionMeters()));
+
+    SmartDashboard.putNumber("Elevator Setpoint", elevatorPID.getSetpoint().position);
   }
 
   /**
