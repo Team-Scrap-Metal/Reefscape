@@ -15,11 +15,14 @@ package frc.robot;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.TeleopCommands.Coral.GroundPickup;
 import frc.robot.Commands.TeleopCommands.Coral.PositionToScore;
@@ -269,51 +272,43 @@ public class RobotContainer {
         .povDown()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL1, m_elevatorSubsystem, m_wristSubsystem))
-        .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
+                CoralStateMachine.PositionL1, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .povLeft()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL2Left, m_elevatorSubsystem, m_wristSubsystem))
-        .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
+                CoralStateMachine.PositionL2Left, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .povRight()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL3Left, m_elevatorSubsystem, m_wristSubsystem))
-        .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
+                CoralStateMachine.PositionL3Left, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .povUp()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL4Left, m_elevatorSubsystem, m_wristSubsystem))
-        .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
+                CoralStateMachine.PositionL4Left, m_elevatorSubsystem, m_wristSubsystem));
 
     auxController
         .a()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL1, m_elevatorSubsystem, m_wristSubsystem))
-        .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
+                CoralStateMachine.PositionL1, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .x()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL2Right, m_elevatorSubsystem, m_wristSubsystem))
-        .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
+                CoralStateMachine.PositionL2Right, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .b()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL3Right, m_elevatorSubsystem, m_wristSubsystem))
-        .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
+                CoralStateMachine.PositionL3Right, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .y()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL4Right, m_elevatorSubsystem, m_wristSubsystem))
-        .onFalse(new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
+                CoralStateMachine.PositionL4Right, m_elevatorSubsystem, m_wristSubsystem));
     // auxController
     //     .y()
     //     .onTrue(
@@ -345,11 +340,27 @@ public class RobotContainer {
     //         new InstantCommand(
     //             () -> m_elevatorSubsystem.incrementSetpoint(Units.inchesToMeters(-1)),
     //             m_elevatorSubsystem));
+
+    auxController
+        .button(9)
+        .onTrue(
+            new InstantCommand(
+                () -> m_wristSubsystem.incrementSetpoint(Units.degreesToRadians(1))));
+    auxController
+        .button(10)
+        .onTrue(
+            new InstantCommand(
+                () -> m_wristSubsystem.incrementSetpoint(Units.degreesToRadians(-1))));
     auxController
         .leftTrigger()
         .onTrue(
-            new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(0.3), m_endEffectorSubsystem))
+            new SequentialCommandGroup(
+                new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem),
+                Commands.runOnce(
+                    () -> {
+                      m_endEffectorSubsystem.setEndEffectorPercent(0.3);
+                    },
+                    m_endEffectorSubsystem)))
         .onFalse(
             new InstantCommand(
                 () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
