@@ -26,11 +26,11 @@ public class WristConstants {
     public static final double LEFT_L2_AND_L3_START_ROTATION_RAD =
         Units.degreesToRadians(90) + Units.degreesToRadians(90);
     public static final double LEFT_L2_AND_L3_END_ROTATION_RAD =
-        Units.degreesToRadians(125) + Units.degreesToRadians(90);
+        Units.degreesToRadians(120) + Units.degreesToRadians(90);
     public static final double RIGHT_L2_AND_L3_START_ROTATION_RAD =
         Units.degreesToRadians(270) + Units.degreesToRadians(90);
     public static final double RIGHT_L2_AND_L3_END_ROTATION_RAD =
-        Units.degreesToRadians(245) + Units.degreesToRadians(90);
+        Units.degreesToRadians(240) + Units.degreesToRadians(90);
 
     public static final double LEFT_L4_START_ROTATION_RAD =
         Units.degreesToRadians(90) + Units.degreesToRadians(90);

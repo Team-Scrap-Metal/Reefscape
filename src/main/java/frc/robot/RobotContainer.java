@@ -160,6 +160,7 @@ public class RobotContainer {
     // Configure the button bindings
     autoChooser.addDefaultOption("Null", null);
     autoChooser.addOption("Straight Line", new PathPlannerAuto("StraightLine"));
+    autoChooser.addOption("Turn Path", new PathPlannerAuto("TurnPath"));
     configureDriverButtonBindings();
     configureAuxButtonBindings();
   }

@@ -8,7 +8,7 @@ public class DriveConstants {
 
   /** Real Constants */
   /** Wheel Radius in Meters */
-  public static final double WHEEL_RADIUS_M = Units.inchesToMeters(2);
+  public static final double WHEEL_RADIUS_M = Units.inchesToMeters(1.791);
 
   /**
    * Chassis Width, distance between the centerline of two adjacent wheels same for length and width
@@ -17,7 +17,7 @@ public class DriveConstants {
   public static final double TRACK_WIDTH_M = Units.inchesToMeters(23.25);
 
   /** Gear Ratio for MK4I L3 (Kraken) */
-  public static final double GEAR_RATIO = 5.36;
+  public static final double GEAR_RATIO = 6.112;
 
   /** Max Speed the Robot Can Travel in One Linear Direction (m/s) */
   public static final double MAX_LINEAR_SPEED_M_PER_SEC = 5.2; // TODO: Update
@@ -157,10 +157,10 @@ public class DriveConstants {
     // Feed Forward values used in sim: S = 0.4, V = 0.4
 
     /** KS represents the voltage required to overcome static friction */
-    public static final double KRAKEN_KS = 0.02;
+    public static final double KRAKEN_KS = 0.07;
 
     /** KV represents the voltage used every second per meter */
-    public static final double KRAKEN_KV = 0.10;
+    public static final double KRAKEN_KV = 0.12;
 
     // PID Constants for Neo Steer
     /**

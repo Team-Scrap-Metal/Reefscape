@@ -34,10 +34,10 @@ public class ElevatorConstants {
     public static final double L1_START_HEIGHT_M = Units.inchesToMeters(20.0);
 
     // l2 is 2ft 7 7/8 in tall
-    public static final double L2_HEIGHT_M = Units.inchesToMeters(30);
+    public static final double L2_HEIGHT_M = Units.inchesToMeters(32);
 
     // l3 is 3ft ll 5/8 inch tall
-    public static final double L3_HEIGHT_M = Units.inchesToMeters(43);
+    public static final double L3_HEIGHT_M = Units.inchesToMeters(45);
 
     // l4 is 6ft tall
     public static final double L4_HEIGHT_M = Units.inchesToMeters(70);
