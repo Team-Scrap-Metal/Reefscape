@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.linkage;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -7,6 +9,7 @@ public class Linkage extends SubsystemBase {
   private final LinkageIO io;
   private final LinkageIOInputsAutoLogged inputs = new LinkageIOInputsAutoLogged();
   // private PIDController LinkagePID = new PIDController(0, 0, 0);
+  // private SimpleMotorFeedforward motorFeedforward = new SimpleMotorFeedforward(0, 0);
 
   public Linkage(LinkageIO io) {
     System.out.println("[Init] Creating Linkage");
@@ -16,13 +19,14 @@ public class Linkage extends SubsystemBase {
     // LinkageConstants.kD);
     // LinkagePID.setTolerance(LinkageConstants.PID_TOLERANCE_RAD);
     // LinkagePID.setSetpoint(0.0);
+    // motorFeedforward = new SimpleMotorFeedforward(LinkageConstants.KS, LinkageConstants.KV);
   }
 
   @Override
   public void periodic() {
     this.updateInputs();
     Logger.processInputs("Linkage", inputs);
-    // setLinkageVoltage(LinkagePID.calculate(this.getLinkagePositionRad()));
+    // setLinkageVoltage(LinkagePID.calculate(this.getLinkagePositionRad()) + motorFeedforward.calculate(LinkagePID.getSetpoint()));
   }
 
   /**
@@ -49,7 +53,7 @@ public class Linkage extends SubsystemBase {
   //   return io.getLinkageVoltage();
   // }
 
-  // public double getLinkagePositionRad() {
-  //   return inputs.linkagePositionRad();
-  // }
+  public double getLinkagePositionRad() {
+    return inputs.linkagePositionRad;
+  }
 }
