@@ -49,21 +49,23 @@ public final class Constants {
     }
 
     public static enum CoralStateMachine {
-      PositionL1(true, true),
-      PositionL2Left(true, false),
-      PositionL2Right(false, false),
-      PositionL3Left(true, false),
-      PositionL3Right(false, false),
-      PositionL4Left(true, false),
-      PositionL4Right(false, false),
-      Stowed(false, false);
+      PositionL1(true, true, false),
+      PositionL2Left(true, false, false),
+      PositionL2Right(false, false, false),
+      PositionL3Left(true, false, false),
+      PositionL3Right(false, false, false),
+      PositionL4Left(true, false, true),
+      PositionL4Right(false, false, true),
+      Stowed(false, false, false);
 
       public final boolean isLeft;
       public final boolean isL1;
+      public final boolean isL4;
 
-      CoralStateMachine(boolean isLeft, boolean isL1) {
+      CoralStateMachine(boolean isLeft, boolean isL1, boolean isL4) {
         this.isLeft = isLeft;
         this.isL1 = isL1;
+        this.isL4 = isL4;
       }
     }
 

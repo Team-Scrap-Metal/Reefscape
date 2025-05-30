@@ -29,6 +29,7 @@ public class GroundPickup extends SequentialCommandGroup {
             new SequentialCommandGroup(
                 new InstantCommand(
                     () -> wrist.setSetpointRad(WristPositions.FLOOR_INTAKE_RAD), wrist),
+                new WaitCommand(1),
                 new WaitUntilCommand(() -> wrist.safeToLift()),
                 new InstantCommand(
                     () -> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M),
@@ -38,7 +39,7 @@ public class GroundPickup extends SequentialCommandGroup {
                 new WaitUntilCommand(() -> elevator.safeToRotate()),
                 new InstantCommand(
                     () -> wrist.setSetpointRad(WristPositions.FLOOR_INTAKE_RAD), wrist),
-                new WaitCommand(3),
+                new WaitCommand(1),
                 new WaitUntilCommand(() -> wrist.safeToLift()),
                 new InstantCommand(
                     () -> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M),

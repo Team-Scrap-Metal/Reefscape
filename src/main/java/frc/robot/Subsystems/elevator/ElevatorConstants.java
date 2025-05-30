@@ -37,7 +37,7 @@ public class ElevatorConstants {
     public static final double L2_HEIGHT_M = Units.inchesToMeters(32);
 
     // l3 is 3ft ll 5/8 inch tall
-    public static final double L3_HEIGHT_M = Units.inchesToMeters(45);
+    public static final double L3_HEIGHT_M = Units.inchesToMeters(47);
 
     // l4 is 6ft tall
     public static final double L4_HEIGHT_M = Units.inchesToMeters(70);

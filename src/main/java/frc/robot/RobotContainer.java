@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -279,17 +278,17 @@ public class RobotContainer {
         .povLeft()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL2Left, m_elevatorSubsystem, m_wristSubsystem));
+                CoralStateMachine.PositionL2Right, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .povRight()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL3Left, m_elevatorSubsystem, m_wristSubsystem));
+                CoralStateMachine.PositionL3Right, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .povUp()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL4Left, m_elevatorSubsystem, m_wristSubsystem));
+                CoralStateMachine.PositionL4Right, m_elevatorSubsystem, m_wristSubsystem));
 
     auxController
         .a()
@@ -300,17 +299,17 @@ public class RobotContainer {
         .x()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL2Right, m_elevatorSubsystem, m_wristSubsystem));
+                CoralStateMachine.PositionL2Left, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .b()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL3Right, m_elevatorSubsystem, m_wristSubsystem));
+                CoralStateMachine.PositionL3Left, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .y()
         .onTrue(
             new PositionToScore(
-                CoralStateMachine.PositionL4Right, m_elevatorSubsystem, m_wristSubsystem));
+                CoralStateMachine.PositionL4Left, m_elevatorSubsystem, m_wristSubsystem));
     // auxController
     //     .y()
     //     .onTrue(
@@ -343,57 +342,57 @@ public class RobotContainer {
     //             () -> m_elevatorSubsystem.incrementSetpoint(Units.inchesToMeters(-1)),
     //             m_elevatorSubsystem));
 
-    auxController
-        .button(9)
-        .onTrue(
-            new ConditionalCommand(
-                Commands.runOnce(
-                    () -> {
-                      m_wristSubsystem.setWristPercent(0.2);
-                    },
-                    m_wristSubsystem),
-                Commands.runOnce(() -> {}, m_wristSubsystem),
-                () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()))
-        .onFalse(
-            new ConditionalCommand(
-                Commands.runOnce(
-                    () -> {
-                      m_wristSubsystem.setWristPercent(0.0);
-                    },
-                    m_wristSubsystem),
-                Commands.runOnce(() -> {}, m_wristSubsystem),
-                () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()));
-    ;
+    // auxController
+    //     .button(9)
+    //     .onTrue(
+    //         new ConditionalCommand(
+    //             Commands.runOnce(
+    //                 () -> {
+    //                   m_wristSubsystem.setWristPercent(0.2);
+    //                 },
+    //                 m_wristSubsystem),
+    //             Commands.runOnce(() -> {}, m_wristSubsystem),
+    //             () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()))
+    //     .onFalse(
+    //         new ConditionalCommand(
+    //             Commands.runOnce(
+    //                 () -> {
+    //                   m_wristSubsystem.setWristPercent(0.0);
+    //                 },
+    //                 m_wristSubsystem),
+    //             Commands.runOnce(() -> {}, m_wristSubsystem),
+    //             () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()));
+    // ;
 
-    auxController
-        .button(10)
-        .onTrue(
-            new ConditionalCommand(
-                Commands.runOnce(
-                    () -> {
-                      m_wristSubsystem.setWristPercent(-0.2);
-                    },
-                    m_wristSubsystem),
-                Commands.runOnce(() -> {}, m_wristSubsystem),
-                () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()))
-        .onFalse(
-            new ConditionalCommand(
-                Commands.runOnce(
-                    () -> {
-                      m_wristSubsystem.setWristPercent(0.0);
-                    },
-                    m_wristSubsystem),
-                Commands.runOnce(() -> {}, m_wristSubsystem),
-                () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()));
-    // () -> m_wristSubsystem.incrementSetpoint(Units.degreesToRadians(1))));
+    // auxController
+    //     .button(10)
+    //     .onTrue(
+    //         new ConditionalCommand(
+    //             Commands.runOnce(
+    //                 () -> {
+    //                   m_wristSubsystem.setWristPercent(-0.2);
+    //                 },
+    //                 m_wristSubsystem),
+    //             Commands.runOnce(() -> {}, m_wristSubsystem),
+    //             () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()))
+    //     .onFalse(
+    //         new ConditionalCommand(
+    //             Commands.runOnce(
+    //                 () -> {
+    //                   m_wristSubsystem.setWristPercent(0.0);
+    //                 },
+    //                 m_wristSubsystem),
+    //             Commands.runOnce(() -> {}, m_wristSubsystem),
+    //             () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()));
+    // // () -> m_wristSubsystem.incrementSetpoint(Units.degreesToRadians(1))));
 
-    auxController
-        .back()
-        .onTrue(new InstantCommand(() -> m_wristSubsystem.togglePID(true), m_wristSubsystem));
+    // auxController
+    //     .back()
+    //     .onTrue(new InstantCommand(() -> m_wristSubsystem.togglePID(true), m_wristSubsystem));
 
-    auxController
-        .start()
-        .onTrue(new InstantCommand(() -> m_wristSubsystem.togglePID(false), m_wristSubsystem));
+    // auxController
+    //     .start()
+    //     .onTrue(new InstantCommand(() -> m_wristSubsystem.togglePID(false), m_wristSubsystem));
 
     auxController
         .leftTrigger()

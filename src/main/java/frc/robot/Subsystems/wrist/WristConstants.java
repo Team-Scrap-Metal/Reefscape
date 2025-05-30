@@ -7,17 +7,23 @@ public class WristConstants {
   public static final boolean IS_INVERTED = false;
   public static final int STALL_LIMIT_AMPS = 25;
   public static final int FREE_SPIN_LIMIT_AMPS = 20;
-  public static final double GEAR_RATIO = 120;
+  public static final double GEAR_RATIO = 130;
 
-  public static double KP = 24.0;
+  //   public static double KP = 24.0;
+  //   public static double KI = 0.0;
+  //   public static double KD = 0.0;
+  //   public static double KS = 0.0;
+  //   public static double KG = 3.5;
+  //   public static double KV = 0.0;
+  public static double KP = 16.0;
   public static double KI = 0.0;
   public static double KD = 0.0;
   public static double KS = 0.0;
-  public static double KG = 3.5;
+  public static double KG = 0.4;
   public static double KV = 0.0;
   public static double PID_TOLERANCE_RAD = Units.degreesToRadians(2);
   public static double MAX_VELOCITY = 7.283;
-  public static double MAX_ACCELERATION = 4.56637;
+  public static double MAX_ACCELERATION = 16.566371;
 
   public static final class WristPositions {
     public static final double L1_ROTATION_RAD =

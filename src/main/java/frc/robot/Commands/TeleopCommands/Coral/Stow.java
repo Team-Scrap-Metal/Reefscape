@@ -8,6 +8,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Subsystems.elevator.Elevator;
 import frc.robot.Subsystems.elevator.ElevatorConstants.ElevatorPositions;
@@ -29,6 +30,7 @@ public class Stow extends SequentialCommandGroup {
                 new WaitUntilCommand(() -> elevator.safeToRotate()),
                 new InstantCommand(
                     () -> wrist.setSetpointRad(WristPositions.STOW_ROTATION_RAD), wrist),
+                new WaitCommand(1),
                 new WaitUntilCommand(() -> wrist.safeToLift()),
                 new InstantCommand(
                     () -> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M),
@@ -36,6 +38,7 @@ public class Stow extends SequentialCommandGroup {
             new SequentialCommandGroup(
                 new InstantCommand(
                     () -> wrist.setSetpointRad(WristPositions.STOW_ROTATION_RAD), wrist),
+                new WaitCommand(1),
                 new WaitUntilCommand(() -> wrist.safeToLift()),
                 new InstantCommand(
                     () -> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M),

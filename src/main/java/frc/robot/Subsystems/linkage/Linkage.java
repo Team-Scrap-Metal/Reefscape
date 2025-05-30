@@ -1,7 +1,5 @@
 package frc.robot.Subsystems.linkage;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -26,7 +24,8 @@ public class Linkage extends SubsystemBase {
   public void periodic() {
     this.updateInputs();
     Logger.processInputs("Linkage", inputs);
-    // setLinkageVoltage(LinkagePID.calculate(this.getLinkagePositionRad()) + motorFeedforward.calculate(LinkagePID.getSetpoint()));
+    // setLinkageVoltage(LinkagePID.calculate(this.getLinkagePositionRad()) +
+    // motorFeedforward.calculate(LinkagePID.getSetpoint()));
   }
 
   /**
