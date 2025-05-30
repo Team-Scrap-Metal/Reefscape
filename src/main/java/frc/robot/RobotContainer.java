@@ -15,11 +15,11 @@ package frc.robot;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -345,13 +345,55 @@ public class RobotContainer {
     auxController
         .button(9)
         .onTrue(
-            new InstantCommand(
-                () -> m_wristSubsystem.incrementSetpoint(Units.degreesToRadians(1))));
+            new ConditionalCommand(
+                Commands.runOnce(
+                    () -> {
+                      m_wristSubsystem.setWristPercent(0.2);
+                    },
+                    m_wristSubsystem),
+                Commands.runOnce(() -> {}, m_wristSubsystem),
+                () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()))
+        .onFalse(
+            new ConditionalCommand(
+                Commands.runOnce(
+                    () -> {
+                      m_wristSubsystem.setWristPercent(0.0);
+                    },
+                    m_wristSubsystem),
+                Commands.runOnce(() -> {}, m_wristSubsystem),
+                () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()));
+    ;
+
     auxController
         .button(10)
         .onTrue(
-            new InstantCommand(
-                () -> m_wristSubsystem.incrementSetpoint(Units.degreesToRadians(-1))));
+            new ConditionalCommand(
+                Commands.runOnce(
+                    () -> {
+                      m_wristSubsystem.setWristPercent(-0.2);
+                    },
+                    m_wristSubsystem),
+                Commands.runOnce(() -> {}, m_wristSubsystem),
+                () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()))
+        .onFalse(
+            new ConditionalCommand(
+                Commands.runOnce(
+                    () -> {
+                      m_wristSubsystem.setWristPercent(0.0);
+                    },
+                    m_wristSubsystem),
+                Commands.runOnce(() -> {}, m_wristSubsystem),
+                () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()));
+    // () -> m_wristSubsystem.incrementSetpoint(Units.degreesToRadians(1))));
+
+    auxController
+        .back()
+        .onTrue(new InstantCommand(() -> m_wristSubsystem.togglePID(true), m_wristSubsystem));
+
+    auxController
+        .start()
+        .onTrue(new InstantCommand(() -> m_wristSubsystem.togglePID(false), m_wristSubsystem));
+
     auxController
         .leftTrigger()
         .onTrue(

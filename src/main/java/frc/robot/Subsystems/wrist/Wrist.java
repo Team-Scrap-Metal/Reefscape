@@ -21,6 +21,7 @@ public class Wrist extends SubsystemBase {
       new ArmFeedforward(WristConstants.KS, WristConstants.KG, WristConstants.KV);
 
   private double oldSetpoint = 0.0;
+  private boolean PIDisEnabled = true;
 
   public Wrist(WristIO io) {
     System.out.println("[Init] Creating Wrist");
@@ -35,9 +36,13 @@ public class Wrist extends SubsystemBase {
     this.updateInputs();
     Logger.processInputs("Wrist", inputs);
     // updateControls();
-    setWristVoltage(
-        wristFeedforward.calculate(wristPID.getSetpoint().position, wristPID.getSetpoint().velocity)
-            + wristPID.calculate(this.getWristPositionRad()));
+    if (PIDisEnabled) {
+
+      setWristVoltage(
+          wristFeedforward.calculate(
+                  wristPID.getSetpoint().position, wristPID.getSetpoint().velocity)
+              + wristPID.calculate(this.getWristPositionRad()));
+    }
 
     SmartDashboard.putNumber("WristSetpoint", wristPID.getSetpoint().position);
     SmartDashboard.putNumber("WristPosition", inputs.wristPositionRad);
@@ -48,6 +53,7 @@ public class Wrist extends SubsystemBase {
             || (getWristPositionRad() - Units.degreesToRadians(90) < Units.degreesToRadians(-175)
                 && getWristPositionRad() - Units.degreesToRadians(90)
                     > Units.degreesToRadians(-185)));
+    SmartDashboard.putBoolean("IsPIDEnabled", PIDisEnabled);
     SmartDashboard.putNumber(
         "WristPosition",
         Units.radiansToDegrees(getWristPositionRad() - Units.degreesToRadians(90)));
@@ -59,6 +65,14 @@ public class Wrist extends SubsystemBase {
    */
   public void updateInputs() {
     io.updateInputs(inputs);
+  }
+
+  public void togglePID(boolean isEnabled) {
+    PIDisEnabled = isEnabled;
+  }
+
+  public boolean isPIDEnabled() {
+    return PIDisEnabled;
   }
 
   public void setSetpointRad(double setpoint) {
