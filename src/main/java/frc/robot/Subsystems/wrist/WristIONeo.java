@@ -21,18 +21,23 @@ public class WristIONeo implements WristIO {
   private final SparkMaxConfig wristMotorConfig = new SparkMaxConfig();
   // private final AbsoluteEncoderConfig wristAbsoluteEncoderConfig = new AbsoluteEncoderConfig();
   private final SparkLimitSwitch wristLimitSwitch;
+  // private final SparkAnalogSensor wristAnalogSensor;
   private final LimitSwitchConfig limitSwitchConfig;
 
   public WristIONeo() {
     wristMotor = new SparkMax(WristConstants.CAN_ID, MotorType.kBrushless);
     wristRelativeEncoder = wristMotor.getEncoder();
+    // wristAnalogSensor = wristMotor.getAnalog();
+    // AnalogSensorConfig analogSensorConfig = new AnalogSensorConfig();
+    // SmartDashboard.putNumber("wristAnalogSensor", wristAnalogSensor.getVoltage());
+
     // wristAbsoluteEncoder = wristMotor.getAbsoluteEncoder();
     // wristAbsoluteEncoderConfig.positionConversionFactor(1).zeroCentered(true).zeroOffset(0.621);
-    wristLimitSwitch = wristMotor.getForwardLimitSwitch();
+    wristLimitSwitch = wristMotor.getReverseLimitSwitch();
     limitSwitchConfig =
         new LimitSwitchConfig()
-            .forwardLimitSwitchEnabled(true)
-            .forwardLimitSwitchType(Type.kNormallyOpen);
+            .reverseLimitSwitchEnabled(true)
+            .reverseLimitSwitchType(Type.kNormallyOpen);
     wristMotorConfig
         .inverted(WristConstants.IS_INVERTED)
         .idleMode(IdleMode.kBrake)
@@ -80,12 +85,11 @@ public class WristIONeo implements WristIO {
                   + Units.degreesToRadians(90));
     } else if (wristLimitSwitch.isPressed()) {
       inputs.wristPositionRad =
-          MathUtil.angleModulus(Units.degreesToRadians(180) + Units.degreesToRadians(90));
-      wristRelativeEncoder.setPosition(Units.degreesToRadians(180) + Units.degreesToRadians(90));
+          MathUtil.angleModulus(Units.degreesToRadians(-180) + Units.degreesToRadians(90));
+      wristRelativeEncoder.setPosition(180);
     }
     /** Returns the position of the Wrist Motor by how many degrees it has rotated */
-    inputs.wristPositionDeg =
-        Units.rotationsToDegrees(wristRelativeEncoder.getPosition()) / WristConstants.GEAR_RATIO;
+    inputs.wristPositionDeg = Units.radiansToDegrees(inputs.wristPositionRad);
     /** Returns the velocity of the Wrist Motor by how many radians per second it has rotated */
     inputs.wristVelocityRadPerSec =
         Units.rotationsPerMinuteToRadiansPerSecond(wristRelativeEncoder.getVelocity())
