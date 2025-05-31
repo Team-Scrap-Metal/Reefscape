@@ -60,9 +60,9 @@ public class DriveConstants {
   }
 
   public static enum ABSOLUTE_ENCODER_OFFSET_RAD {
-    FRONT_LEFT(-0.207087 - 0.0905053 + 0.011 - 0.006), // Module 0 //TODO: Update
-    BACK_LEFT(-3.110913 + 0.2408349 + 0.06 - 0.085), // Module 1 //TODO: Update
-    BACK_RIGHT(0.587514 + 0.474 - 0.365), // Module 2 //TODO: Update
+    FRONT_LEFT(-0.207087 - 0.0905053 + 0.011 - 0.006 + 0.053), // Module 0 //TODO: Update
+    BACK_LEFT(-3.110913 + 0.2408349 + 0.06 - 0.04), // Module 1 //TODO: Update
+    BACK_RIGHT(0.587514 + 0.474 - 0.365 - 0.155), // Module 2 //TODO: Update
     FRONT_RIGHT(2.862408 + 0.003068 + 0.021); // Module 3 //TODO: Update
 
     public final double OFFSET;
@@ -157,7 +157,7 @@ public class DriveConstants {
     // Feed Forward values used in sim: S = 0.4, V = 0.4
 
     /** KS represents the voltage required to overcome static friction */
-    public static final double KRAKEN_KS = 0.05;
+    public static final double KRAKEN_KS = 0.07;
 
     /** KV represents the voltage used every second per meter */
     public static final double KRAKEN_KV = 0.12;

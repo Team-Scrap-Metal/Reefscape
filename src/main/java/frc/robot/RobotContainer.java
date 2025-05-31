@@ -441,6 +441,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // return autoChooser.get();
-    return new RunCommand(() -> m_driveSubsystem.driveWithDeadband(0, 0.5, 0), m_driveSubsystem);
+    return new RunCommand(() -> m_driveSubsystem.driveWithDeadband(0, -0.5, 0), m_driveSubsystem);
   }
 }

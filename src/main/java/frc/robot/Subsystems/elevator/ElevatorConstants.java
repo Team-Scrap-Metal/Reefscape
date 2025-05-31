@@ -40,7 +40,7 @@ public class ElevatorConstants {
     public static final double L3_HEIGHT_M = Units.inchesToMeters(47);
 
     // l4 is 6ft tall
-    public static final double L4_START_HEIGHT_M = Units.inchesToMeters(71);
+    public static final double L4_START_HEIGHT_M = Units.inchesToMeters(73);
     public static final double L4_END_HEIGHT_M = Units.inchesToMeters(68);
 
     // Opening from floor is 3ft
