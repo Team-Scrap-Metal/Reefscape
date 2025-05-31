@@ -22,11 +22,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.TeleopCommands.Coral.GroundPickup;
 import frc.robot.Commands.TeleopCommands.Coral.PositionToScore;
 import frc.robot.Commands.TeleopCommands.Coral.ScoreCoral;
+import frc.robot.Commands.TeleopCommands.Coral.ScoreCoralAgain;
 import frc.robot.Commands.TeleopCommands.Coral.Stow;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RobotStateConstants;
@@ -416,15 +416,7 @@ public class RobotContainer {
     auxController
         .rightTrigger()
         .onTrue(new ScoreCoral(m_endEffectorSubsystem, m_wristSubsystem))
-        .onFalse(
-            new SequentialCommandGroup(
-                new InstantCommand(
-                    () -> m_endEffectorSubsystem.setEndEffectorPercent(-0.2),
-                    m_endEffectorSubsystem),
-                new WaitCommand(2),
-                new InstantCommand(
-                    () -> m_endEffectorSubsystem.setEndEffectorPercent(0),
-                    m_endEffectorSubsystem)));
+        .onFalse(new ScoreCoralAgain(m_endEffectorSubsystem, m_elevatorSubsystem));
     // auxController
     //     .rightTrigger()
     //     .onTrue(
@@ -448,7 +440,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
-    // return new RunCommand(() -> m_driveSubsystem.driveWithDeadband(0, 0.5, 0), m_driveSubsystem);
+    // return autoChooser.get();
+    return new RunCommand(() -> m_driveSubsystem.driveWithDeadband(0, 0.5, 0), m_driveSubsystem);
   }
 }

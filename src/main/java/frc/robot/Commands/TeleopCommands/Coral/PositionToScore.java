@@ -100,7 +100,7 @@ public class PositionToScore extends SequentialCommandGroup {
                 },
                 wrist),
             new InstantCommand(
-                () -> elevator.setSetpointM(ElevatorPositions.L4_HEIGHT_M), elevator),
+                () -> elevator.setSetpointM(ElevatorPositions.L4_START_HEIGHT_M), elevator),
             new WaitUntilCommand(() -> elevator.safeToRotate()),
             new InstantCommand(
                 () -> wrist.setSetpointRad(WristPositions.LEFT_L4_START_ROTATION_RAD), wrist));
@@ -113,7 +113,7 @@ public class PositionToScore extends SequentialCommandGroup {
                 },
                 wrist),
             new InstantCommand(
-                () -> elevator.setSetpointM(ElevatorPositions.L4_HEIGHT_M), elevator),
+                () -> elevator.setSetpointM(ElevatorPositions.L4_START_HEIGHT_M), elevator),
             new WaitUntilCommand(() -> elevator.safeToRotate()),
             new InstantCommand(
                 () -> wrist.setSetpointRad(WristPositions.RIGHT_L4_START_ROTATION_RAD), wrist));
