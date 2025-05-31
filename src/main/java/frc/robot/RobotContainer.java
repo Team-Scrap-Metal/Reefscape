@@ -194,17 +194,35 @@ public class RobotContainer {
      * <p>));
      */
     driverController
-        .b()
+        .rightTrigger()
         .onTrue(
-            new RunCommand(
+            new InstantCommand(
                 () ->
                     m_driveSubsystem.driveWithDeadband(
-                        driverController.getLeftX() * 0.5,
-                        driverController.getLeftY() * -1 * 0.5,
+                        driverController.getLeftX() * 0.25,
+                        driverController.getLeftY() * -1 * 0.25,
                         driverController.getRightX() * 0.75 * 0.75),
                 m_driveSubsystem))
         .onFalse(
-            new RunCommand(
+            new InstantCommand(
+                () ->
+                    m_driveSubsystem.driveWithDeadband(
+                        driverController.getLeftX() * 1,
+                        driverController.getLeftY() * -1,
+                        driverController.getRightX() * 0.75),
+                m_driveSubsystem));
+    driverController
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    m_driveSubsystem.driveWithDeadband(
+                        driverController.getLeftX() * 0.25,
+                        driverController.getLeftY() * -1 * 0.25,
+                        driverController.getRightX() * 0.75 * 0.75),
+                m_driveSubsystem))
+        .onFalse(
+            new InstantCommand(
                 () ->
                     m_driveSubsystem.driveWithDeadband(
                         driverController.getLeftX() * 1,
@@ -241,14 +259,14 @@ public class RobotContainer {
         .onFalse(
             new InstantCommand(
                 () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
-    driverController
-        .rightTrigger()
-        .onTrue(
-            new InstantCommand(
-                () -> m_rollersSubsystem.setRollersPercent(0.50), m_rollersSubsystem))
-        .onFalse(
-            new InstantCommand(
-                () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
+    // driverController
+    //     .rightTrigger()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_rollersSubsystem.setRollersPercent(0.50), m_rollersSubsystem))
+    //     .onFalse(
+    //         new InstantCommand(
+    //             () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
 
     driverController
         .povUp()

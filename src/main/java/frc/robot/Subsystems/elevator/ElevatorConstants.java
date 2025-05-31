@@ -41,7 +41,7 @@ public class ElevatorConstants {
 
     // l4 is 6ft tall
     public static final double L4_START_HEIGHT_M = Units.inchesToMeters(73);
-    public static final double L4_END_HEIGHT_M = Units.inchesToMeters(68);
+    public static final double L4_END_HEIGHT_M = Units.inchesToMeters(64);
 
     // Opening from floor is 3ft
     public static final double CORAL_STATION_HEIGHT_M = Units.inchesToMeters(30);
