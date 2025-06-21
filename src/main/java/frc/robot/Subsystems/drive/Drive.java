@@ -4,7 +4,6 @@
 
 package frc.robot.Subsystems.drive;
 
-import com.pathplanner.lib.util.DriveFeedforwards;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -126,7 +125,7 @@ public class Drive extends SubsystemBase {
    * Sets the Velocity of the Swerve Drive through Passing in a ChassisSpeeds (Can be Field Relative
    * OR Robot Orientated)
    */
-  public void runVelocity(ChassisSpeeds speeds, DriveFeedforwards driveff) {
+  public void runVelocity(ChassisSpeeds speeds) {
     ChassisSpeeds discreteSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
     setpoint = discreteSpeeds;
   }
@@ -139,14 +138,14 @@ public class Drive extends SubsystemBase {
    * @param rot Angular Velocity of Entire Swerve Drive
    */
   public void setRaw(double x, double y, double rot) {
-    runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rot, this.getRotation()), null);
+    runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rot, this.getRotation()));
   }
 
   public void setRawWithAdjustedHeading(double x, double y, double rot, Rotation2d heading) {
-    runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rot, heading), null);
+    runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rot, heading));
   }
 
-  public void setRawRobotRel(double x, double y, double rot){
+  public void setRawRobotRel(double x, double y, double rot) {
     runVelocity(ChassisSpeeds.fromRobotRelativeSpeeds(x, y, rot, this.getRotation()));
   }
 
@@ -164,6 +163,8 @@ public class Drive extends SubsystemBase {
     Rotation2d linearDirection = new Rotation2d(x, y);
     double omega = MathUtil.applyDeadband(rot, DriveConstants.DEADBAND);
 
+    System.out.println("Running");
+
     // Square values
     linearMagnitude = linearMagnitude * linearMagnitude;
     omega = Math.copySign(omega * omega, omega);
@@ -180,13 +181,12 @@ public class Drive extends SubsystemBase {
             linearVelocity.getX() * DriveConstants.MAX_LINEAR_SPEED_M_PER_SEC,
             linearVelocity.getY() * DriveConstants.MAX_LINEAR_SPEED_M_PER_SEC,
             omega * DriveConstants.MAX_ANGULAR_SPEED_RAD_PER_SEC,
-            this.getRotation()),
-        null);
+            this.getRotation()));
   }
 
   /** stops the robot (sets velocity to 0 bu inputing empty Chassis Speeds which Default to 0) */
   public void stop() {
-    runVelocity(new ChassisSpeeds(), null);
+    runVelocity(new ChassisSpeeds());
   }
 
   /** stops the robot and sets wheels in the shape of an x */

@@ -34,6 +34,13 @@ public interface ElevatorIO {
   public default void setElevatorVoltage(double volts) {}
 
   /**
+   * Set the upward or downward current
+   *
+   * @param type
+   */
+  public default void setElevatorCurrentTypeAndVoltage(int type, double volts) {}
+
+  /**
    * Sets the Brake Mode for the Elevator
    *
    * <p>Brake means motor holds position, Coast means easy to move

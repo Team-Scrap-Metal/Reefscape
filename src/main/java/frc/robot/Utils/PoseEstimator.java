@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-// import frc.robot.Constants.RobotStateConstants;
-// import frc.robot.Constants.RobotStateConstants.Mode;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.DriveConstants;
 import frc.robot.Subsystems.gyro.Gyro;
@@ -50,7 +48,7 @@ public class PoseEstimator extends SubsystemBase {
             stateStandardDevs,
             visionStandardDevs);
 
-    mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    // mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
   }
 
   @Override
@@ -64,12 +62,12 @@ public class PoseEstimator extends SubsystemBase {
     // System.out.println(mt1.tagCount);
     // System.out.println(mt1.pose);
 
-    mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-    if (mt1.tagCount > 0) {
-      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, 0));
-      poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-      // System.out.println("running");
-    }
+    // mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    // if (mt1.tagCount > 0) {
+    //   // poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, 0));
+    //   poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
+    //   // System.out.println("running");
+    // }
   }
 
   /**

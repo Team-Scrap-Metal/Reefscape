@@ -18,6 +18,7 @@ public class Gyro extends SubsystemBase {
   public Gyro(GyroIO io) {
     System.out.println("[Init] Creating Gyro");
     this.io = io;
+    io.zeroHeading();
   }
 
   @Override

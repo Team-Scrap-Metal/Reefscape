@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RollersIONeo implements RollersIO {
   private final SparkMax rollerMotor;
@@ -34,6 +35,7 @@ public class RollersIONeo implements RollersIO {
    */
   public void updateInputs(RollersIOInputs inputs) {
     inputs.rollerAppliedVolts = rollerMotor.getAppliedOutput() * rollerMotor.getBusVoltage();
+    SmartDashboard.putNumber("rollerVolts", inputs.rollerAppliedVolts);
     /** Returns the position of the Endeffector Motor by how many radians it has rotated */
     inputs.rollerPositionRad =
         Units.rotationsToRadians(rollerRelativeEncoder.getPosition()) / RollersConstants.GEAR_RATIO;
@@ -44,9 +46,11 @@ public class RollersIONeo implements RollersIO {
         Units.rotationsPerMinuteToRadiansPerSecond(rollerRelativeEncoder.getVelocity())
             / RollersConstants.GEAR_RATIO;
     /** The Current Drawn from the Endeffector Motor in Amps */
-    inputs.rollerCurrentAmps = new double[] {};
+    inputs.rollerCurrentAmps = new double[] {rollerMotor.getOutputCurrent()};
+    SmartDashboard.putNumber("rollerAmps", inputs.rollerCurrentAmps[0]);
     /** The tempature of the Endeffector Motor in Celsius */
-    inputs.rollerTempCelsius = new double[] {};
+    inputs.rollerTempCelsius = new double[] {rollerMotor.getMotorTemperature()};
+    SmartDashboard.putNumber("rollerCelsius", inputs.rollerTempCelsius[0]);
     inputs.rollerVelocityRotPerMin =
         rollerRelativeEncoder.getVelocity() / RollersConstants.GEAR_RATIO;
   }

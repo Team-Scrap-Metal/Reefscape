@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LinkageIONeo implements LinkageIO {
   private final RelativeEncoder linkagRelativeEncoder;
@@ -40,8 +41,12 @@ public class LinkageIONeo implements LinkageIO {
     inputs.linkagePositionRad =
         Units.rotationsToRadians(linkagRelativeEncoder.getPosition()) / LinkageConstants.GEAR_RATIO;
     inputs.linkageAppliedVolts = (linkageMotor.getAppliedOutput() * linkageMotor.getBusVoltage());
+
+    SmartDashboard.putNumber("linkageVolts", inputs.linkageAppliedVolts);
     inputs.linkageTempCelsius = new double[] {linkageMotor.getMotorTemperature()};
+    SmartDashboard.putNumber("linkageCelsius", inputs.linkageTempCelsius[0]);
     inputs.linkageCurrentAmps = new double[] {linkageMotor.getOutputCurrent()};
+    SmartDashboard.putNumber("linkageAmps", inputs.linkageCurrentAmps[0]);
     inputs.linkageVelocityRadPerSec =
         Units.rotationsPerMinuteToRadiansPerSecond(linkagRelativeEncoder.getVelocity())
             / LinkageConstants.GEAR_RATIO;

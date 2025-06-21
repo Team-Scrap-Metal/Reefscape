@@ -13,15 +13,24 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Commands.TeleopCommands.Coral.GroundPickup;
+import frc.robot.Commands.TeleopCommands.Coral.PositionToScore;
+import frc.robot.Commands.TeleopCommands.Coral.ScoreCoral;
+import frc.robot.Commands.TeleopCommands.Coral.ScoreCoralAgain;
+import frc.robot.Commands.TeleopCommands.Coral.Stow;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RobotStateConstants;
+import frc.robot.Constants.RobotStateConstants.CoralStateMachine;
 import frc.robot.Subsystems.climber.Climber;
 import frc.robot.Subsystems.climber.ClimberIO;
 import frc.robot.Subsystems.climber.ClimberIONeo;
@@ -38,7 +47,6 @@ import frc.robot.Subsystems.gyro.Gyro;
 import frc.robot.Subsystems.gyro.GyroIO;
 import frc.robot.Subsystems.gyro.GyroIOPigeon;
 import frc.robot.Subsystems.linkage.Linkage;
-import frc.robot.Subsystems.linkage.LinkageIO;
 import frc.robot.Subsystems.linkage.LinkageIONeo;
 import frc.robot.Subsystems.rollers.Rollers;
 import frc.robot.Subsystems.rollers.RollersIO;
@@ -46,6 +54,8 @@ import frc.robot.Subsystems.rollers.RollersIONeo;
 import frc.robot.Subsystems.wrist.Wrist;
 import frc.robot.Subsystems.wrist.WristIO;
 import frc.robot.Subsystems.wrist.WristIONeo;
+import frc.robot.Utils.PathPlanner;
+import frc.robot.Utils.PoseEstimator;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -55,18 +65,24 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  // NAH ID WIN!!!
   // Subsystems
   private final Drive m_driveSubsystem;
   private final Gyro m_gyroSubsystem;
-  private final Linkage m_linkageSubsystem;
   private final Wrist m_wristSubsystem;
   private final Rollers m_rollersSubsystem;
   private final EndEffector m_endEffectorSubsystem;
   private final Elevator m_elevatorSubsystem;
   private final Climber m_climberSubsystem;
-  // private final PoseEstimator m_poseEstimator; TODO: Update PoseEstimator Stuff
+  private final PoseEstimator m_poseEstimator;
+  private final Linkage m_linkageSubsystem;
+  private final PathPlanner m_pathPlanner;
 
   private SlewRateLimiter wristRateLimiter;
+
+  private SlewRateLimiter downlinkageSlewRateLimiter;
+  private SlewRateLimiter uplinkageSlewRateLimiter;
+
   // Controller
   private final CommandXboxController driverController =
       new CommandXboxController(OperatorConstants.DRIVER_PORT);
@@ -90,12 +106,12 @@ public class RobotContainer {
                 new ModuleIOKrakenNeo(2),
                 new ModuleIOKrakenNeo(3),
                 m_gyroSubsystem);
-        m_linkageSubsystem = new Linkage(new LinkageIONeo());
         m_wristSubsystem = new Wrist(new WristIONeo());
         m_rollersSubsystem = new Rollers(new RollersIONeo());
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIONeo());
         m_elevatorSubsystem = new Elevator(new ElevatorIOVortex());
         m_climberSubsystem = new Climber(new ClimberIONeo());
+        m_linkageSubsystem = new Linkage(new LinkageIONeo());
         break;
 
       case SIM:
@@ -108,12 +124,12 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 m_gyroSubsystem);
-        m_linkageSubsystem = new Linkage(new LinkageIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
         m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
         m_climberSubsystem = new Climber(new ClimberIO() {});
+        m_linkageSubsystem = new Linkage(new LinkageIONeo());
 
         break;
 
@@ -122,23 +138,28 @@ public class RobotContainer {
         m_gyroSubsystem = new Gyro(new GyroIO() {});
         m_driveSubsystem =
             new Drive(
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
+                new ModuleIOKrakenNeo(0),
+                new ModuleIOKrakenNeo(1),
+                new ModuleIOKrakenNeo(2),
+                new ModuleIOKrakenNeo(3),
                 m_gyroSubsystem);
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
-        m_linkageSubsystem = new Linkage(new LinkageIO() {});
         m_wristSubsystem = new Wrist(new WristIO() {});
         m_rollersSubsystem = new Rollers(new RollersIO() {});
         m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
         m_climberSubsystem = new Climber(new ClimberIO() {});
+        m_linkageSubsystem = new Linkage(new LinkageIONeo());
         break;
     }
     wristRateLimiter = new SlewRateLimiter(1);
-    // m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
+    downlinkageSlewRateLimiter = new SlewRateLimiter(0.001);
+    uplinkageSlewRateLimiter = new SlewRateLimiter(0.001);
+    m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
+    m_pathPlanner = new PathPlanner(m_driveSubsystem, m_poseEstimator);
     // Configure the button bindings
-    autoChooser.addDefaultOption("null", null);
+    autoChooser.addDefaultOption("Null", null);
+    autoChooser.addOption("Straight Line", new PathPlannerAuto("StraightLine"));
+    autoChooser.addOption("Turn Path", new PathPlannerAuto("TurnPath"));
     configureDriverButtonBindings();
     configureAuxButtonBindings();
   }
@@ -160,7 +181,7 @@ public class RobotContainer {
                     driverController.getLeftX() * 1, // Forward/backward
                     driverController.getLeftY()
                         * -1, // Left/Right (multiply by -1 bc controller axis is inverted)
-                    driverController.getRightX() * (1)), // Rotate chassis left/right
+                    driverController.getRightX() * (0.75)), // Rotate chassis left/right
             m_driveSubsystem));
 
     // Resets robot heading to be wherever the front of the robot is facing
@@ -168,109 +189,267 @@ public class RobotContainer {
         .a()
         .onTrue(new InstantCommand(() -> m_driveSubsystem.updateHeading(), m_driveSubsystem));
     /**
-     * driverController .b() .onTrue( new RunCommand( () -> m_linkageSubsystem.setSetpoint(.20)
+     * driverController .b() .onTrue( new RunCommand( () -> m_climberSubsystem.setSetpoint(.20)
      *
      * <p>));
      */
     driverController
-        .rightBumper()
+        .rightTrigger()
         .onTrue(
-            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0.1), m_linkageSubsystem))
+            new RunCommand(
+                () ->
+                    m_driveSubsystem.driveWithDeadband(
+                        driverController.getLeftX() * 0.5,
+                        driverController.getLeftY() * -1 * 0.5,
+                        driverController.getRightX() * 0.75 * 0.75),
+                m_driveSubsystem))
         .onFalse(
-            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0), m_linkageSubsystem));
+            new RunCommand(
+                () ->
+                    m_driveSubsystem.driveWithDeadband(
+                        driverController.getLeftX() * 1,
+                        driverController.getLeftY() * -1,
+                        driverController.getRightX() * 0.75),
+                m_driveSubsystem));
+    driverController
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    m_driveSubsystem.driveWithDeadband(
+                        driverController.getLeftX() * 0.25,
+                        driverController.getLeftY() * -1 * 0.25,
+                        driverController.getRightX() * 0.75 * 0.75),
+                m_driveSubsystem))
+        .onFalse(
+            new InstantCommand(
+                () ->
+                    m_driveSubsystem.driveWithDeadband(
+                        driverController.getLeftX() * 1,
+                        driverController.getLeftY() * -1,
+                        driverController.getRightX() * 0.75),
+                m_driveSubsystem));
+
     driverController
         .leftBumper()
         .onTrue(
             new InstantCommand(
-                () -> m_linkageSubsystem.setLinkagePercent(-0.1), m_linkageSubsystem))
+                () ->
+                    m_linkageSubsystem.setLinkagePercent(-uplinkageSlewRateLimiter.calculate(0.5)),
+                m_linkageSubsystem))
         .onFalse(
-            new InstantCommand(() -> m_linkageSubsystem.setLinkagePercent(0), m_linkageSubsystem));
+            new InstantCommand(
+                () -> m_linkageSubsystem.setLinkagePercent(0.0), m_linkageSubsystem));
     driverController
-        .rightTrigger()
+        .rightBumper()
         .onTrue(
-            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(1.0), m_linkageSubsystem))
+            new InstantCommand(
+                () ->
+                    m_linkageSubsystem.setLinkagePercent(downlinkageSlewRateLimiter.calculate(0.5)),
+                m_linkageSubsystem))
         .onFalse(
-            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0), m_linkageSubsystem));
+            new InstantCommand(
+                () -> m_linkageSubsystem.setLinkagePercent(0.0), m_linkageSubsystem));
+
     driverController
         .leftTrigger()
         .onTrue(
             new InstantCommand(
-                () -> m_rollersSubsystem.setRollersPercent(-1.0), m_rollersSubsystem))
+                () -> m_rollersSubsystem.setRollersPercent(-0.50), m_rollersSubsystem))
         .onFalse(
-            new InstantCommand(() -> m_rollersSubsystem.setRollersPercent(0), m_rollersSubsystem));
+            new InstantCommand(
+                () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
+    // driverController
+    //     .rightTrigger()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_rollersSubsystem.setRollersPercent(0.50), m_rollersSubsystem))
+    //     .onFalse(
+    //         new InstantCommand(
+    //             () -> m_rollersSubsystem.setRollersPercent(0.0), m_rollersSubsystem));
+
+    driverController
+        .povUp()
+        .onTrue(
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(1.0), m_climberSubsystem))
+        .onFalse(
+            new InstantCommand(
+                () -> m_climberSubsystem.setClimberPercent(0.0), m_climberSubsystem));
+    driverController
+        .povDown()
+        .onTrue(
+            new InstantCommand(
+                () -> m_climberSubsystem.setClimberPercent(-0.5), m_climberSubsystem))
+        .onFalse(
+            new InstantCommand(
+                () -> m_climberSubsystem.setClimberPercent(0.0), m_climberSubsystem));
   }
 
   private void configureAuxButtonBindings() {
     /** Aux Controls */
     auxController
-        .leftBumper()
+        .povDown()
         .onTrue(
-            new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(0.2), m_endEffectorSubsystem))
-        .onFalse(
-            new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
-
+            new PositionToScore(
+                CoralStateMachine.PositionL1, m_elevatorSubsystem, m_wristSubsystem));
     auxController
-        .rightBumper()
+        .povLeft()
         .onTrue(
-            new InstantCommand(
-                () -> m_endEffectorSubsystem.setEndEffectorPercent(-0.2), m_endEffectorSubsystem))
-        .onFalse(new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(0)));
-
+            new PositionToScore(
+                CoralStateMachine.PositionL2Right, m_elevatorSubsystem, m_wristSubsystem));
     auxController
-        .leftTrigger()
+        .povRight()
         .onTrue(
-            new InstantCommand(
-                () -> m_wristSubsystem.setWristPercent(wristRateLimiter.calculate(0.4)),
-                m_wristSubsystem))
-        .onFalse(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0), m_wristSubsystem));
-
+            new PositionToScore(
+                CoralStateMachine.PositionL3Right, m_elevatorSubsystem, m_wristSubsystem));
     auxController
-        .rightTrigger()
+        .povUp()
         .onTrue(
-            new InstantCommand(
-                () -> m_wristSubsystem.setWristPercent(wristRateLimiter.calculate(-0.4)),
-                m_wristSubsystem))
-        .onFalse(new InstantCommand(() -> m_wristSubsystem.setWristPercent(0), m_wristSubsystem));
+            new PositionToScore(
+                CoralStateMachine.PositionL4Right, m_elevatorSubsystem, m_wristSubsystem));
 
     auxController
         .a()
         .onTrue(
-            new InstantCommand(
-                () -> m_elevatorSubsystem.setElevatorPercent(-0.21), m_elevatorSubsystem))
-        .onFalse(
-            new InstantCommand(
-                () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
-    auxController
-        .b()
-        .onTrue(
-            new InstantCommand(
-                () -> m_elevatorSubsystem.setElevatorPercent(0.21), m_elevatorSubsystem))
-        .onFalse(
-            new InstantCommand(
-                () -> m_elevatorSubsystem.setElevatorPercent(0), m_elevatorSubsystem));
-
+            new PositionToScore(
+                CoralStateMachine.PositionL1, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .x()
         .onTrue(
-            new InstantCommand(
-                () -> m_climberSubsystem.setClimberPercent(-0.5), m_climberSubsystem))
-        .onFalse(
-            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
-
+            new PositionToScore(
+                CoralStateMachine.PositionL2Left, m_elevatorSubsystem, m_wristSubsystem));
+    auxController
+        .b()
+        .onTrue(
+            new PositionToScore(
+                CoralStateMachine.PositionL3Left, m_elevatorSubsystem, m_wristSubsystem));
     auxController
         .y()
         .onTrue(
-            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0.5), m_climberSubsystem))
+            new PositionToScore(
+                CoralStateMachine.PositionL4Left, m_elevatorSubsystem, m_wristSubsystem));
+    // auxController
+    //     .y()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(20)),
+    //             m_elevatorSubsystem));
+    // auxController
+    //     .a()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(50)),
+    //             m_elevatorSubsystem));
+    // auxController
+    //     .b()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(65)),
+    //             m_elevatorSubsystem));
+    // auxController
+    //     .x()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(0)),
+    //             m_elevatorSubsystem));
+
+    // auxController
+    //     .leftBumper()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.incrementSetpoint(Units.inchesToMeters(-1)),
+    //             m_elevatorSubsystem));
+
+    // auxController
+    //     .button(9)
+    //     .onTrue(
+    //         new ConditionalCommand(
+    //             Commands.runOnce(
+    //                 () -> {
+    //                   m_wristSubsystem.setWristPercent(0.2);
+    //                 },
+    //                 m_wristSubsystem),
+    //             Commands.runOnce(() -> {}, m_wristSubsystem),
+    //             () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()))
+    //     .onFalse(
+    //         new ConditionalCommand(
+    //             Commands.runOnce(
+    //                 () -> {
+    //                   m_wristSubsystem.setWristPercent(0.0);
+    //                 },
+    //                 m_wristSubsystem),
+    //             Commands.runOnce(() -> {}, m_wristSubsystem),
+    //             () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()));
+    // ;
+
+    // auxController
+    //     .button(10)
+    //     .onTrue(
+    //         new ConditionalCommand(
+    //             Commands.runOnce(
+    //                 () -> {
+    //                   m_wristSubsystem.setWristPercent(-0.2);
+    //                 },
+    //                 m_wristSubsystem),
+    //             Commands.runOnce(() -> {}, m_wristSubsystem),
+    //             () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()))
+    //     .onFalse(
+    //         new ConditionalCommand(
+    //             Commands.runOnce(
+    //                 () -> {
+    //                   m_wristSubsystem.setWristPercent(0.0);
+    //                 },
+    //                 m_wristSubsystem),
+    //             Commands.runOnce(() -> {}, m_wristSubsystem),
+    //             () -> m_elevatorSubsystem.safeToRotate() && !m_wristSubsystem.isPIDEnabled()));
+    // // () -> m_wristSubsystem.incrementSetpoint(Units.degreesToRadians(1))));
+
+    // auxController
+    //     .back()
+    //     .onTrue(new InstantCommand(() -> m_wristSubsystem.togglePID(true), m_wristSubsystem));
+
+    // auxController
+    //     .start()
+    //     .onTrue(new InstantCommand(() -> m_wristSubsystem.togglePID(false), m_wristSubsystem));
+
+    auxController
+        .leftTrigger()
+        .onTrue(
+            new SequentialCommandGroup(
+                new GroundPickup(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem),
+                Commands.runOnce(
+                    () -> {
+                      m_endEffectorSubsystem.setEndEffectorPercent(0.3);
+                    },
+                    m_endEffectorSubsystem)))
         .onFalse(
-            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0), m_climberSubsystem));
+            new InstantCommand(
+                () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
+    // auxController
+    //     .rightBumper()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_wristSubsystem.incrementSetpoint(Units.inchesToMeters(-1)),
+    //             m_elevatorSubsystem));
+    auxController
+        .rightTrigger()
+        .onTrue(new ScoreCoral(m_endEffectorSubsystem, m_wristSubsystem))
+        .onFalse(new ScoreCoralAgain(m_endEffectorSubsystem, m_elevatorSubsystem));
+    // auxController
+    //     .rightTrigger()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> m_elevatorSubsystem.setSetpointM(Units.inchesToMeters(20)),
+    //             m_elevatorSubsystem));
+    auxController.leftBumper().onTrue(new Stow(m_elevatorSubsystem, m_wristSubsystem));
   }
 
   public void stopEverything() {}
 
   public void coastOnDisable(boolean isDisabled) {
     m_driveSubsystem.coastOnDisable(isDisabled);
+    m_wristSubsystem.coastOnDisable(isDisabled);
+    // m_elevatorSubsystem.coastOnDisable(isDisabled);
   }
 
   /**
@@ -279,6 +458,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
+    // return autoChooser.get();
+    return new RunCommand(() -> m_driveSubsystem.driveWithDeadband(0, -0.5, 0), m_driveSubsystem);
   }
 }

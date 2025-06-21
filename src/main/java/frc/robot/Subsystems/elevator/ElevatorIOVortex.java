@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorIOVortex implements ElevatorIO {
   private final SparkFlex elevatorLeftMotor;
@@ -20,21 +21,26 @@ public class ElevatorIOVortex implements ElevatorIO {
     elevatorLeftMotor = new SparkFlex(ElevatorConstants.LEFT_CANID, MotorType.kBrushless);
     elevatorLeftEncoder = elevatorLeftMotor.getEncoder();
     elevatorRightMotor = new SparkFlex(ElevatorConstants.RIGHT_CANID, MotorType.kBrushless);
+
     leftMotorConfig
         .smartCurrentLimit(
-            ElevatorConstants.STALL_LIMIT_AMPS, ElevatorConstants.FREESPIN_LIMIT_AMPS)
-        .inverted(false)
+            ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS)
+        .inverted(true)
         .idleMode(IdleMode.kBrake);
+
     elevatorLeftMotor.configure(
         leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
     rightMotorConfig
         .smartCurrentLimit(
-            ElevatorConstants.STALL_LIMIT_AMPS, ElevatorConstants.FREESPIN_LIMIT_AMPS)
-        .inverted(true)
+            ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS)
+        .inverted(false)
         .idleMode(IdleMode.kBrake)
-        .follow(ElevatorConstants.LEFT_CANID);
+        .follow(ElevatorConstants.LEFT_CANID, true);
+
     elevatorRightMotor.configure(
         rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    elevatorLeftEncoder.setPosition(0);
   }
 
   @Override
@@ -48,11 +54,15 @@ public class ElevatorIOVortex implements ElevatorIO {
     inputs.elevatorAppliedVolts =
         elevatorLeftMotor.getAppliedOutput() * elevatorLeftMotor.getBusVoltage()
             + elevatorRightMotor.getAppliedOutput() * elevatorRightMotor.getBusVoltage();
+    SmartDashboard.putNumber("ElevatorVolts", inputs.elevatorAppliedVolts);
     /** Returns the position of the elevator Motor by how many radians it has rotated */
     inputs.elevatorPositionRad =
-        Units.rotationsToRadians(elevatorLeftEncoder.getPosition()) / ElevatorConstants.GEAR_RATIO;
+        (Units.rotationsToRadians(elevatorLeftEncoder.getPosition())
+            / ElevatorConstants.GEAR_RATIO);
     /** /** Returns the position of the elevator Motor by how many meters it has raised */
-    inputs.elevatorPositionM = Units.inchesToMeters(0.5) * inputs.elevatorPositionRad;
+    inputs.elevatorPositionM =
+        Units.inchesToMeters(elevatorLeftEncoder.getPosition() * 3 * 0.83448);
+    // Units.inchesToMeters(3 / 8) * inputs.elevatorPositionRad * 4;
     /** Returns the velocity of the elevator Motor by how many radians per second it has rotated */
     inputs.elevatorVelocityRadPerSec =
         Units.rotationsPerMinuteToRadiansPerSecond(elevatorLeftEncoder.getVelocity())
@@ -65,11 +75,15 @@ public class ElevatorIOVortex implements ElevatorIO {
     /** The Current Drawn from the elevator Motor in Amps */
     inputs.elevatorCurrentAmps =
         new double[] {elevatorLeftMotor.getOutputCurrent(), elevatorRightMotor.getOutputCurrent()};
+    SmartDashboard.putNumber("ElevatorLeftAmps", inputs.elevatorCurrentAmps[0]);
+    SmartDashboard.putNumber("ElevatorRightAmps", inputs.elevatorCurrentAmps[1]);
     /** The tempature of the elevator Motor in Celsius */
     inputs.elevatorTempCelsius =
         new double[] {
           elevatorLeftMotor.getMotorTemperature(), elevatorRightMotor.getMotorTemperature()
         };
+    SmartDashboard.putNumber("ElevatorLeftCelsius", inputs.elevatorTempCelsius[0]);
+    SmartDashboard.putNumber("ElevatorRightCelsius", inputs.elevatorTempCelsius[1]);
   }
 
   @Override
@@ -82,6 +96,34 @@ public class ElevatorIOVortex implements ElevatorIO {
     elevatorLeftMotor.setVoltage(volts);
   }
 
+  /**
+   * Switches between upward current and downward current 1 - Up 2 - Down
+   *
+   * @param type
+   * @param volts
+   */
+  //   public void setElevatorCurrentTypeAndVoltage(int type, double volts) {
+
+  //     switch (type) {
+  //       case 1:
+  //         leftMotorConfig.smartCurrentLimit(
+  //             ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS);
+  //         rightMotorConfig.smartCurrentLimit(
+  //             ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS);
+  //       case 2:
+  //         leftMotorConfig.smartCurrentLimit(
+  //             ElevatorConstants.STALL_LIMIT_DOWN_AMPS,
+  // ElevatorConstants.FREESPIN_LIMIT_DOWN_AMPS);
+  //         rightMotorConfig.smartCurrentLimit(
+  //             ElevatorConstants.STALL_LIMIT_DOWN_AMPS,
+  // ElevatorConstants.FREESPIN_LIMIT_DOWN_AMPS);
+
+  //       default:
+  //         break;
+  //     }
+  //     elevatorLeftMotor.setVoltage(volts);
+  //   }
+
   @Override
   /**
    * Sets the Brake Mode for the Elevator
@@ -93,7 +135,7 @@ public class ElevatorIOVortex implements ElevatorIO {
   public void setBrakeMode(boolean enable) {
     leftMotorConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
     rightMotorConfig.idleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
-    elevatorRightMotor.configure(
+    elevatorLeftMotor.configure(
         leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     elevatorRightMotor.configure(
         rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
