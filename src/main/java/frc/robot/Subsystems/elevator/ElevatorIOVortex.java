@@ -102,25 +102,27 @@ public class ElevatorIOVortex implements ElevatorIO {
    * @param type
    * @param volts
    */
-  public void setElevatorCurrentTypeAndVoltage(int type, double volts) {
+  //   public void setElevatorCurrentTypeAndVoltage(int type, double volts) {
 
-    switch (type) {
-      case 1:
-        leftMotorConfig.smartCurrentLimit(
-            ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS);
-        rightMotorConfig.smartCurrentLimit(
-            ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS);
-      case 2:
-        leftMotorConfig.smartCurrentLimit(
-            ElevatorConstants.STALL_LIMIT_DOWN_AMPS, ElevatorConstants.FREESPIN_LIMIT_DOWN_AMPS);
-        rightMotorConfig.smartCurrentLimit(
-            ElevatorConstants.STALL_LIMIT_DOWN_AMPS, ElevatorConstants.FREESPIN_LIMIT_DOWN_AMPS);
+  //     switch (type) {
+  //       case 1:
+  //         leftMotorConfig.smartCurrentLimit(
+  //             ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS);
+  //         rightMotorConfig.smartCurrentLimit(
+  //             ElevatorConstants.STALL_LIMIT_UP_AMPS, ElevatorConstants.FREESPIN_LIMIT_UP_AMPS);
+  //       case 2:
+  //         leftMotorConfig.smartCurrentLimit(
+  //             ElevatorConstants.STALL_LIMIT_DOWN_AMPS,
+  // ElevatorConstants.FREESPIN_LIMIT_DOWN_AMPS);
+  //         rightMotorConfig.smartCurrentLimit(
+  //             ElevatorConstants.STALL_LIMIT_DOWN_AMPS,
+  // ElevatorConstants.FREESPIN_LIMIT_DOWN_AMPS);
 
-      default:
-        break;
-    }
-    elevatorLeftMotor.setVoltage(volts);
-  }
+  //       default:
+  //         break;
+  //     }
+  //     elevatorLeftMotor.setVoltage(volts);
+  //   }
 
   @Override
   /**

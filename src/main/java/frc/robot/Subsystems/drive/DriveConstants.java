@@ -59,11 +59,12 @@ public class DriveConstants {
     };
   }
 
+  // This is subtracted
   public static enum ABSOLUTE_ENCODER_OFFSET_RAD {
-    FRONT_LEFT(-0.207087 - 0.0905053 + 0.011 - 0.006 + 0.053), // Module 0 //TODO: Update
-    BACK_LEFT(-3.110913 + 0.2408349 + 0.06 - 0.04), // Module 1 //TODO: Update
-    BACK_RIGHT(0.587514 + 0.474 - 0.365 - 0.155), // Module 2 //TODO: Update
-    FRONT_RIGHT(2.862408 + 0.003068 + 0.021); // Module 3 //TODO: Update
+    FRONT_LEFT(-0.307), // Module 0 //TODO: Update
+    BACK_LEFT(1.615), // Module 1 //TODO: Update
+    BACK_RIGHT(2.526), // Module 2 //TODO: Update
+    FRONT_RIGHT(2.49); // Module 3 //TODO: Update
 
     public final double OFFSET;
 

@@ -23,7 +23,8 @@ public class ScoreCoral extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
 
-        /* 1st conditional command */ new ConditionalCommand(
+        /* 1st conditional command */
+        new ConditionalCommand(
             new ConditionalCommand(
                 /* if L1 */
                 Commands.runOnce(

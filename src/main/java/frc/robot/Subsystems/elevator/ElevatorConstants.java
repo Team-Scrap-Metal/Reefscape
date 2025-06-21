@@ -8,10 +8,10 @@ public class ElevatorConstants {
   public static final int RIGHT_CANID = 16;
   public static final boolean LEFT_IS_INVERTED = false;
   public static final boolean RIGHT_IS_INVERTED = false;
-  public static final int STALL_LIMIT_UP_AMPS = 50;
+  public static final int STALL_LIMIT_UP_AMPS = 60;
   public static final int FREESPIN_LIMIT_UP_AMPS = 50;
-  public static final int STALL_LIMIT_DOWN_AMPS = 0;
-  public static final int FREESPIN_LIMIT_DOWN_AMPS = 0;
+  // public static final int STALL_LIMIT_DOWN_AMPS = 0;
+  // public static final int FREESPIN_LIMIT_DOWN_AMPS = 0;
   public static final double GEAR_RATIO = 4.8;
   public static final double LINEAR_CONSTANTS_M = 0.0; // TODO: Update
 

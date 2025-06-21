@@ -196,15 +196,15 @@ public class RobotContainer {
     driverController
         .rightTrigger()
         .onTrue(
-            new InstantCommand(
+            new RunCommand(
                 () ->
                     m_driveSubsystem.driveWithDeadband(
-                        driverController.getLeftX() * 0.25,
-                        driverController.getLeftY() * -1 * 0.25,
+                        driverController.getLeftX() * 0.5,
+                        driverController.getLeftY() * -1 * 0.5,
                         driverController.getRightX() * 0.75 * 0.75),
                 m_driveSubsystem))
         .onFalse(
-            new InstantCommand(
+            new RunCommand(
                 () ->
                     m_driveSubsystem.driveWithDeadband(
                         driverController.getLeftX() * 1,
