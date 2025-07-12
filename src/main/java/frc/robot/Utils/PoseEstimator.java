@@ -24,7 +24,7 @@ public class PoseEstimator extends SubsystemBase {
    */
   public static Vector<N3> stateStandardDevs = VecBuilder.fill(0.1, 0.1, 0.1);
 
-  public static Vector<N3> visionStandardDevs = VecBuilder.fill(0.5, 0.5, 9999999);
+  public static Vector<N3> visionStandardDevs = VecBuilder.fill(0.1, 0.1, 9999999);
 
   private SwerveDrivePoseEstimator poseEstimator;
   private Drive drive;
@@ -46,13 +46,21 @@ public class PoseEstimator extends SubsystemBase {
             new SwerveDriveKinematics(DriveConstants.getModuleTranslations()),
             gyro.getYaw(),
             drive.getSwerveModulePositions(),
-            new Pose2d(new Translation2d(), new Rotation2d()),
+            new Pose2d(new Translation2d(2.15, 4.18), new Rotation2d()),
             stateStandardDevs,
             visionStandardDevs);
 
-    LimelightHelpers.SetRobotOrientation(
-        "limelight", this.getRotation().getDegrees(), 0, 0, 0, 0, 0);
-
+    int[] validIDs = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+    LimelightHelpers.SetFiducialIDFiltersOverride("limelight", validIDs);
+    LimelightHelpers.setCameraPose_RobotSpace(
+        "",
+        0.33655, // Forward offset (meters)
+        0.14, // Side offset (meters)
+        0.18415, // Height offset (meters)
+        -90.0, // Roll (degrees)
+        0.0, // Pitch (degrees)
+        0.0 // Yaw (degrees)
+        );
     // if our angular velocity is greater than 360 degrees per second, ignore vision updates
 
     // limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
@@ -68,12 +76,12 @@ public class PoseEstimator extends SubsystemBase {
   public void periodic() {
     // When ran on the real robot it would overload the command scheduler, causing input delay from
     // joystick to driving
-    // field2d.setRobotPose(getCurrentPose2d());
+    field2d.setRobotPose(getCurrentPose2d());
     SmartDashboard.putNumber("mt2", mt2.tagCount);
     SmartDashboard.putString("running", "running");
-    poseEstimator.updateWithTime(
-        Timer.getFPGATimestamp(), drive.getRotation(), drive.getSwerveModulePositions());
 
+    LimelightHelpers.SetRobotOrientation(
+        "limelight", this.getRotation().getDegrees() + 90, 0, 0, 0, 0, 0);
     boolean doRejectUpdate = false;
     if (Math.abs(gyro.getRate()) > 360) {
       doRejectUpdate = true;
@@ -82,72 +90,14 @@ public class PoseEstimator extends SubsystemBase {
       doRejectUpdate = true;
     }
     if (!doRejectUpdate) {
-      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.1, 0.1, 999999));
       poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
-      field2d.setRobotPose(mt2.pose);
+      // field2d.setRobotPose(mt2.pose);
       System.out.println("hi running limwlighr");
     }
-    // LimelightHelpers.SetRobotOrientation("limelight",
-    // poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
 
-    // // if our angular velocity is greater than 360 degrees per second, ignore vision updates
-    // if (Math.abs(gyro.getRate()) > 360) {
-    //   doRejectUpdate = true;
-    // }
-    // if (mt2.tagCount == 0) {
-    //   doRejectUpdate = true;
-    // }
-
-    // if (!doRejectUpdate) {
-    //   poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
-    //   // poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
-    // }
-
-    // if (limelightMeasurement.tagCount >= 1) {
-    //     poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
-    //     poseEstimator.addVisionMeasurement(
-    //         limelightMeasurement.pose,
-    //         limelightMeasurement.timestampSeconds
-    //     );
-    // }
-    // System.out.println(mt1.tagCount);
-    // System.out.println(mt1.pose);
-
-    // mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-    // if (mt1.tagCount > 0) {
-    //   // poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, 0));
-    //   poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-    //   System.out.println("running");
-    // }
-
-    // LimelightHelpers.PoseEstimate limelightMeasurement =
-    //     LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-    // if (getCurrentPose2d().getX() < Units.inchesToMeters(250)
-    //     || getCurrentPose2d().getX() > Units.inchesToMeters(649 - 195)) {
-
-    //   if (limelightMeasurement.tagCount >= 1) {
-    //     poseEstimator.addVisionMeasurement(
-    //         limelightMeasurement.pose.transformBy(
-    //             new Transform2d(
-    //                 new Translation2d(Units.inchesToMeters(12.5), Units.inchesToMeters(-5.5)),
-    //                 new Rotation2d(Math.PI))),
-    //         limelightMeasurement.timestampSeconds,
-    //         visionStandardDevs);
-    //     System.out.println("running 1");
-    //   }
-    // }
-    // else {
-    //   if (limelightMeasurement.tagCount >= 1) {
-    //     poseEstimator.addVisionMeasurement(
-    //         limelightMeasurement.pose.transformBy(
-    //             new Transform2d(
-    //                 new Translation2d(Units.inchesToMeters(12.5), Units.inchesToMeters(-5.5)),
-    //                 new Rotation2d(Math.PI))),
-    //         limelightMeasurement.timestampSeconds,
-    //         visionStandardDevs);
-    //     System.out.println("running 1");
-    //   }
-    // }
+    poseEstimator.updateWithTime(
+        Timer.getFPGATimestamp(), drive.getRotation(), drive.getSwerveModulePositions());
   }
 
   /**
