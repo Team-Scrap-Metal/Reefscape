@@ -49,6 +49,7 @@ public class GyroIOPigeon implements GyroIO {
     // converts it to radians per second
 
     inputs.temperatureCelcius = gyro.getTemperature().getValueAsDouble();
+    inputs.ratePositionRadPerSec = gyro.getAngularVelocityZWorld().getValueAsDouble();
   }
 
   @Override

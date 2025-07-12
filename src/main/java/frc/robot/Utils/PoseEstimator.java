@@ -30,7 +30,9 @@ public class PoseEstimator extends SubsystemBase {
   private Drive drive;
   private Gyro gyro;
   private Field2d field2d;
-  private LimelightHelpers.PoseEstimate mt1;
+  LimelightHelpers.PoseEstimate limelightMeasurement;
+  LimelightHelpers.PoseEstimate mt2 =
+      LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
 
   public PoseEstimator(Drive drive, Gyro gyro) {
 
@@ -48,17 +50,66 @@ public class PoseEstimator extends SubsystemBase {
             stateStandardDevs,
             visionStandardDevs);
 
-    // mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    LimelightHelpers.SetRobotOrientation(
+        "limelight", this.getRotation().getDegrees(), 0, 0, 0, 0, 0);
+
+    // if our angular velocity is greater than 360 degrees per second, ignore vision updates
+
+    // limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    // mt1 = LimelightHelpers.getB/otPoseEstimate_wpiBlue("limelight");
+    // mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+
+    // SmartDashboard.putString(
+    //     "Limelight",
+    // LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight").toString());
   }
 
   @Override
   public void periodic() {
     // When ran on the real robot it would overload the command scheduler, causing input delay from
     // joystick to driving
-    field2d.setRobotPose(getCurrentPose2d());
+    // field2d.setRobotPose(getCurrentPose2d());
+    SmartDashboard.putNumber("mt2", mt2.tagCount);
+    SmartDashboard.putString("running", "running");
     poseEstimator.updateWithTime(
         Timer.getFPGATimestamp(), drive.getRotation(), drive.getSwerveModulePositions());
 
+    boolean doRejectUpdate = false;
+    if (Math.abs(gyro.getRate()) > 360) {
+      doRejectUpdate = true;
+    }
+    if (mt2.tagCount == 0) {
+      doRejectUpdate = true;
+    }
+    if (!doRejectUpdate) {
+      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+      poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+      field2d.setRobotPose(mt2.pose);
+      System.out.println("hi running limwlighr");
+    }
+    // LimelightHelpers.SetRobotOrientation("limelight",
+    // poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+
+    // // if our angular velocity is greater than 360 degrees per second, ignore vision updates
+    // if (Math.abs(gyro.getRate()) > 360) {
+    //   doRejectUpdate = true;
+    // }
+    // if (mt2.tagCount == 0) {
+    //   doRejectUpdate = true;
+    // }
+
+    // if (!doRejectUpdate) {
+    //   poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+    //   // poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+    // }
+
+    // if (limelightMeasurement.tagCount >= 1) {
+    //     poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
+    //     poseEstimator.addVisionMeasurement(
+    //         limelightMeasurement.pose,
+    //         limelightMeasurement.timestampSeconds
+    //     );
+    // }
     // System.out.println(mt1.tagCount);
     // System.out.println(mt1.pose);
 
@@ -66,7 +117,36 @@ public class PoseEstimator extends SubsystemBase {
     // if (mt1.tagCount > 0) {
     //   // poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, 0));
     //   poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-    //   // System.out.println("running");
+    //   System.out.println("running");
+    // }
+
+    // LimelightHelpers.PoseEstimate limelightMeasurement =
+    //     LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    // if (getCurrentPose2d().getX() < Units.inchesToMeters(250)
+    //     || getCurrentPose2d().getX() > Units.inchesToMeters(649 - 195)) {
+
+    //   if (limelightMeasurement.tagCount >= 1) {
+    //     poseEstimator.addVisionMeasurement(
+    //         limelightMeasurement.pose.transformBy(
+    //             new Transform2d(
+    //                 new Translation2d(Units.inchesToMeters(12.5), Units.inchesToMeters(-5.5)),
+    //                 new Rotation2d(Math.PI))),
+    //         limelightMeasurement.timestampSeconds,
+    //         visionStandardDevs);
+    //     System.out.println("running 1");
+    //   }
+    // }
+    // else {
+    //   if (limelightMeasurement.tagCount >= 1) {
+    //     poseEstimator.addVisionMeasurement(
+    //         limelightMeasurement.pose.transformBy(
+    //             new Transform2d(
+    //                 new Translation2d(Units.inchesToMeters(12.5), Units.inchesToMeters(-5.5)),
+    //                 new Rotation2d(Math.PI))),
+    //         limelightMeasurement.timestampSeconds,
+    //         visionStandardDevs);
+    //     System.out.println("running 1");
+    //   }
     // }
   }
 

@@ -24,6 +24,7 @@ public interface GyroIO {
     public double yawVelocityRadPerSec = 0.0;
 
     public double temperatureCelcius = 0.0;
+    public double ratePositionRadPerSec = 0.0;
   }
 
   /** Updates the set of loggable inputs. */
