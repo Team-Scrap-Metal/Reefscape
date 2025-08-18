@@ -51,6 +51,7 @@ import frc.robot.Subsystems.linkage.LinkageIONeo;
 import frc.robot.Subsystems.rollers.Rollers;
 import frc.robot.Subsystems.rollers.RollersIO;
 import frc.robot.Subsystems.rollers.RollersIONeo;
+import frc.robot.Subsystems.rollers.RollersIOSim;
 import frc.robot.Subsystems.wrist.Wrist;
 import frc.robot.Subsystems.wrist.WristIO;
 import frc.robot.Subsystems.wrist.WristIONeo;
@@ -125,7 +126,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 m_gyroSubsystem);
         m_wristSubsystem = new Wrist(new WristIO() {});
-        m_rollersSubsystem = new Rollers(new RollersIO() {});
+        m_rollersSubsystem = new Rollers(new RollersIOSim());
         m_endEffectorSubsystem = new EndEffector(new EndEffectorIO() {});
         m_elevatorSubsystem = new Elevator(new ElevatorIO() {});
         m_climberSubsystem = new Climber(new ClimberIO() {});
