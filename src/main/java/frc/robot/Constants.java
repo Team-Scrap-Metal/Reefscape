@@ -121,4 +121,10 @@ public final class Constants {
   public final class UnitConversions {
     public static final double MIN_TO_MS = 60000;
   }
+
+  public final class DefaultSpeedConstants {
+    public static final double LEFT_X = 1;
+    public static final double LEFT_Y = -1;
+    public static final double RIGHT_X = 0.75;
+  }
 }

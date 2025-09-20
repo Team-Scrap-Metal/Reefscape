@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Subsystems.elevator.Elevator;
 import frc.robot.Subsystems.elevator.ElevatorConstants.ElevatorPositions;
+import frc.robot.Subsystems.endEffector.EndEffector;
 import frc.robot.Subsystems.wrist.Wrist;
 import frc.robot.Subsystems.wrist.WristConstants.WristPositions;
 
@@ -26,6 +27,33 @@ public class Stow extends SequentialCommandGroup {
     addCommands(
         new ConditionalCommand(
             new SequentialCommandGroup(
+                new InstantCommand(() -> elevator.setSetpointM(Units.inchesToMeters(13)), elevator),
+                new WaitUntilCommand(() -> elevator.safeToRotate()),
+                new InstantCommand(
+                    () -> wrist.setSetpointRad(WristPositions.STOW_ROTATION_RAD), wrist),
+                new WaitCommand(1),
+                new WaitUntilCommand(() -> wrist.safeToLift()),
+                new InstantCommand(
+                    () -> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M),
+                    elevator)),
+            new SequentialCommandGroup(
+                new InstantCommand(
+                    () -> wrist.setSetpointRad(WristPositions.STOW_ROTATION_RAD), wrist),
+                new WaitCommand(1),
+                new WaitUntilCommand(() -> wrist.safeToLift()),
+                new InstantCommand(
+                    () -> elevator.setSetpointM(ElevatorPositions.GROUND_INTAKE_HEIGHT_M),
+                    elevator)),
+            () -> elevator.safeToRotate() ? false : true));
+  }
+
+  public Stow(Elevator elevator, Wrist wrist, EndEffector endEffector) {
+    // Add your commands in the addCommands() call, e.g.
+    // addCommands(new FooCommand(), new BarCommand());
+    addCommands(
+        new ConditionalCommand(
+            new SequentialCommandGroup(
+                new InstantCommand(() -> endEffector.setEndEffectorPercent(0)),
                 new InstantCommand(() -> elevator.setSetpointM(Units.inchesToMeters(13)), elevator),
                 new WaitUntilCommand(() -> elevator.safeToRotate()),
                 new InstantCommand(

@@ -40,11 +40,16 @@ public class ElevatorConstants {
     public static final double L3_HEIGHT_M = Units.inchesToMeters(47);
 
     // l4 is 6ft tall
-    public static final double L4_START_HEIGHT_M = Units.inchesToMeters(73);
+    public static final double L4_START_HEIGHT_M = Units.inchesToMeters(71);
     public static final double L4_END_HEIGHT_M = Units.inchesToMeters(64);
 
     // Opening from floor is 3ft
     public static final double CORAL_STATION_HEIGHT_M = Units.inchesToMeters(30);
     public static final double GROUND_INTAKE_HEIGHT_M = 0.0;
+
+    public static final double ALGAE_REMOVAL_ONE_HEIGHT_M = Units.inchesToMeters(26);
+    public static final double ALGAE_REMOVAL_TWO_HEIGHT_M = Units.inchesToMeters(42);
+
+    public static final double ALGAE_SCORE_HEIGHT_M = Units.inchesToMeters(70);
   }
 }

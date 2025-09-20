@@ -85,29 +85,33 @@ public class PoseEstimator extends SubsystemBase {
     // joystick to driving
     field2d.setRobotPose(getCurrentPose2d());
     // field2d.setRobotPose(getCurrentPose2d().getX(), getCurrentPose2d().getY(), getRotation());
-    SmartDashboard.putNumber("mt2", mt2.tagCount);
-    SmartDashboard.putString("running", "running");
+    // SmartDashboard.putNumber("mt2", mt2.tagCount);
+    // SmartDashboard.putString("running", "running");
 
     LimelightHelpers.SetRobotOrientation(
         "limelight", gyro.getYaw().getDegrees() - 180, 0, 0, 0, 0, 0);
     boolean doRejectUpdate = false;
-    if (Math.abs(gyro.getRate()) > 360) {
-      doRejectUpdate = true;
+    try {
+      if (Math.abs(gyro.getRate()) > 360) {
+        doRejectUpdate = true;
+      }
+      if (mt2.tagCount == 0) {
+        doRejectUpdate = true;
+      }
+      if (!doRejectUpdate) {
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.1, 0.1, 999999));
+        poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+        System.out.println(getCurrentPose2d());
+        // field2d.setRobotPose(mt2.pose);
+        // System.out.println(mt2.tagCount);
+        //   System.out.println(
+        //
+        // NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(0));
+      }
+    } catch (Exception e) {
+
     }
-    if (mt2.tagCount == 0) {
-      doRejectUpdate = true;
-    }
-    if (!doRejectUpdate) {
-      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.1, 0.1, 999999));
-      poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
-      System.out.println(getCurrentPose2d());
-      // field2d.setRobotPose(mt2.pose);
-      // System.out.println(mt2.tagCount);
-      //   System.out.println(
-      //
-      // NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(0));
-    }
-    System.out.println(gyro.getYaw().getDegrees());
+    // System.out.println(gyro.getYaw().getDegrees());
     // System.out.println(this.getRotation().getDegrees());
 
     poseEstimator.updateWithTime(

@@ -55,5 +55,11 @@ public class WristConstants {
     // NAH ID WIN!!!
     public static final double STOW_ROTATION_RAD =
         Units.degreesToRadians(0.0) + Units.degreesToRadians(90);
+    public static final double ALGAE_REMOVAL_ONE_ROTATION_R =
+        Units.degreesToRadians(180) + Units.degreesToRadians(90);
+    public static final double ALGAE_REMOVAL_TWO_ROTATION_R =
+        Units.degreesToRadians(180) + Units.degreesToRadians(90);
+    public static final double ALGAE_SCORE_ROTATION_R =
+        Units.degreesToRadians(90) + Units.degreesToRadians(90);
   }
 }
