@@ -18,7 +18,7 @@ import frc.robot.Subsystems.drive.Drive;
 public class PathPlanner extends SubsystemBase {
   private Drive drive;
   private PoseEstimator pose;
-  RobotConfig config;
+  private RobotConfig config;
 
   public PathPlanner(Drive drive, PoseEstimator pose) {
     this.drive = drive;
@@ -42,12 +42,12 @@ public class PathPlanner extends SubsystemBase {
         drive::runVelocity,
         new PPHolonomicDriveController(
             new PIDConstants( // Translation PID constants
-                8.0, // TODO: Update Values && put in constants
+                0.0, // TODO: Update Values && put in constants
                 0, // TODO: Update Values && put in constants
                 0), // TODO: Update Values && put in constants
             new PIDConstants( // Rotation PID constants
                 0, // TODO: Update Values && put in constants
-                0, // TODO: Update Values && put in constants
+                0, // TODO: UpdateD Values && put in constants
                 0)), // TODO: Update Values && put in constants
         // DriveConstants.MAX_LINEAR_SPEED_M_PER_SEC, // Max module speed, in m/s
         // DriveConstants.TRACK_WIDTH_M, // Drive base radius in meters. Distance from robot center

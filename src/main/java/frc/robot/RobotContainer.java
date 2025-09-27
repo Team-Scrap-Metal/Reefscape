@@ -13,7 +13,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -169,9 +168,13 @@ public class RobotContainer {
     m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
     m_pathPlanner = new PathPlanner(m_driveSubsystem, m_poseEstimator);
     // Configure the button bindings
-    autoChooser.addDefaultOption("Null", null);
-    autoChooser.addOption("Straight Line", new PathPlannerAuto("StraightLine"));
-    autoChooser.addOption("Turn Path", new PathPlannerAuto("TurnPath"));
+    // autoChooser.setDefaultOption("None", null);
+    // autoChooser.addOption(
+    //     "Straight Line", AutoBuilder.followPath(PathPlannerPath.fromPathFile("StraightLine")));
+    // autoChooser.addOption(
+    //     "Turn Path", AutoBuilder.followPath(PathPlannerPath.fromPathFile("TurnAuto")));
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
+
     configureDriverButtonBindings();
     configureAuxButtonBindings();
   }
@@ -205,7 +208,7 @@ public class RobotContainer {
      *
      * <p>));
      */
-    driverController.b().onTrue(new InstantCommand(() -> setDriveModulesPercentages(1, 1, 1)));
+    driverController.b().onTrue(new InstantCommand(() -> setDriveModulesPercentages(1, -1, 1)));
     driverController
         .rightTrigger()
         .onTrue(
@@ -234,7 +237,7 @@ public class RobotContainer {
                     () ->
                         m_elevatorSubsystem.setSetpointM(
                             ElevatorConstants.ElevatorPositions.ALGAE_SCORE_HEIGHT_M)),
-                new InstantCommand(() -> setDriveModulesPercentages(0.25, -0.25, 0.4)),
+                new InstantCommand(() -> setDriveModulesPercentages(0.35, -0.35, 0.4)),
                 new InstantCommand(
                     () ->
                         m_wristSubsystem.setSetpointRad(
@@ -247,7 +250,7 @@ public class RobotContainer {
                 new InstantCommand(() -> setDriveModulesPercentages(0.4, -0.4, 0.4)),
                 new Stow(m_elevatorSubsystem, m_wristSubsystem),
                 new WaitCommand(1.5),
-                new InstantCommand(() -> setDriveModulesPercentages(0.85, 0.85, 0.85))));
+                new InstantCommand(() -> setDriveModulesPercentages(0.85, -0.85, 0.85))));
     driverController
         .povLeft()
         .onTrue(new InstantCommand(() -> m_endEffectorSubsystem.setEndEffectorPercent(0)));
@@ -264,15 +267,14 @@ public class RobotContainer {
     driverController
         .povUp()
         .onTrue(
-            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(1.0), m_climberSubsystem))
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(1), m_climberSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_climberSubsystem.setClimberPercent(0.0), m_climberSubsystem));
     driverController
         .povDown()
         .onTrue(
-            new InstantCommand(
-                () -> m_climberSubsystem.setClimberPercent(-0.5), m_climberSubsystem))
+            new InstantCommand(() -> m_climberSubsystem.setClimberPercent(0.5), m_climberSubsystem))
         .onFalse(
             new InstantCommand(
                 () -> m_climberSubsystem.setClimberPercent(0.0), m_climberSubsystem));
@@ -443,7 +445,9 @@ public class RobotContainer {
                     () -> {
                       m_endEffectorSubsystem.setEndEffectorPercent(0.3);
                     },
-                    m_endEffectorSubsystem)))
+                    m_endEffectorSubsystem),
+                new WaitCommand(1),
+                new InstantCommand(() -> setDriveModulesPercentages(0.9, -0.9, 0.7))))
         .onFalse(
             new InstantCommand(
                 () -> m_endEffectorSubsystem.setEndEffectorPercent(0), m_endEffectorSubsystem));
@@ -465,7 +469,11 @@ public class RobotContainer {
     //             m_elevatorSubsystem));
     auxController
         .leftBumper()
-        .onTrue(new Stow(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
+        .onTrue(
+            new SequentialCommandGroup(
+                new Stow(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem),
+                new WaitCommand(1),
+                new InstantCommand(() -> setDriveModulesPercentages(0.85, -0.85, 0.85))));
   }
 
   public void stopEverything() {}

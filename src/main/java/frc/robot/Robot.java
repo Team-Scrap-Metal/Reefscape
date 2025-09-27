@@ -13,9 +13,14 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.FileVersionException;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.RobotStateConstants;
+import java.io.IOException;
+import org.json.simple.parser.ParseException;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -107,12 +112,22 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    if (autonomousCommand != null) {
-      autonomousCommand.schedule();
+    try {
+      PathPlannerPath path = PathPlannerPath.fromPathFile("SPIN");
+      Command followCommand = AutoBuilder.followPath(path);
+      System.out.println("Running ONEM");
+      followCommand.schedule();
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.out.println(
+          "Could not load path file. Make sure Turning.path exists in deploy folder.");
+    } catch (FileVersionException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (ParseException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-    m_robotContainer.coastOnDisable(false);
   }
 
   /** This function is called periodically during autonomous. */
