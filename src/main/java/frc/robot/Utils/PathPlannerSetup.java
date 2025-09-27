@@ -11,29 +11,25 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.Constants.RobotStateConstants;
 import frc.robot.Subsystems.drive.Drive;
 
 /** Add your docs here. */
-public class PathPlanner extends SubsystemBase {
-  private Drive drive;
-  private PoseEstimator pose;
-  private RobotConfig config;
+public final class PathPlannerSetup {
 
-  public PathPlanner(Drive drive, PoseEstimator pose) {
-    this.drive = drive;
-    this.pose = pose;
+  private PathPlannerSetup() {}
+  public static void configure(Drive drive, PoseEstimator pose) {
+    RobotConfig cfg;
+    try { cfg = RobotConfig.fromGUISettings(); } 
+    catch (Exception e) { throw new RuntimeException("PathPlanner RobotConfig"); }
+
 
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
-    try {
-      config = RobotConfig.fromGUISettings();
-    } catch (Exception e) {
-      // Handle exception as needed
-      e.printStackTrace();
-    }
 
     SmartDashboard.putString("Running PathPlanner", "running");
+    
 
     AutoBuilder.configure(
         pose::getCurrentPose2d,
@@ -46,14 +42,14 @@ public class PathPlanner extends SubsystemBase {
                 0, // TODO: Update Values && put in constants
                 0), // TODO: Update Values && put in constants
             new PIDConstants( // Rotation PID constants
-                0, // TODO: Update Values && put in constants
+                4, // TODO: Update Values && put in constants
                 0, // TODO: UpdateD Values && put in constants
                 0)), // TODO: Update Values && put in constants
         // DriveConstants.MAX_LINEAR_SPEED_M_PER_SEC, // Max module speed, in m/s
         // DriveConstants.TRACK_WIDTH_M, // Drive base radius in meters. Distance from robot center
         // to
         // furthest module.
-        config,
+        cfg,
         () -> {
           // Boolean supplier that controls when the path will be mirrored for the red
           // alliance

@@ -112,22 +112,6 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    try {
-      PathPlannerPath path = PathPlannerPath.fromPathFile("SPIN");
-      Command followCommand = AutoBuilder.followPath(path);
-      System.out.println("Running ONEM");
-      followCommand.schedule();
-    } catch (IOException e) {
-      e.printStackTrace();
-      System.out.println(
-          "Could not load path file. Make sure Turning.path exists in deploy folder.");
-    } catch (FileVersionException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (ParseException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
   }
 
   /** This function is called periodically during autonomous. */
