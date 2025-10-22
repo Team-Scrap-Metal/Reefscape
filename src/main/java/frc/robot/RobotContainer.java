@@ -13,6 +13,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -29,6 +31,7 @@ import frc.robot.Commands.TeleopCommands.Coral.AlgaeRemove;
 import frc.robot.Commands.TeleopCommands.Coral.AlgaeScore;
 import frc.robot.Commands.TeleopCommands.Coral.GroundPickup;
 import frc.robot.Commands.TeleopCommands.Coral.PositionToScore;
+import frc.robot.Commands.TeleopCommands.Coral.Processor;
 import frc.robot.Commands.TeleopCommands.Coral.ScoreCoral;
 import frc.robot.Commands.TeleopCommands.Coral.ScoreCoralAgain;
 import frc.robot.Commands.TeleopCommands.Coral.Stow;
@@ -63,15 +66,9 @@ import frc.robot.Subsystems.wrist.WristIO;
 import frc.robot.Subsystems.wrist.WristIONeo;
 import frc.robot.Utils.PathPlanner;
 import frc.robot.Utils.PoseEstimator;
-
 import java.io.IOException;
-import java.util.Map;
-
 import org.json.simple.parser.ParseException;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -111,10 +108,8 @@ public class RobotContainer {
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser =
       new LoggedDashboardChooser<>("Auto Chooser");
-  /** The container for the robot. Contains subsystems, OI devices, and commands. 
- * @throws ParseException 
- * @throws IOException */
-  public RobotContainer() throws IOException, ParseException {
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  public RobotContainer() {
     switch (RobotStateConstants.getMode()) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -175,11 +170,16 @@ public class RobotContainer {
     downlinkageSlewRateLimiter = new SlewRateLimiter(0.001);
     uplinkageSlewRateLimiter = new SlewRateLimiter(0.001);
     m_poseEstimator = new PoseEstimator(m_driveSubsystem, m_gyroSubsystem);
-    m_pathPlanner = new PathPlanner(m_driveSubsystem, m_poseEstimator);
-    NamedCommands.registerCommand("L1", new PositionToScore(CoralStateMachine.PositionL1, m_elevatorSubsystem, m_wristSubsystem));
-        
-    
-    
+    try {
+      m_pathPlanner = new PathPlanner(m_driveSubsystem, m_poseEstimator);
+    } catch (IOException | ParseException e) {
+      throw new RuntimeException("Pathplanner Config", e);
+    }
+    NamedCommands.registerCommand(
+        "L1",
+        new PositionToScore(
+            CoralStateMachine.PositionL2Left, m_elevatorSubsystem, m_wristSubsystem));
+
     // PathPlannerSetup.configure(m_driveSubsystem, m_poseEstimator);
     // public Command getAutonomousCommand() {
     //     return new com.pathplanner.lib.auto.PathPlannerAuto("")
@@ -198,7 +198,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return AutoBuilder.buildAuto("Test_Auto");
+    return AutoBuilder.buildAuto("TT");
   }
 
   /**
@@ -496,6 +496,11 @@ public class RobotContainer {
                 new Stow(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem),
                 new WaitCommand(1),
                 new InstantCommand(() -> setDriveModulesPercentages(0.85, -0.85, 0.85))));
+
+    auxController
+        .rightBumper()
+        .onTrue(new AlgaeRemove(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem, 1))
+        .onFalse(new Processor(m_elevatorSubsystem, m_wristSubsystem, m_endEffectorSubsystem));
   }
 
   public void stopEverything() {}
@@ -517,8 +522,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-//   public Command getAutonomousCommand() {
-    // return autoChooser.get();
-    // return new RunCommand(() -> m_driveSubsystem.driveWithDeadband(0, -0.5, 0), m_driveSubsystem);
-//   }
+  //   public Command getAutonomousCommand() {
+  // return autoChooser.get();
+  // return new RunCommand(() -> m_driveSubsystem.driveWithDeadband(0, -0.5, 0), m_driveSubsystem);
+  //   }
 }

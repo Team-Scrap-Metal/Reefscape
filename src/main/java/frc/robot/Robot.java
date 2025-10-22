@@ -13,14 +13,11 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.util.FileVersionException;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.RobotStateConstants;
-import java.io.IOException;
-import org.json.simple.parser.ParseException;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -91,6 +88,7 @@ public class Robot extends LoggedRobot {
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    // TODO Auto-generated catch block
   }
 
   /** This function is called periodically during all modes. */
@@ -99,6 +97,11 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
   }
 
+  @Override
+  public void robotInit() {
+    DataLogManager.start();
+    DriverStation.startDataLog(DataLogManager.getLog());
+  }
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
@@ -112,6 +115,8 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    autonomousCommand = m_robotContainer.getAutonomousCommand();
+    if (autonomousCommand != null) autonomousCommand.schedule();
   }
 
   /** This function is called periodically during autonomous. */
@@ -121,6 +126,8 @@ public class Robot extends LoggedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    autonomousCommand = m_robotContainer.getAutonomousCommand();
+    if (autonomousCommand != null) autonomousCommand.cancel();
     m_robotContainer.coastOnDisable(false);
   }
 

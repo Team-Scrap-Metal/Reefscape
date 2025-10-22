@@ -54,7 +54,7 @@ public class WristConstants {
         Units.degreesToRadians(180) + Units.degreesToRadians(90);
     // NAH ID WIN!!!
     public static final double STOW_ROTATION_RAD =
-        Units.degreesToRadians(0.0) + Units.degreesToRadians(90);
+        Units.degreesToRadians(360) + Units.degreesToRadians(90);
     public static final double ALGAE_REMOVAL_ONE_ROTATION_R =
         Units.degreesToRadians(180) + Units.degreesToRadians(90);
     public static final double ALGAE_REMOVAL_TWO_ROTATION_R =

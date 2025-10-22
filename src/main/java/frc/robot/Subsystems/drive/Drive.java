@@ -56,6 +56,10 @@ public class Drive extends SubsystemBase {
     // Creates Swerve Dimensions in a 2D plan
     swerveKinematics = new SwerveDriveKinematics(DriveConstants.getModuleTranslations());
   }
+  // private final SysIdRoutine routine = new SysIdRoutine(
+  //   new SysIdRoutine.Config(),
+  //   new SysIdRoutine.Mechanism(
+  //     (volts) -> ;, null, gyro))
 
   @Override
   public void periodic() {
@@ -107,6 +111,12 @@ public class Drive extends SubsystemBase {
     Logger.recordOutput("SwerveStates/Setpoints", setpointStates);
     Logger.recordOutput("SwerveStates/SetpointsOptimized", optimizedStates);
   }
+  // public void runSwerveModulesVoltage(float[] voltages) {
+  //   SwerveModuleState[] optimizedStates = new SwerveModuleState[4];
+  //   for (int i =0; i < 4; i++) {
+  //     optimizedStates[i] = modules[i].setDriveVoltage(voltages[i]);
+  //   }
+  // }
   /** Get Swerve Measured States */
   public SwerveModuleState[] getMeasuredStates() {
     // Tracks the state each module is in
