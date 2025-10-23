@@ -9,12 +9,6 @@
           "data": {
             "pathName": "ROTATE90"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L1"
-          }
         }
       ]
     }
